@@ -1,0 +1,22 @@
+=============================================================================
+FIAP - GLOBAL SOLUTION 2026/2
+CitizenTech - Zeladoria Urbana Colaborativa
+Turma: 2TDSPG (2º Ano ADS - Turmas de Fevereiro)
+Disciplina: Compliance, Quality Assurance & Tests
+=============================================================================
+
+INTEGRANTES DO GRUPO (Ordem Alfabética):
+1. Enzo Okuizumi                     - RM: 561432
+2. Gustavo Okada                     - RM: 563428
+3. Lucas Barros Gouveia              - RM: 566422
+4. Luna de Carvalho Guimarães        - RM: 562290
+5. Milton Jakson de Sousa Marcelino  - RM: 564836
+
+=============================================================================
+REPOSITÓRIO GITHUB OFICIAL:
+https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests
+
+AZURE BOARDS & TEST PLANS:
+Organização: Global-Solution-CitizenTech (ou configurada no .env)
+Projeto: CitizenTech
+=============================================================================

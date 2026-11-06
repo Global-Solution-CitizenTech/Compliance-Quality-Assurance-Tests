@@ -1,0 +1,255 @@
+{
+  "info": {
+    "_postman_id": "c1f7a829-4d6e-4f11-9e8c-citizentech01",
+    "name": "CitizenTech — QA Integration & E2E Test Suite",
+    "description": "Suíte automatizada de testes de integração com asserções pm.test para validação de endpoints REST da API Java Spring Boot (CitizenTech - Zeladoria Urbana Colaborativa).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01. Auth - Cadastro de Cidadão",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 201 Created', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test('Resposta contém ID do usuário gerado', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "    pm.environment.set('usuarioId', jsonData.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nome\": \"Cidadão QA Teste\",\n  \"email\": \"cidadao.qa@citizentech.org\",\n  \"senha\": \"SenhaForte@2026\",\n  \"cargo\": \"CIDADAO\",\n  \"telefone\": \"11987654321\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/register",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "register"]
+        }
+      }
+    },
+    {
+      "name": "02. Auth - Login e Extração de JWT Bearer Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Token JWT retornado e armazenado', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('token');",
+              "    pm.environment.set('jwtToken', jsonData.token);",
+              "});",
+              "pm.test('Tempo de resposta inferior a 800ms', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(800);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"cidadao.qa@citizentech.org\",\n  \"senha\": \"SenhaForte@2026\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "03. Chamados - Abertura de Ocorrência Urbana",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 201 Created', function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "pm.test('Status inicial é ABERTO', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.status).to.eql('ABERTO');",
+              "    pm.environment.set('chamadoId', jsonData.id);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+        },
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"titulo\": \"Bueiro Entupido Causando Alagamento\",\n  \"descricao\": \"Bueiro coberto por entulho e folhas após chuva forte.\",\n  \"enderecoRef\": \"Rua Augusta, 500\",\n  \"categoriaId\": 1,\n  \"fotoUrl\": \"https://storage.citizentech.org/evidencias/bueiro.jpg\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/chamados",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "chamados"]
+        }
+      }
+    },
+    {
+      "name": "04. Chamados - Consulta e Validação de Schema",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Objeto possui campos obrigatórios de zeladoria', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData).to.have.property('id');",
+              "    pm.expect(jsonData).to.have.property('titulo');",
+              "    pm.expect(jsonData).to.have.property('status');",
+              "    pm.expect(jsonData).to.have.property('dtAbertura');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+        },
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "chamados", "{{chamadoId}}"]
+        }
+      }
+    },
+    {
+      "name": "05. Voto - Registro de Apoio Comunitário",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 200 OK ou 201 Created', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+        },
+        "method": "POST",
+        "url": {
+          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}/votos",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "chamados", "{{chamadoId}}", "votos"]
+        }
+      }
+    },
+    {
+      "name": "06. Gestão - Atualização de Status para EM_EXECUCAO",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 200 OK', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Status atualizado para EM_EXECUCAO', function () {",
+              "    var jsonData = pm.response.json();",
+              "    pm.expect(jsonData.status).to.eql('EM_EXECUCAO');",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+        },
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"EM_EXECUCAO\",\n  \"observacoes\": \"Equipe de desobstrução de galerias enviada ao local.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}/status",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "chamados", "{{chamadoId}}", "status"]
+        }
+      }
+    },
+    {
+      "name": "07. Teardown - Exclusão de Chamado de Teste",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status code é 204 No Content ou 200 OK', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+        },
+        "method": "DELETE",
+        "url": {
+          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "chamados", "{{chamadoId}}"]
+        }
+      }
+    }
+  ]
+}
