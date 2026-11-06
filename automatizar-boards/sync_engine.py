@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 """
-ZelaFix - Motor Central de Sincronização, QA e Governança
-Orquestra as operações de Backlogs, Test Cases, Rastreamento de Commits e Governança Scrum.
+ZelaFix - Motor Central de Sincronização, Commits e Governança
+Orquestra as operações de Backlogs, Rastreamento de Commits Git e Governança Scrum.
 """
 
 import sys
 import os
 import re
-import html
 import subprocess
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional
 
 if sys.stdout.encoding != 'utf-8':
     try:
@@ -19,7 +18,7 @@ if sys.stdout.encoding != 'utf-8':
 
 from config import (
     AZURE_ORG, AZURE_PROJECT, AZURE_PAT, GITHUB_ORG,
-    DISCIPLINES, TEST_CASES_DATA, TEAM_MEMBERS
+    DISCIPLINES, TEAM_MEMBERS
 )
 from azure_client import AzureClient
 from parser_backlog import parse_backlog_markdown, clean_title
@@ -171,92 +170,7 @@ class SyncEngine:
         return totals
 
     # =========================================================================
-    # 2. SINCRONIZAÇÃO DE CASOS DE TESTE (20 CASOS CAIXA-PRETA)
-    # =========================================================================
-    def sync_test_cases(self, dry_run: bool = False) -> int:
-        """Cria e vincula os 20 Test Cases às Features no Azure Boards."""
-        prefix = "[DRY-RUN] " if dry_run else ""
-        print("\n================================================================================")
-        print(f"🧪 {prefix}SINCRONIZANDO 20 CASOS DE TESTES NO AZURE BOARDS")
-        print("================================================================================")
-
-        # Mapeia Features ativas para vinculação
-        features_map = {}
-        if not dry_run:
-            f_ids = self.client.query_wiql(
-                f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}' and [System.WorkItemType] = 'Feature'"
-            )
-            items = self.client.get_batch(f_ids, fields=["System.Id", "System.Title"])
-            for it in items:
-                features_map[it["id"]] = it["fields"].get("System.Title", "")
-
-        created = 0
-        enzo_email = TEAM_MEMBERS["enzo"]["email"]
-
-        for tc in TEST_CASES_DATA:
-            clean_tc_title = f"{tc['id_code']}: {tc['title'].replace(tc['id_code'] + ' ', '')}"
-
-            # Constrói XML oficial TCM
-            step_nodes = []
-            for s_idx, st in enumerate(tc["steps"], 2):
-                act = html.escape(st["action"])
-                exp = html.escape(st["expected"])
-                step_nodes.append(
-                    f'<step id="{s_idx}" type="ValidateStep">'
-                    f'<parameterizedString isformatted="true">{act}</parameterizedString>'
-                    f'<parameterizedString isformatted="true">{exp}</parameterizedString>'
-                    f'<description/>'
-                    f'</step>'
-                )
-            steps_xml = f'<steps id="0" last="{len(tc["steps"]) + 1}">{"".join(step_nodes)}</steps>'
-
-            # Sumário
-            inputs_html = "".join(f"<li><b>{k}:</b> {v}</li>" for k, v in tc["inputs"].items())
-            summary_html = (
-                f"<div><b>Objetivo:</b> {tc['objective']}</div><br/>"
-                f"<div><b>Preparação / Pré-condições:</b> {tc['preconditions']}</div><br/>"
-                f"<div><b>Dados de Entrada Controlados:</b><ul>{inputs_html}</ul></div><br/>"
-                f"<div><b>Resultados Esperados:</b> {tc['expected_output']}</div>"
-            )
-
-            tags = ["ZelaFix", "QA", "BlackBox", tc["type"], tc["feature_name"].replace(" ", "")]
-            target_fid = tc.get("target_feature_id")
-
-            relations = []
-            if not dry_run and target_fid:
-                relations.append({
-                    "rel": "Microsoft.VSTS.Common.TestedBy-Reverse",
-                    "url": f"{self.client.base_url}/_apis/wit/workitems/{target_fid}",
-                    "attributes": {"comment": f"Vinculado à Feature #{target_fid}"}
-                })
-
-            extra_fields = {
-                "Microsoft.VSTS.TCM.Steps": steps_xml
-            }
-
-            res = self.client.create_work_item(
-                work_item_type="Test Case",
-                title=clean_tc_title,
-                description=summary_html,
-                priority=tc["priority"],
-                tags=tags,
-                assigned_to=enzo_email,
-                state="Ready",
-                extra_fields=extra_fields,
-                relations=relations,
-                dry_run=dry_run
-            )
-            created += 1
-            tid = res.get("id", 3000 + created)
-            print(f"  ✅ Caso de Teste #{tid} criado: {clean_tc_title}")
-
-        print("\n" + "="*80)
-        print(f"✨ {prefix}Total de Casos de Teste processados: {created}")
-        print("="*80 + "\n")
-        return created
-
-    # =========================================================================
-    # 3. RASTREABILIDADE MULTI-REPO DE COMMITS GIT
+    # 2. RASTREABILIDADE MULTI-REPO DE COMMITS GIT
     # =========================================================================
     def scan_and_link_commits(self, dry_run: bool = False) -> Dict[str, int]:
         """Varre os 7 repositórios locais e vincula os commits ao Azure Boards."""
@@ -276,7 +190,6 @@ class SyncEngine:
 
             print(f"\n📂 [{d_info['name']}] - {d_info['repo']}")
 
-            # Obtém commits recentes do Git local
             try:
                 cmd = ["git", "-C", repo_path, "log", "-n", "3", "--pretty=format:%h|%s"]
                 output = subprocess.check_output(cmd, encoding="utf-8", errors="ignore")
@@ -287,7 +200,6 @@ class SyncEngine:
 
             print(f"  🔎 Encontrados {len(lines)} commits recentes:")
 
-            # Work Items da disciplina
             disc_items = []
             if not dry_run:
                 wiql = f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}' and [System.Tags] Contains '{d_info['tag']}'"
@@ -300,7 +212,6 @@ class SyncEngine:
                 print(f"    • {sha} — {msg}")
                 print(f"      🔗 {commit_url}")
 
-                # Procura tag AB#<id>
                 matches = re.findall(r"AB#(\d+)", msg, re.IGNORECASE)
                 target_ids = [int(m) for m in matches] if matches else ([disc_items[0]] if disc_items else [])
 
@@ -317,7 +228,7 @@ class SyncEngine:
         return {"total": total_commits, "linked": linked_commits}
 
     # =========================================================================
-    # 4. GOVERNANÇA DE RESPONSÁVEIS E ESTADOS
+    # 3. GOVERNANÇA DE RESPONSÁVEIS E ESTADOS
     # =========================================================================
     def apply_governance(self, dry_run: bool = False) -> int:
         """Aplica atribuição dos integrantes e estados In Progress / Committed."""
@@ -351,8 +262,6 @@ class SyncEngine:
                 if tag in tags:
                     target_owner = owner_email
                     break
-            if not target_owner and wtype == "Test Case":
-                target_owner = TEAM_MEMBERS["enzo"]["email"]
 
             if target_owner:
                 patch.append({"op": "add", "path": "/fields/System.AssignedTo", "value": target_owner})
@@ -362,8 +271,6 @@ class SyncEngine:
                 patch.append({"op": "add", "path": "/fields/System.State", "value": "In Progress"})
             elif wtype == "Product Backlog Item" and state != "Committed":
                 patch.append({"op": "add", "path": "/fields/System.State", "value": "Committed"})
-            elif wtype == "Test Case" and state != "Ready":
-                patch.append({"op": "add", "path": "/fields/System.State", "value": "Ready"})
 
             # 3. Remove GS 2026/2 de títulos se presente
             title = fields.get("System.Title", "")
@@ -380,83 +287,7 @@ class SyncEngine:
         return updated
 
     # =========================================================================
-    # 5. GERADOR DE DOCUMENTAÇÃO DE QA
-    # =========================================================================
-    def export_test_documentation(self) -> Tuple[str, str]:
-        """Gera os arquivos Markdown da Matriz e do Plano de Testes em docs/."""
-        docs_dir = os.path.join(os.path.dirname(self.script_dir), "docs")
-        os.makedirs(docs_dir, exist_ok=True)
-
-        matrix_path = os.path.join(docs_dir, "MATRIZ_CASOS_DE_TESTE_AZURE.md")
-        plan_path = os.path.join(docs_dir, "PLANO_DE_TESTES_AZURE_BOARDS.md")
-
-        # 1. Matriz de Testes
-        m_lines = [
-            "# 📋 Matriz de Casos de Testes Manuais - ZelaFix",
-            "> **Projeto:** ZelaFix - Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  ",
-            "> **Padrão:** Azure Test Plans & Azure Boards (Caixa-Preta Funcional)  ",
-            f"> **Organização:** `{AZURE_ORG}` | **Projeto:** `{AZURE_PROJECT}`  ",
-            "",
-            "---",
-            "",
-            "## 📊 Resumo Executivo da Matriz",
-            f"- **Total de Casos de Teste:** {len(TEST_CASES_DATA)}",
-            f"- **Casos Positivos (Caminho Feliz):** {len([t for t in TEST_CASES_DATA if t['type'] == 'Positivo'])} (65%)",
-            f"- **Casos Negativos (Validação & Exceções):** {len([t for t in TEST_CASES_DATA if t['type'] == 'Negativo'])} (35%)",
-            "",
-            "---",
-            "",
-            "## 📑 Detalhamento Completo dos 20 Casos de Teste",
-            ""
-        ]
-
-        for tc in TEST_CASES_DATA:
-            m_lines.append(f"### {tc['id_code']}: {tc['title']}")
-            m_lines.append(f"- **Tipo:** `{tc['type']}` | **Prioridade:** `P{tc['priority']}` | **Feature:** `{tc['feature_name']}`")
-            m_lines.append(f"- **Objetivo:** {tc['objective']}")
-            m_lines.append(f"- **Pré-condições:** {tc['preconditions']}")
-            m_lines.append(f"- **Dados de Entrada:** `{tc['inputs']}`")
-            m_lines.append(f"- **Resultado Esperado:** {tc['expected_output']}")
-            m_lines.append("")
-            m_lines.append("| Passo | Ação do Testador | Resposta Esperada do Sistema |")
-            m_lines.append("| :---: | :--- | :--- |")
-            for idx, st in enumerate(tc["steps"], 1):
-                m_lines.append(f"| {idx} | {st['action']} | {st['expected']} |")
-            m_lines.append("\n---\n")
-
-        with open(matrix_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(m_lines))
-
-        # 2. Plano de Testes
-        p_lines = [
-            "# 🛡️ Plano de Testes Formais - ZelaFix",
-            "> **Disciplina:** Compliance, Quality Assurance & Tests (FIAP 2TDSPG)",
-            f"> **Projeto Azure DevOps:** [{AZURE_PROJECT}](https://dev.azure.com/{AZURE_ORG}/{AZURE_PROJECT})",
-            "",
-            "## 1. Escopo de Testes",
-            "O presente plano cobre a validação funcional caixa-preta do ecossistema ZelaFix:",
-            "- Autenticação JWT e Sessão Persistente (Mobile/Java)",
-            "- CRUD Completo de Ocorrências Urbanas com Foto e GPS",
-            "- Votação Coletiva Comunitária em Chamados",
-            "- Ciclo de Vida e Permissões Administrativas RBAC",
-            "- Telemetria de Sensores IoT via MQTT e Triagem por IA",
-            "- Resiliência de Conexão e Suporte a Cache Offline",
-            "",
-            "## 2. Critérios de Aceite e Homologação",
-            "- 100% dos fluxos positivos validados com status 'Passed'.",
-            "- 100% dos fluxos negativos devidamente tratados com mensagens amigáveis sem stacktrace.",
-            "- Rastreabilidade bidirecional entre Casos de Teste, Features e Commits Git."
-        ]
-
-        with open(plan_path, "w", encoding="utf-8") as f:
-            f.write("\n".join(p_lines))
-
-        print(f"✅ Matriz exportada: {matrix_path}")
-        print(f"✅ Plano exportado: {plan_path}")
-        return matrix_path, plan_path
-
-    # =========================================================================
-    # 6. DASHBOARD DE STATUS DO PROJETO
+    # 4. DASHBOARD DE STATUS DO PROJETO
     # =========================================================================
     def get_project_status(self) -> Dict[str, Any]:
         """Consulta e exibe a visão consolidada de saúde do Azure Boards."""
@@ -498,7 +329,7 @@ class SyncEngine:
         return {"total": len(ids), "types": types_count, "states": states_count, "members": assigned_count}
 
     # =========================================================================
-    # 7. LIMPEZA TOTAL DO BOARD
+    # 5. LIMPEZA TOTAL DO BOARD
     # =========================================================================
     def clean_board(self, destroy: bool = True) -> int:
         """Limpa todos os Work Items do projeto com segurança."""
