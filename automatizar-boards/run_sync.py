@@ -1,187 +1,123 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
-=============================================================================
-🏛️ CitizenTech — Orquestrador de Sincronização Azure Boards
-=============================================================================
-Importador automático de Backlog Scrum (Epic -> Feature -> PBI -> Task),
-vínculo de commits Git de todos os 7 repositórios e Casos de Testes.
-
-FIAP Global Solution 2026/2 — CitizenTech
-Disciplina: Compliance, Quality Assurance & Tests
-=============================================================================
+ZelaFix - Orquestrador Unificado do Azure Boards (CLI Principal)
+Ponto de entrada único para Carga de Backlogs, Casos de Testes, Commits e Governança Scrum.
 """
 
 import sys
-import os
 import argparse
-from typing import List
 
-# Garante suporte a UTF-8 no terminal Windows
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
+if sys.stdout.encoding != 'utf-8':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 
-# Adiciona diretório atual ao path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-from parser_backlog import parse_backlog_markdown
-from azure_boards_sync import AzureBoardsClient
-from link_commits import AzureCommitLinker, scan_and_link
-from sync_test_cases import sync_test_cases_to_azure, export_test_matrix_md, export_test_plan_md
+from config import AZURE_ORG, AZURE_PROJECT, DISCIPLINES
+from sync_engine import SyncEngine
+from install_git_hooks import install_hooks
 
 
-def load_env_file(env_path: str = None) -> dict:
-    """Lê arquivo .env simples sem depender de bibliotecas externas."""
-    candidates = [
-        env_path,
-        os.path.join(os.path.dirname(__file__), ".env"),
-        os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env"),
-        os.path.join(os.getcwd(), ".env")
-    ]
-    env_vars = {}
-    for p in candidates:
-        if p and os.path.exists(p):
-            with open(p, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if not line or line.startswith("#") or "=" not in line:
-                        continue
-                    k, v = line.split("=", 1)
-                    env_vars[k.strip()] = v.strip().strip("'\"")
-            break
-    return env_vars
-
-
-BACKLOG_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "backlog-materias")
-
-ALL_DISCIPLINE_FILES = [
-    (os.path.join(BACKLOG_DIR, "BACKLOG_MOBILE.md"), "Mobile Application Development"),
-    (os.path.join(BACKLOG_DIR, "BACKLOG_JAVA_ADVANCED.md"), "Java Advanced"),
-    (os.path.join(BACKLOG_DIR, "BACKLOG_DOT_NET.md"), "Advanced Business Development with .NET"),
-    (os.path.join(BACKLOG_DIR, "BACKLOG_DATABASE_ADVANCED.md"), "Database Advanced"),
-    (os.path.join(BACKLOG_DIR, "BACKLOG_DEVOPS.md"), "DevOps Tools & Cloud Computing"),
-    (os.path.join(BACKLOG_DIR, "BACKLOG_DISRUPTIVE_ARCHITECTURES.md"), "Disruptive Architectures (IoT & IA)"),
-    (os.path.join(BACKLOG_DIR, "BACKLOG_COMPLIANCE.md"), "Compliance, Quality Assurance & Tests")
-]
+def print_banner():
+    banner = f"""
+================================================================================
+🚀 ZELAFIX AZURE BOARDS AUTOMATION CLI (FIAP 2TDSPG)
+🏛️ Organização: {AZURE_ORG} | Projeto: {AZURE_PROJECT}
+================================================================================
+"""
+    print(banner)
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="CitizenTech - Automação de Backlog & QA para Azure Boards (Epic -> Feature -> PBI -> Task -> Test Case -> Commits)",
+        description="ZelaFix - Automação Completa de Backlogs, QA e Governança para Azure Boards",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-Exemplos de uso:
-  1. Testar conexão com Azure DevOps:
-     python run_sync.py --check-auth
-
-  2. Simular importação de todos os 7 backlogs (Dry-Run):
-     python run_sync.py --all --dry-run
-
-  3. Importar uma matéria específica:
-     python run_sync.py --file BACKLOG_MOBILE.md --dry-run
-     python run_sync.py --file BACKLOG_COMPLIANCE.md
-
-  4. Importar todas as matérias de uma vez no Board unificado:
-     python run_sync.py --all
-
-  5. Vincular commits Git dos 7 repositórios aos Work Items:
-     python run_sync.py --link-commits
-     python run_sync.py --link-commits --dry-run
-
-  6. Sincronizar os 20 Casos de Testes no Azure Boards / Test Plans:
-     python run_sync.py --sync-test-cases
-     python run_sync.py --sync-test-cases --dry-run
+Exemplos de Uso:
+  python run_sync.py --all                    # Importa os backlogs das 7 disciplinas
+  python run_sync.py --discipline mobile      # Importa somente uma disciplina
+  python run_sync.py --test-cases             # Cria os 20 Test Cases vinculados às Features
+  python run_sync.py --commits                # Varre os 7 repositórios locais e vincula commits
+  python run_sync.py --govern                 # Aplica atribuição de responsáveis e estados
+  python run_sync.py --status                 # Exibe o painel de saúde e métricas do projeto
+  python run_sync.py --full                   # Executa o pipeline completo (carga, testes, commits, docs)
+  python run_sync.py --dry-run --all          # Simula a importação sem alterar o Azure
         """
     )
 
-    parser.add_argument("--file", "-f", type=str, default=None, help="Caminho ou nome do arquivo de backlog (em backlog-materias/)")
-    parser.add_argument("--all", "-a", action="store_true", help="Importar backlogs de todas as 7 disciplinas do CitizenTech")
-    parser.add_argument("--dry-run", "-d", action="store_true", help="Modo simulação: executa o parser e exibe a hierarquia sem criar nada na nuvem")
-    parser.add_argument("--check-auth", "-c", action="store_true", help="Valida se as credenciais e o projeto do Azure DevOps estão acessíveis")
-    parser.add_argument("--link-commits", "-l", action="store_true", help="Escaneia os 7 repositórios git e vincula os commits aos Work Items")
-    parser.add_argument("--sync-test-cases", "-t", action="store_true", help="Sincroniza a suíte de 20 casos de testes (caixa-preta) no Azure")
-    parser.add_argument("--org", type=str, default=None, help="Nome da organização Azure DevOps (Ex: ZelaFixGS)")
-    parser.add_argument("--project", type=str, default=None, help="Nome do projeto Azure DevOps (Ex: CitizenTech)")
-    parser.add_argument("--pat", type=str, default=None, help="Personal Access Token (PAT) do Azure DevOps")
+    parser.add_argument("--all", "-a", action="store_true", help="Importar backlogs das 7 disciplinas")
+    parser.add_argument("--discipline", "-d", type=str, choices=list(DISCIPLINES.keys()), help="Importar disciplina específica")
+    parser.add_argument("--test-cases", "-t", action="store_true", help="Sincronizar os 20 Casos de Teste Caixa-Preta")
+    parser.add_argument("--commits", "-c", action="store_true", help="Escanear os 7 repositórios e vincular commits")
+    parser.add_argument("--govern", "-g", action="store_true", help="Aplicar governança de responsáveis e estados (In Progress/Committed)")
+    parser.add_argument("--docs", action="store_true", help="Gerar documentação Markdown da Matriz e do Plano de Testes")
+    parser.add_argument("--hooks", action="store_true", help="Instalar post-commit hooks nos 7 repositórios locais")
+    parser.add_argument("--status", "-s", action="store_true", help="Exibir resumo consolidado de saúde dos Work Items")
+    parser.add_argument("--clean", action="store_true", help="Limpar todos os Work Items do projeto com segurança")
+    parser.add_argument("--check-auth", action="store_true", help="Verificar conexão e permissões no Azure DevOps")
+    parser.add_argument("--full", action="store_true", help="Executar pipeline completo de ponta a ponta")
+    parser.add_argument("--dry-run", action="store_true", help="Modo simulação (não grava na nuvem)")
 
     args = parser.parse_args()
 
-    # Carrega variáveis do arquivo .env se existirem
-    env_vars = load_env_file()
-    org = args.org or os.getenv("AZURE_DEVOPS_ORG") or env_vars.get("AZURE_DEVOPS_ORG", "ZelaFixGS")
-    project = args.project or os.getenv("AZURE_DEVOPS_PROJECT") or env_vars.get("AZURE_DEVOPS_PROJECT", "ZelaFix")
-    pat = args.pat or os.getenv("AZURE_DEVOPS_PAT") or env_vars.get("AZURE_DEVOPS_PAT", "")
-    github_org = env_vars.get("GITHUB_ORG", "ZelaFixGS")
+    # Se nenhum argumento for passado, exibe o status por padrão
+    if not any([args.all, args.discipline, args.test_cases, args.commits, args.govern, args.docs, args.hooks, args.status, args.clean, args.check_auth, args.full]):
+        print_banner()
+        engine = SyncEngine()
+        engine.get_project_status()
+        print("💡 Dica: Use 'python run_sync.py --help' para listar todos os comandos disponíveis.")
+        return
 
-    client = AzureBoardsClient(organization=org, project=project, pat=pat)
+    print_banner()
+    engine = SyncEngine()
 
     if args.check_auth:
-        print(f"\n🔍 Verificando conexão com Azure DevOps...")
-        print(f"🏛️ Organização: {org}")
-        print(f"📁 Projeto: {project}")
-        ok, msg = client.check_connection()
-        if ok:
-            print(f"✅ {msg}")
+        ok, msg = engine.client.check_connection()
+        print(f"📡 Status da Conexão: {'✅ SUCESSO' if ok else '❌ FALHA'}")
+        print(f"ℹ️ Detalhes: {msg}\n")
+        return
+
+    if args.clean:
+        confirm = input("⚠️ ATENÇÃO: Deseja realmente remover todos os Work Items do projeto? (s/N): ").strip().lower()
+        if confirm == "s":
+            engine.clean_board()
         else:
-            print(f"❌ Falha de autenticação / conexão:\n{msg}")
-            print("\n💡 Dica: Verifique se o seu PAT está preenchido no arquivo .env com permissão 'Work Items (Read & Write)'.")
+            print("Operação de limpeza cancelada.")
         return
 
-    # Execução de Casos de Teste isolada
-    if args.sync_test_cases:
-        sync_test_cases_to_azure(org=org, project=project, pat=pat, dry_run=args.dry_run)
+    if args.full:
+        print("🚀 Executando Pipeline Completo de Homologação ZelaFix...")
+        engine.sync_all_disciplines(dry_run=args.dry_run)
+        engine.sync_test_cases(dry_run=args.dry_run)
+        engine.scan_and_link_commits(dry_run=args.dry_run)
+        engine.apply_governance(dry_run=args.dry_run)
+        engine.export_test_documentation()
+        engine.get_project_status()
         return
 
-    # Execução de Vínculo de Commits isolada
-    if args.link_commits:
-        base_repos_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        linker = AzureCommitLinker(organization=org, project=project, pat=pat, github_org=github_org)
-        scan_and_link(linker, base_repos_dir, dry_run=args.dry_run)
-        return
-
-    # Modo de execução de Backlogs: Todos ou Arquivo Único
     if args.all:
-        print(f"\n🚀 Modo Selecionado: IMPORTAÇÃO TOTAL DE TODAS AS 7 DISCIPLINAS (CITIZENTECH)")
-        total_stats = {"epics": 0, "features": 0, "pbis": 0, "tasks": 0}
-        
-        for full_path, disc_name in ALL_DISCIPLINE_FILES:
-            if not os.path.exists(full_path):
-                print(f"⚠️ Arquivo não encontrado: {full_path} (pulando...)")
-                continue
-            
-            doc = parse_backlog_markdown(full_path)
-            stats = client.sync_backlog(doc, dry_run=args.dry_run)
-            for k in total_stats:
-                total_stats[k] += stats.get(k, 0)
+        engine.sync_all_disciplines(dry_run=args.dry_run)
 
-        print(f"\n========================================================")
-        print(f"🎉 FINAL DA CARGA TOTAL CONSOLIDADA!")
-        print(f"👑 Epics: {total_stats['epics']}")
-        print(f"🏆 Features: {total_stats['features']}")
-        print(f"📄 PBIs: {total_stats['pbis']}")
-        print(f"🔨 Tasks: {total_stats['tasks']}")
-        print(f"========================================================\n")
+    if args.discipline:
+        engine.sync_discipline(args.discipline, dry_run=args.dry_run)
 
-    elif args.file:
-        target_path = args.file
-        if not os.path.exists(target_path):
-            # Tenta dentro da pasta backlog-materias
-            candidate = os.path.join(BACKLOG_DIR, args.file)
-            if os.path.exists(candidate):
-                target_path = candidate
-            else:
-                candidate2 = os.path.join(os.path.dirname(__file__), args.file)
-                if os.path.exists(candidate2):
-                    target_path = candidate2
-                else:
-                    print(f"❌ Erro: Arquivo de backlog não encontrado: {args.file}")
-                    return
+    if args.test_cases:
+        engine.sync_test_cases(dry_run=args.dry_run)
 
-        doc = parse_backlog_markdown(target_path)
-        client.sync_backlog(doc, dry_run=args.dry_run)
-    else:
-        # Se nenhum argumento for passado, exibe menu / ajuda
-        parser.print_help()
+    if args.commits:
+        engine.scan_and_link_commits(dry_run=args.dry_run)
+
+    if args.govern:
+        engine.apply_governance(dry_run=args.dry_run)
+
+    if args.docs:
+        engine.export_test_documentation()
+
+    if args.hooks:
+        install_hooks()
+
+    if args.status:
+        engine.get_project_status()
 
 
 if __name__ == "__main__":
