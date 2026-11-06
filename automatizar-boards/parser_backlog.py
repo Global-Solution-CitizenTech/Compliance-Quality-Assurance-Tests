@@ -24,6 +24,7 @@ def clean_title(text: str) -> str:
     cleaned = re.sub(r"[\U00010000-\U0010ffff]", "", text)  # Emojis 4-byte
     cleaned = re.sub(r"[\u2600-\u27BF\u2300-\u23FF\u2B50-\u2B55\u200d\uFE0F\u00A9\u00AE]", "", cleaned)  # Símbolos, dingbats
     cleaned = cleaned.replace("`", "").replace("'", "").replace('"', "").replace("**", "").replace("*", "")
+    cleaned = cleaned.replace("GS 2026/2 - ", "").replace("GS 2026/2 -", "")
     cleaned = re.sub(r"^\s*-\s*", "", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
     return cleaned

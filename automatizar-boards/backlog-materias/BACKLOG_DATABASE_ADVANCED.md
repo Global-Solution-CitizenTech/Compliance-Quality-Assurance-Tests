@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Mastering Relational and Non-Relational Database (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`  
+> **Epic Principal:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -25,7 +25,7 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB
+[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB
 │
 ├── 🏆 [FEATURE 01] Modelagem Conceitual, Lógica e Relacional no Oracle Data Modeler
 │   ├── 📄 [PBI-01] Elaboração do Modelo Entidade-Relacionamento e Diagrama Relacional 3FN (3 pts)
@@ -66,7 +66,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
+* **Title:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
 * **Tags:** `Database, ZelaFix, GlobalSolution2, Oracle, PLSQL, MongoDB, DataModeling`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -79,7 +79,7 @@
 
 ### 🏆 [FEATURE 01] Modelagem Conceitual, Lógica e Relacional no Oracle Data Modeler
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
+* **Parent:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
 * **Title:** `[FEATURE 01] Modelagem Conceitual, Lógica e Relacional no Oracle Data Modeler`
 * **Tags:** `Database, DataModeler, 3FN, DDL`
 * **Start Date:** `2026-11-04`
@@ -130,7 +130,7 @@
 
 ### 🏆 [FEATURE 02] Automação em PL/SQL (Packages, Stored Procedures e Functions)
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
+* **Parent:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
 * **Title:** `[FEATURE 02] Automação em PL/SQL (Packages, Stored Procedures e Functions)`
 * **Tags:** `Database, PLSQL, Procedures, Packages`
 * **Start Date:** `2026-11-08`
@@ -180,7 +180,7 @@
 
 ### 🏆 [FEATURE 03] Triggers de Auditoria DML e Histórico de Status de Chamados
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
+* **Parent:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
 * **Title:** `[FEATURE 03] Triggers de Auditoria DML e Histórico de Status de Chamados`
 * **Tags:** `Database, Triggers, Audit, DML`
 * **Start Date:** `2026-11-10`
@@ -228,7 +228,7 @@
 
 ### 🏆 [FEATURE 04] Persistência NoSQL com MongoDB e Documentos de Telemetria
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
+* **Parent:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 11g, Automações PL/SQL e Persistência NoSQL MongoDB`
 * **Title:** `[FEATURE 04] Persistência NoSQL com MongoDB e Documentos de Telemetria`
 * **Tags:** `Database, MongoDB, NoSQL, IoT, Telemetry`
 * **Start Date:** `2026-11-13`

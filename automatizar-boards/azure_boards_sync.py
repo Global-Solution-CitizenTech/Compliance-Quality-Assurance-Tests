@@ -52,6 +52,17 @@ def get_discipline_iteration_path(discipline: str, project_name: str = "ZelaFix"
     return f"{project_name}\\Sprint 1"
 
 
+DISCIPLINE_OWNERS = {
+    "Mobile": "RM562290@fiap.com.br",               # Luna de Carvalho Guimarães
+    "DotNet": "MR563428@fiap.com.br",               # Gustavo Okada / MR563428
+    "DevOps": "RM564836@fiap.com.br",               # Milton Jakson de Sousa Marcelino
+    "Database": "RM566422@fiap.com.br",             # Lucas Barros Gouveia
+    "DisruptiveArchitectures": "RM561432@fiap.com.br", # Enzo Okuizumi
+    "Compliance": "RM561432@fiap.com.br",           # Enzo Okuizumi
+    "JavaAdvanced": "RM561432@fiap.com.br"          # Enzo Okuizumi
+}
+
+
 class AzureBoardsClient:
     def __init__(self, organization: str, project: str, pat: Optional[str] = None):
         self.organization = organization.strip()
@@ -134,6 +145,8 @@ class AzureBoardsClient:
         tags: Optional[List[str]] = None,
         iteration_path: Optional[str] = None,
         parent_id: Optional[int] = None,
+        assigned_to: Optional[str] = None,
+        state: Optional[str] = None,
         dry_run: bool = False
     ) -> Dict[str, Any]:
         """
@@ -249,6 +262,20 @@ class AzureBoardsClient:
                 "value": iteration_path
             })
 
+        if assigned_to:
+            patch_document.append({
+                "op": "add",
+                "path": "/fields/System.AssignedTo",
+                "value": assigned_to
+            })
+
+        if state:
+            patch_document.append({
+                "op": "add",
+                "path": "/fields/System.State",
+                "value": state
+            })
+
         if parent_id:
             parent_url = f"https://dev.azure.com/{self.organization}/{self.project}/_apis/wit/workitems/{parent_id}"
             patch_document.append({
@@ -337,32 +364,17 @@ class AzureBoardsClient:
         print(f"========================================================")
 
         stats = {"epics": 0, "features": 0, "pbis": 0, "tasks": 0, "errors": 0}
+        owner = DISCIPLINE_OWNERS.get(discipline_tag, "RM561432@fiap.com.br")
 
         # 1. Cria o Epic
         epic = doc.epic
         date_str = f" | Dates: {epic.start_date} -> {epic.target_date}" if epic.start_date and epic.target_date else ""
         print(f"\n👑 Criando Epic: {epic.title} (Effort: {epic.effort} SP | Business Value: {epic.business_value}{date_str} | Tag: {discipline_tag} | Iteration: {iteration_path})")
 
-        header_desc = (
-            "<div>"
-            "<p><strong>ZelaFix</strong></p>"
-            "<p>Projeto para entrega da Global Solution 2026/2 do professor Antonio Sergio Rodrigues Figueiredo.<br/>"
-            "<strong>Tema:</strong> CitizenTech - Zeladoria Urbana Colaborativa (ODS 11 - Cidades e Comunidades Sustentáveis).</p>"
-            "<p><strong>Integrantes do grupo ZelaFix - 2TDSPG:</strong><br/>"
-            "• Enzo Okuizumi - RM561432<br/>"
-            "• Gustavo Okada - RM563428<br/>"
-            "• Lucas Barros - RM566422<br/>"
-            "• Luna de Carvalho - RM562290<br/>"
-            "• Milton Marcelino - RM564836</p>"
-            "<hr/>"
-            "</div>"
-        )
-        combined_epic_desc = header_desc + (epic.description or "")
-
         epic_res = self.create_work_item(
             work_item_type="Epic",
             title=epic.title,
-            description=combined_epic_desc,
+            description=epic.description,
             acceptance_criteria=epic.acceptance_criteria,
             start_date=epic.start_date,
             target_date=epic.target_date,
@@ -371,6 +383,8 @@ class AzureBoardsClient:
             business_value=epic.business_value,
             tags=item_tags,
             iteration_path=iteration_path,
+            assigned_to=owner,
+            state="In Progress",
             dry_run=dry_run
         )
         epic_id = epic_res.get("id")
@@ -394,6 +408,8 @@ class AzureBoardsClient:
                 tags=item_tags,
                 iteration_path=iteration_path,
                 parent_id=epic_id,
+                assigned_to=owner,
+                state="In Progress",
                 dry_run=dry_run
             )
             feat_id = feat_res.get("id")
@@ -414,6 +430,8 @@ class AzureBoardsClient:
                     tags=item_tags,
                     iteration_path=iteration_path,
                     parent_id=feat_id,
+                    assigned_to=owner,
+                    state="Committed",
                     dry_run=dry_run
                 )
                 pbi_id = pbi_res.get("id")

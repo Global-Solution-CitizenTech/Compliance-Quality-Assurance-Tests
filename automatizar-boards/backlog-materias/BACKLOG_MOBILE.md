@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Mobile Application Development (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`  
+> **Epic Principal:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -25,7 +25,7 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa
+[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa
 │
 ├── 🏆 [FEATURE 01] Arquitetura UI, Design System e Navegação por Abas
 │   ├── 📄 [PBI-01] Configuração do React Navigation e Estrutura de Telas Base (3 pts)
@@ -68,7 +68,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
+* **Title:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Tags:** `Mobile, ZelaFix, GlobalSolution2, ReactNative, Expo, TypeScript`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -81,7 +81,7 @@
 
 ### 🏆 [FEATURE 01] Arquitetura UI, Design System e Navegação por Abas
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
+* **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 01] Arquitetura UI, Design System e Navegação por Abas`
 * **Tags:** `Mobile, ZelaFix, UI, Navigation`
 * **Start Date:** `2026-11-04`
@@ -133,7 +133,7 @@
 
 ### 🏆 [FEATURE 02] Autenticação JWT, Sessão Segura e Cache Offline Resiliente
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
+* **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 02] Autenticação JWT, Sessão Segura e Cache Offline Resiliente`
 * **Tags:** `Mobile, ZelaFix, Auth, JWT, OfflineCache`
 * **Start Date:** `2026-11-07`
@@ -186,7 +186,7 @@
 
 ### 🏆 [FEATURE 03] CRUD Completo de Chamados Urbanos e Geolocalização GPS
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
+* **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 03] CRUD Completo de Chamados Urbanos e Geolocalização GPS`
 * **Tags:** `Mobile, ZelaFix, CRUD, GPS, Camera`
 * **Start Date:** `2026-11-09`
@@ -240,7 +240,7 @@
 
 ### 🏆 [FEATURE 04] Engajamento Cidadão, Votação Comunitária e Detalhes da Ocorrência
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
+* **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 04] Engajamento Cidadão, Votação Comunitária e Detalhes da Ocorrência`
 * **Tags:** `Mobile, ZelaFix, Voto, Timeline, Documentation`
 * **Start Date:** `2026-11-13`

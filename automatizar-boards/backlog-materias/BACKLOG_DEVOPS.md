@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** DevOps Tools & Cloud Computing (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`  
+> **Epic Principal:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -25,7 +25,7 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD
+[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD
 │
 ├── 🏆 [FEATURE 01] Containerização Multi-Container com Docker e Docker Compose
 │   ├── 📄 [PBI-01] Criação de Dockerfiles Multi-Stage Seguros e Otimizados (3 pts)
@@ -62,7 +62,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
+* **Title:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
 * **Tags:** `DevOps, ZelaFix, GlobalSolution2, Docker, Azure, CICD, GitHubActions`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -75,7 +75,7 @@
 
 ### 🏆 [FEATURE 01] Containerização Multi-Container com Docker e Docker Compose
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
+* **Parent:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
 * **Title:** `[FEATURE 01] Containerização Multi-Container com Docker e Docker Compose`
 * **Tags:** `DevOps, Docker, DockerCompose, Containers`
 * **Start Date:** `2026-11-04`
@@ -126,7 +126,7 @@
 
 ### 🏆 [FEATURE 02] Infraestrutura como Código (IaC) e Provisionamento na Nuvem Azure
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
+* **Parent:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
 * **Title:** `[FEATURE 02] Infraestrutura como Código (IaC) e Provisionamento na Nuvem Azure`
 * **Tags:** `DevOps, Azure, Cloud, IaC, ACR`
 * **Start Date:** `2026-11-09`
@@ -176,7 +176,7 @@
 
 ### 🏆 [FEATURE 03] Automação de Pipelines CI/CD via GitHub Actions e Monitoramento
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
+* **Parent:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
 * **Title:** `[FEATURE 03] Automação de Pipelines CI/CD via GitHub Actions e Monitoramento`
 * **Tags:** `DevOps, GitHubActions, Pipeline, CICD`
 * **Start Date:** `2026-11-12`

@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Compliance, Quality Assurance & Tests (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`  
+> **Epic Principal:** `[EPIC] Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -40,7 +40,7 @@
 ## 🌳 2. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta
+[EPIC] Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta
 │
 ├── 🏆 [FEATURE 01] Governança Scrum e Estruturação do Backlog Geral no Azure Boards
 │   ├── 📄 [PBI-01] Planejamento e Estruturação Hierárquica dos Épicos de Todas as Disciplinas (3 pts)
@@ -79,7 +79,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
+* **Title:** `[EPIC] Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
 * **Tags:** `Compliance, ZelaFix, GlobalSolution2, QA, Scrum, AzureBoards`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -92,7 +92,7 @@
 
 ### 🏆 [FEATURE 01] Governança Scrum e Estruturação do Backlog Geral no Azure Boards
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
+* **Parent:** `[EPIC] Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
 * **Title:** `[FEATURE 01] Governança Scrum e Estruturação do Backlog Geral no Azure Boards`
 * **Tags:** `Compliance, ZelaFix, Scrum, ProductBacklog`
 * **Start Date:** `2026-11-04`
@@ -162,7 +162,7 @@
 
 ### 🏆 [FEATURE 02] Matriz de Casos de Testes Manuais Caixa-Preta com Dados Controlados
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
+* **Parent:** `[EPIC] Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
 * **Title:** `[FEATURE 02] Matriz de Casos de Testes Manuais Caixa-Preta com Dados Controlados`
 * **Tags:** `Compliance, ZelaFix, Testing, QA, BlackBox`
 * **Start Date:** `2026-11-08`
@@ -215,7 +215,7 @@
 
 ### 🏆 [FEATURE 03] Gestão de Execução no Azure Test Plans e Rastreabilidade de Commits Git
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
+* **Parent:** `[EPIC] Compliance, Quality Assurance & Tests: Governança Scrum, Rastreabilidade de Commits e Plano de Testes Manuais Caixa-Preta`
 * **Title:** `[FEATURE 03] Gestão de Execução no Azure Test Plans e Rastreabilidade de Commits Git`
 * **Tags:** `Compliance, ZelaFix, TestPlans, Commits, Traceability`
 * **Start Date:** `2026-11-12`

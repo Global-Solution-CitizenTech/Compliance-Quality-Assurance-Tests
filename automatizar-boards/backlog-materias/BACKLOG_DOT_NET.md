@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Advanced Business Development with .NET (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`  
+> **Epic Principal:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -25,7 +25,7 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software
+[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software
 │
 ├── 🏆 [FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais
 │   ├── 📄 [PBI-01] Estruturação da Clean Architecture e Endpoints de Notificação (3 pts)
@@ -60,7 +60,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Title:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
 * **Tags:** `DotNet, ZelaFix, GlobalSolution2, CSharp, OpenTelemetry, Serilog, xUnit`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -73,7 +73,7 @@
 
 ### 🏆 [FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
 * **Title:** `[FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais`
 * **Tags:** `DotNet, CleanArchitecture, WebAPI`
 * **Start Date:** `2026-11-04`
@@ -124,7 +124,7 @@
 
 ### 🏆 [FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
 * **Title:** `[FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)`
 * **Tags:** `DotNet, Observability, OpenTelemetry, Serilog, HealthChecks`
 * **Start Date:** `2026-11-09`
@@ -175,7 +175,7 @@
 
 ### 🏆 [FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
 * **Title:** `[FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit`
 * **Tags:** `DotNet, Testing, xUnit, AAA, Quality`
 * **Start Date:** `2026-11-12`

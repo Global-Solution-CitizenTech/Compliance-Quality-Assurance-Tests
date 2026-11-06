@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Disruptive Architectures: IoT, IoB & Generative IA (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`  
+> **Epic Principal:** `[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -25,7 +25,7 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências
+[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências
 │
 ├── 🏆 [FEATURE 01] Sensoriamento Urbano com ESP32 e Protocolo MQTT
 │   ├── 📄 [PBI-01] Circuito IoT de Detecção de Nível de Alagamento e Bueiros no Wokwi/ESP32 (3 pts)
@@ -60,7 +60,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
+* **Title:** `[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
 * **Tags:** `DisruptiveArchitectures, ZelaFix, GlobalSolution2, IoT, ESP32, MQTT, IA, GenAI, FastAPI`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -73,7 +73,7 @@
 
 ### 🏆 [FEATURE 01] Sensoriamento Urbano com ESP32 e Protocolo MQTT
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
+* **Parent:** `[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
 * **Title:** `[FEATURE 01] Sensoriamento Urbano com ESP32 e Protocolo MQTT`
 * **Tags:** `DisruptiveArchitectures, IoT, ESP32, MQTT, Sensors`
 * **Start Date:** `2026-11-04`
@@ -123,7 +123,7 @@
 
 ### 🏆 [FEATURE 02] Microsserviço Python com IA Generativa e Visão Computacional
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
+* **Parent:** `[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
 * **Title:** `[FEATURE 02] Microsserviço Python com IA Generativa e Visão Computacional`
 * **Tags:** `DisruptiveArchitectures, Python, FastAPI, GenAI, Vision`
 * **Start Date:** `2026-11-08`
@@ -174,7 +174,7 @@
 
 ### 🏆 [FEATURE 03] Integração com o Painel de Gestão e Documentação Técnica
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
+* **Parent:** `[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
 * **Title:** `[FEATURE 03] Integração com o Painel de Gestão e Documentação Técnica`
 * **Tags:** `DisruptiveArchitectures, Integration, Documentation, Video`
 * **Start Date:** `2026-11-13`

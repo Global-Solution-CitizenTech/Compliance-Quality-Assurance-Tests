@@ -2,7 +2,7 @@
 
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Java Advanced (FIAP — 2TDSPG)  
-> **Epic Principal:** `[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`  
+> **Epic Principal:** `[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
@@ -25,7 +25,7 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana
+[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana
 │
 ├── 🏆 [FEATURE 01] Modelagem de Domínio JPA, Entidades Relacionais e Conexão Oracle
 │   ├── 📄 [PBI-01] Mapeamento das Entidades Core (Chamado, Categoria, Usuario, HistStatus, VotoChamado) (3 pts)
@@ -68,7 +68,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
-* **Title:** `[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
+* **Title:** `[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
 * **Tags:** `JavaAdvanced, ZelaFix, GlobalSolution2, SpringBoot, Oracle, JWT, REST`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
@@ -81,7 +81,7 @@
 
 ### 🏆 [FEATURE 01] Modelagem de Domínio JPA, Entidades Relacionais e Conexão Oracle
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
+* **Parent:** `[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
 * **Title:** `[FEATURE 01] Modelagem de Domínio JPA, Entidades Relacionais e Conexão Oracle`
 * **Tags:** `JavaAdvanced, JPA, Oracle, Database`
 * **Start Date:** `2026-11-04`
@@ -133,7 +133,7 @@
 
 ### 🏆 [FEATURE 02] Segurança Stateless com Spring Security, Autenticação JWT e RBAC
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
+* **Parent:** `[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
 * **Title:** `[FEATURE 02] Segurança Stateless com Spring Security, Autenticação JWT e RBAC`
 * **Tags:** `JavaAdvanced, SpringSecurity, JWT, RBAC`
 * **Start Date:** `2026-11-07`
@@ -186,7 +186,7 @@
 
 ### 🏆 [FEATURE 03] Regras de Negócio, Serviços Core e Ciclo de Vida de Ocorrências
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
+* **Parent:** `[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
 * **Title:** `[FEATURE 03] Regras de Negócio, Serviços Core e Ciclo de Vida de Ocorrências`
 * **Tags:** `JavaAdvanced, Services, Chamados, SLA, RFC7807`
 * **Start Date:** `2026-11-10`
@@ -257,7 +257,7 @@
 
 ### 🏆 [FEATURE 04] Documentação OpenAPI / Swagger UI e Qualidade de Código
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] GS 2026/2 - Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
+* **Parent:** `[EPIC] Java Advanced: API RESTful Spring Boot Core, Segurança JWT e Regras de Negócio de Zeladoria Urbana`
 * **Title:** `[FEATURE 04] Documentação OpenAPI / Swagger UI e Qualidade de Código`
 * **Tags:** `JavaAdvanced, Swagger, OpenAPI, JUnit5`
 * **Start Date:** `2026-11-14`
