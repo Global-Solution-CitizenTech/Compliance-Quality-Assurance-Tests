@@ -123,6 +123,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [ ] Entidades `Chamado`, `Categoria`, `Status`, `Usuario`, `CargoUsuario`, `VotoChamado`, `HistChamado`, `Endereco`, `Bairro`, `Cidade`, `Estado`, `Telefone` mapeadas no pacote de domínio.
+- [ ] Mapeamento estrito 1:1 entre `Usuario` e `Telefone` conforme o modelo físico DDL Oracle.
 - [ ] Mapeamento de chaves primárias via sequences nativas do Oracle com `@GeneratedValue(strategy = GenerationType.SEQUENCE)`.
 - [ ] Remoção de entidades ou relacionamentos legados não mapeados (ex: remoção da entidade `Comentario`).
 
@@ -375,23 +376,23 @@
 
 ---
 
-#### 🔹 [PBI-12] Microsserviço Worker com Triagem Inteligente via Spring AI / LLM (Urgência e Parecer)
+#### 🔹 [PBI-12] Microsserviço Worker com Triagem Multimodal via Spring AI / LLM (Urgência e Parecer)
 * **Work Item Type:** `Product Backlog Item`
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Worker, SpringAI, LLM, Triagem`
+* **Tags:** `JavaAdvanced, Worker, SpringAI, Multimodal, LLM, Triagem`
 
 ##### Descrição (História de Usuário)
 > **Como** equipe de triagem municipal,  
-> **Eu quero** um microsserviço worker que consuma chamados recém-criados e consulte uma LLM para classificar a criticidade e emitir parecer técnico,  
-> **Para que** chamados perigosos (ex: fios elétricos expostos ou crateras) sejam priorizados imediatamente de forma automatizada.
+> **Eu quero** um microsserviço worker que consuma chamados recém-criados e consulte uma LLM multimodal (Groq / Qwen 3.8 27B / OpenAI) com suporte à inspeção de imagens enviadas pelo app mobile,  
+> **Para que** ocorrências perigosas (ex: fios elétricos expostos ou crateras na pista) sejam priorizadas imediatamente por análise visual e textual combinada.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [ ] Microsserviço autônomo `zelafix-worker` com consumidor `ChamadoAiConsumer.java` anotado com `@RabbitListener`.
-- [ ] Serviço `ZelaFixAiService.java` integrado com `ChatClient` do Spring AI (OpenAI / Groq LLM).
-- [ ] Algoritmo de fallback heurístico em caso de indisponibilidade da API da LLM ou ausência de chave de API.
-- [ ] Atualização do chamado no banco de dados com órgão competente, urgência e parecer técnico.
+- [ ] Serviço `ZelaFixAiService.java` integrado com modelo multimodal (Qwen 3.8 27B via Groq / OpenAI) processando imagens de evidência.
+- [ ] Algoritmo de fallback heurístico em caso de indisponibilidade de rede ou falha de cota da LLM.
+- [ ] Atualização do chamado no banco de dados com órgão competente, urgência e parecer técnico detalhado.
 
 ---
 
@@ -420,15 +421,15 @@
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, JUnit5, Mockito, Swagger, OpenAPI`
+* **Tags:** `JavaAdvanced, JUnit5, Mockito, Swagger, OpenAPI, Concurrency`
 
 ##### Descrição (História de Usuário)
 > **Como** professor avaliador da FIAP e engenheiro de software,  
-> **Eu quero** testar os endpoints interativamente via Swagger UI e executar a suíte de testes unitários automatizados com JUnit 5 e Mockito,  
-> **Para que** seja comprovada a cobertura de código, conformidade dos contratos REST e robustez das regras de negócio.
+> **Eu quero** testar os endpoints interativamente via Swagger UI e executar suítes de testes pesados para a API e Worker (concorrência, serviços, controllers, segurança e integração com LLM),  
+> **Para que** seja comprovada a cobertura de código, robustez multithread e resiliência das regras de negócio.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [ ] Swagger UI interativo disponível em `http://localhost:8080/swagger-ui.html` com suporte a autenticação Bearer JWT.
-- [ ] Testes unitários para `ChamadoService` cobrindo criação, apoio comunitário e busca paginada com hidratação em lote.
-- [ ] Testes unitários para `UsuarioService`, `AuthController` e `ZelaFixAiService`.
+- [ ] Suíte pesada de testes unitários na API cobrindo `ChamadoService`, `UsuarioService`, `AuthController` e tratamento global de exceções.
+- [ ] Suíte de testes no Worker cobrindo concorrência no `VotoConsumer`, mensageria RabbitMQ e integração real com Groq em `ZelaFixAiServiceTest`.
 - [ ] Todos os testes passando com sucesso via `.\gradlew test`.
