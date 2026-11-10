@@ -61,7 +61,7 @@
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
 * **Title:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
-* **Tags:** `DotNet, ZelaFix, GlobalSolution2, CSharp, OpenTelemetry, Serilog, xUnit`
+* **Tags:** `DotNet, GlobalSolution2, CSharp, OpenTelemetry, Serilog, xUnit`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`

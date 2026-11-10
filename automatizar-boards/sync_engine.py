@@ -57,7 +57,7 @@ class SyncEngine:
         print(f"========================================================")
 
         iteration_path = f"{AZURE_PROJECT}\\{d_info['iteration']}"
-        item_tags = [d_info["tag"], "ZelaFix"]
+        item_tags = [d_info["tag"]]
         owner_email = d_info["owner_email"]
 
         # 1. Cria o Epic

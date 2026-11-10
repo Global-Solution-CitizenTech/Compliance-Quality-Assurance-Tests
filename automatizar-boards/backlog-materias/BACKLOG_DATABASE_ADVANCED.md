@@ -74,7 +74,7 @@
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
 * **Title:** `[EPIC] Database Advanced: Modelagem Relacional Oracle 3FN, Automações PL/SQL e Persistência NoSQL MongoDB`
-* **Tags:** `Database, ZelaFix, GlobalSolution2, Oracle, PLSQL, MongoDB, 3FN, NoSQL`
+* **Tags:** `Database, GlobalSolution2, Oracle, PLSQL, MongoDB, 3FN, NoSQL`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`

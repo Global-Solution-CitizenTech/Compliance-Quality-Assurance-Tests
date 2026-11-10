@@ -63,7 +63,7 @@
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
 * **Title:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD`
-* **Tags:** `DevOps, ZelaFix, GlobalSolution2, Docker, Azure, CICD, GitHubActions`
+* **Tags:** `DevOps, GlobalSolution2, Docker, Azure, CICD, GitHubActions`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`

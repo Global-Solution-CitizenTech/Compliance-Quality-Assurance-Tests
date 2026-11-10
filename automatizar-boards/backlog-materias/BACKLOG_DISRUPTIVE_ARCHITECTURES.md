@@ -61,7 +61,7 @@
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
 * **Title:** `[EPIC] Disruptive Architectures: Monitoramento Urbano Inteligente via IoT (ESP32/MQTT) e IA Generativa para Triagem de Ocorrências`
-* **Tags:** `DisruptiveArchitectures, ZelaFix, GlobalSolution2, IoT, ESP32, MQTT, IA, GenAI, FastAPI`
+* **Tags:** `DisruptiveArchitectures, GlobalSolution2, IoT, ESP32, MQTT, IA, GenAI, FastAPI`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`

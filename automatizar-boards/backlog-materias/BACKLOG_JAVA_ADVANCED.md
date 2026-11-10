@@ -83,7 +83,7 @@
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
 * **Title:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core`
-* **Tags:** `JavaAdvanced, ZelaFix, GlobalSolution2, SpringBoot, RabbitMQ, SpringAI, Oracle, JWT`
+* **Tags:** `JavaAdvanced, GlobalSolution2, SpringBoot, RabbitMQ, SpringAI, Oracle, JWT`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`

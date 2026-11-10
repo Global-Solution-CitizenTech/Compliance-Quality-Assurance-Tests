@@ -84,7 +84,7 @@
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
 * **Title:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
-* **Tags:** `Mobile, ZelaFix, GlobalSolution2, ReactNative, Expo, TypeScript`
+* **Tags:** `Mobile, GlobalSolution2, ReactNative, Expo, TypeScript`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`
@@ -98,7 +98,7 @@
 * **Work Item Type:** `Feature`
 * **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 01] Arquitetura UI, Design System e Navegação por Abas`
-* **Tags:** `Mobile, ZelaFix, UI, Navigation, DesignSystem`
+* **Tags:** `Mobile, UI, Navigation, DesignSystem`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-08`
 * **Priority:** `1 - Critical`
@@ -230,7 +230,7 @@
 * **Work Item Type:** `Feature`
 * **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 02] Autenticação JWT, Sessão Segura e Cache Offline Resiliente`
-* **Tags:** `Mobile, ZelaFix, Auth, JWT, OfflineCache`
+* **Tags:** `Mobile, Auth, JWT, OfflineCache`
 * **Start Date:** `2026-11-07`
 * **Target Date:** `2026-11-12`
 * **Priority:** `1 - Critical`
@@ -303,7 +303,7 @@
 * **Work Item Type:** `Feature`
 * **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 03] CRUD Completo de Chamados Urbanos e Geolocalização GPS`
-* **Tags:** `Mobile, ZelaFix, CRUD, GPS, Camera`
+* **Tags:** `Mobile, CRUD, GPS, Camera`
 * **Start Date:** `2026-11-09`
 * **Target Date:** `2026-11-15`
 * **Priority:** `1 - Critical`
@@ -378,7 +378,7 @@
 * **Work Item Type:** `Feature`
 * **Parent:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa`
 * **Title:** `[FEATURE 04] Engajamento Cidadão, Votação Comunitária e Documentação/Entrega`
-* **Tags:** `Mobile, ZelaFix, Voto, Offline, Documentation`
+* **Tags:** `Mobile, Voto, Offline, Documentation`
 * **Start Date:** `2026-11-13`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`
