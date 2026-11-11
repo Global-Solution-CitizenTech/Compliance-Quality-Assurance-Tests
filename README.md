@@ -169,8 +169,12 @@ python azure_qa_cli.py reset-all
 
 ---
 
-## 🧪 Casos de Testes Principais Auditados (Amostra da Matriz)
+## 🧪 Casos de Teste Funcionais
 
+> A tabela legada foi ocultada por conter expectativas não confirmadas. Use a matriz atual; divergências e lacunas estão documentadas nela.
+
+<!-- Amostra legada mantida apenas no histórico; usar a matriz atual. -->
+<!--
 | ID | Caso de Teste | Tipo | Feature Vinculada | Objetivo Principal | Entrada Controlada (Inputs) | Saída Esperada |
 | :---: | :--- | :---: | :--- | :--- | :--- | :--- |
 | **TC-01** | Cadastro de Cidadão Válido | 🟢 Positivo | Autenticação e Usuários | Validar criação de munícipe | `email`: `"enzo.cidadao@citizentech.org"` | HTTP 201 Created, ID gerado |
@@ -188,7 +192,9 @@ python azure_qa_cli.py reset-all
 | **TC-17** | Classificação de Imagem via IA | 🟢 Positivo | Inteligência Artificial | Triagem visual automática | Foto de fio elétrico caído | Categoria sugerida e Urgência Alta |
 | **TC-19** | Cache Offline no Mobile | 🟢 Positivo | Resiliência Mobile | Abrir app sem internet | Modo Avião ativado | App abre com dados em cache local |
 
-> 📌 *A matriz completa com os 20 casos e seus passos detalhados está disponível em [`docs/MATRIZ_CASOS_DE_TESTE_AZURE.md`](./docs/MATRIZ_CASOS_DE_TESTE_AZURE.md).*
+-->
+
+Consulte a [matriz completa de casos de teste](./docs/MATRIZ_CASOS_DE_TESTE_AZURE.md), que registra os critérios rastreáveis e as divergências pendentes.
 
 ---
 
