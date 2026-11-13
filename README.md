@@ -6,9 +6,7 @@
 
 ---
 
-## 👥 Integrantes do Grupo (Ordem Alfabética Estrita)
-
-> ⚠️ **Regra Institucional da Banca FIAP:** Todos os documentos, PDFs e READMEs mantêm estritamente a ordem alfabética dos integrantes do grupo.
+## 👥 Integrantes do Grupo
 
 | Nome Completo | RM | Turma | GitHub | LinkedIn |
 | :--- | :---: | :---: | :--- | :--- |
@@ -17,6 +15,32 @@
 | **Lucas Barros Gouveia** | **566422** | 2TDSPG | [@LuzBGouveia](https://github.com/LuzBGouveia) | [LinkedIn](https://www.linkedin.com/in/lucas-barros-gouveia-09b147355/) |
 | **Luna de Carvalho Guimarães** | **562290** | 2TDSPG | [@lunaguima](https://github.com/lunaguima) | [LinkedIn](https://www.linkedin.com/in/luna-guimar%C3%A3es-b0ba82309/) |
 | **Milton Marcelino** | **564836** | 2TDSPG | [@MiltonMarcelino](https://github.com/MiltonMarcelino) | [LinkedIn](https://www.linkedin.com/in/milton-marcelino-250298142) |
+
+---
+
+## 🔗 Links Oficiais Obrigatórios de Entrega (Global Solution 2)
+
+| Recurso | Descrição | Link Oficial |
+| :--- | :--- | :--- |
+| 📋 **Azure Boards & Test Plans (QA)** | Acesso aos Planos de Testes Manuais com dados controlados | https://dev.azure.com/ZelaFixGS/ZelaFix |
+| 🐙 **Repositório Oficial (Branch `develop`)** | Código de QA, matriz de testes e scripts | https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests |
+| ☕ **Repositório Java (Branch `develop`)** | Backend Spring Boot, persistência relacional e suíte de testes | https://github.com/Global-Solution-CitizenTech/Java-Advanced |
+
+## 🔗 Vídeo de Demonstração (Global Solution 2)
+
+*(Link do YouTube será inserido após gravação)*
+
+---
+
+## 🌐 Links do Ecossistema Integrado (Java, DevOps & Nuvem Azure)
+
+| Componente | Descrição | Link |
+| :--- | :--- | :--- |
+| 🌐 **API em Produção (Azure Web App)** | Endpoint base do App Service provisionado na nuvem | https://app-zelafix-561432.azurewebsites.net |
+| ⚙️ **Worker IA em Produção (Azure Web App)** | Worker assíncrono com Spring AI (Azure AI Foundry) | https://app-zelafix-worker-561432.azurewebsites.net |
+| 📖 **Swagger UI Interativo (OpenAPI 3.0)** | Documentação interativa de todos os endpoints REST | https://app-zelafix-561432.azurewebsites.net/swagger-ui.html |
+| 🩺 **Actuator Health (Observabilidade)** | Healthcheck em tempo real (Oracle + RabbitMQ + Liveness) | https://app-zelafix-561432.azurewebsites.net/actuator/health |
+| 🚀 **Repositório GitHub (DevOps & Cloud)** | Pipelines de CI/CD, IaC Bash e infraestrutura em nuvem | https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing |
 
 ---
 
@@ -31,21 +55,6 @@
 | 🚀 **DevOps Tools & Cloud Computing** | [Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing) |
 | 🤖 **Disruptive Architectures (IoT & IA)** | [Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA) |
 | 🛡️ **Compliance, QA & Tests (ATUAL)** | [Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests) |
-
----
-
-## 🎯 Atendimento Integral à Rubrica da Global Solution 2 (100 Pontos)
-
-Conforme o edital oficial (págs 29–35 de `2TDS Fevereiro - Global Solution 2026-2.pdf`), a entrega é avaliada em 5 critérios rigorosos:
-
-| Item | Critério de Avaliação | Pontos | Evidência Comprovada no Projeto CitizenTech |
-| :---: | :--- | :---: | :--- |
-| **01** | **Estrutura de Projeto (Scrum)** | **20 pts** | Backlog unificado contendo **7 Epics, 24 Features, 46 PBIs e 131 Tasks** com títulos consistentes e tags padronizadas. |
-| **02** | **Descrição & Critérios de Aceite por Feature** | **20 pts** | Todas as Features com `System.Description` no padrão User Story e `AcceptanceCriteria` no campo nativo do Azure DevOps. |
-| **03** | **Lista de Test Cases Positivos e Negativos** | **20 pts** | Suíte de **20 Casos de Teste Caixa-Preta** cobrindo fluxos felizes (65%) e cenários de exceção/validação/limites (35%). |
-| **04** | **Sumário dos Test Cases** | **20 pts** | Todos os casos documentados com **Objetivo, Preparação (Pré-condições), Dados de Entrada Controlados (Inputs) e Outputs Esperados**. |
-| **05** | **Passos Detalhados dos Test Cases** | **20 pts** | Sequenciamento minucioso no campo XML `Microsoft.VSTS.TCM.Steps` relacionando Ação do Testador x Resposta Esperada do Sistema. |
-| **TOTAL** | **Pontuação Total do Projeto** | **100 pts** | **100% de Aderência com Dossiê PDF, Prints e Link de Administrador** |
 
 ---
 
@@ -169,43 +178,35 @@ python azure_qa_cli.py reset-all
 
 ---
 
-## 🧪 Casos de Teste Funcionais
+## 🧪 Casos de Teste Funcionais (Azure Test Plans)
 
-> A tabela legada foi ocultada por conter expectativas não confirmadas. Use a matriz atual; divergências e lacunas estão documentadas nela.
+Os 24 casos de teste cadastrados no **Azure DevOps (`ZelaFixGS/ZelaFix`)** cobrem autenticação/RBAC, catálogo/endereços, chamados, triagem assíncrona do Worker e ZelaBot IA:
 
-<!-- Amostra legada mantida apenas no histórico; usar a matriz atual. -->
-<!--
-| ID | Caso de Teste | Tipo | Feature Vinculada | Objetivo Principal | Entrada Controlada (Inputs) | Saída Esperada |
-| :---: | :--- | :---: | :--- | :--- | :--- | :--- |
-| **TC-01** | Cadastro de Cidadão Válido | 🟢 Positivo | Autenticação e Usuários | Validar criação de munícipe | `email`: `"enzo.cidadao@citizentech.org"` | HTTP 201 Created, ID gerado |
-| **TC-02** | Cadastro com E-mail Duplicado | 🔴 Negativo | Autenticação e Usuários | Testar constraint de unicidade | `email` duplicado | HTTP 409 Conflict amigável |
-| **TC-03** | Login e Emissão de JWT | 🟢 Positivo | Autenticação e Usuários | Validar segurança e Bearer token | `senha`: `"SenhaForte@2026"` | HTTP 200 OK, Token JWT válido |
-| **TC-04** | Login com Senha Incorreta | 🔴 Negativo | Autenticação e Usuários | Testar rejeição OWASP | Senha incorreta | HTTP 401 Unauthorized genérico |
-| **TC-06** | Abertura de Chamado com Foto e GPS | 🟢 Positivo | Gestão de Ocorrências | Homologar registro de zeladoria | `lat: -23.5629, lng: -46.6544` | HTTP 201 Created, Status Aberto |
-| **TC-07** | Chamado com Campos Nulos | 🔴 Negativo | Gestão de Ocorrências | Validar Bean Validation | Título e categoria vazios | HTTP 400 Bad Request detalhado |
-| **TC-08** | Coordenadas Fora do Município | 🔴 Negativo | Gestão de Ocorrências | Testar limite geográfico | Coordenadas zeradas/fora | HTTP 422 Unprocessable Entity |
-| **TC-11** | Voto Comunitário em Chamado | 🟢 Positivo | Engajamento e Votação | Apoiar solicitação do bairro | `chamadoId: 101, usuarioId: 5` | HTTP 200 OK, contador N+1 |
-| **TC-12** | Voto Duplicado do Mesmo Cidadão | 🔴 Negativo | Engajamento e Votação | Garantir unicidade de voto | Segundo voto no mesmo chamado | HTTP 409 Conflict |
-| **TC-13** | Transição para 'EM_EXECUCAO' | 🟢 Positivo | Painel do Gestor | Auditoria de histórico | `novoStatus: "EM_EXECUCAO"` | HTTP 200, gravado em `HIST_STATUS` |
-| **TC-14** | Cidadão Alterando Status | 🔴 Negativo | Painel do Gestor | Testar segurança RBAC | Token de cidadão comum | HTTP 403 Forbidden |
-| **TC-16** | Telemetria IoT Alagamento | 🟢 Positivo | Sensoriamento IoT | Ingestão de sensor ESP32 | `distancia_cm: 5.2` (crítico) | Chamado de emergência criado |
-| **TC-17** | Classificação de Imagem via IA | 🟢 Positivo | Inteligência Artificial | Triagem visual automática | Foto de fio elétrico caído | Categoria sugerida e Urgência Alta |
-| **TC-19** | Cache Offline no Mobile | 🟢 Positivo | Resiliência Mobile | Abrir app sem internet | Modo Avião ativado | App abre com dados em cache local |
+| ID | Caso de Teste | Suíte | Tipo |
+| :---: | :--- | :--- | :---: |
+| **TC-01** | Autenticar contas de QA dos perfis ADMIN, GESTOR e CIDADAO | `api-auth-rbac` | Positivo |
+| **TC-02** | Rejeitar login com credenciais inválidas | `api-auth-rbac` | Negativo |
+| **TC-03** | Bloquear endpoint protegido sem token | `api-auth-rbac` | Negativo |
+| **TC-04** | Rejeitar token JWT inválido | `api-auth-rbac` | Negativo |
+| **TC-05** | Impedir CIDADAO de criar categoria | `api-auth-rbac` | Negativo |
+| **TC-06** | Impedir CIDADAO de alterar status de chamado | `api-auth-rbac` | Negativo |
+| **TC-07** | Consultar categorias e status disponíveis | `api-catalog-adress` | Positivo |
+| **TC-08** | Criar categoria como ADMIN | `api-catalog-adress` | Positivo |
+| **TC-09** | Rejeitar categoria com nome vazio | `api-catalog-adress` | Negativo |
+| **TC-10** | Criar e consultar endereço por ID | `api-catalog-adress` | Positivo |
+| **TC-11** | Rejeitar CEP em formato inválido | `api-catalog-adress` | Negativo |
+| **TC-12** | Impedir CIDADAO de listar endereços administrativos | `api-catalog-adress` | Negativo |
+| **TC-13** | Criar chamado com foto Base64 | `api-chamados` | Positivo |
+| **TC-14** | Criar chamado multipart e recuperar foto | `api-chamados` | Positivo |
+| **TC-15** | Rejeitar chamado com dados inválidos | `api-chamados` | Negativo |
+| **TC-16** | Consultar chamados com paginação e filtro do próprio usuário | `api-chamados` | Positivo |
+| **TC-17** | Atualizar ciclo de status e consultar histórico | `api-chamados` | Positivo |
+| **TC-18** | Excluir chamado como ADMIN e confirmar remoção | `api-chamados` | Positivo |
+| **TC-19** | Confirmar triagem assíncrona do Worker no histórico do chamado | `worker-ai` | Positivo |
+| **TC-20** | Responder consulta ZelaBot com contexto normativo | `zelabot-ai` | Positivo |
+| **TC-21** | Acionar guardrail para risco vital | `zelabot-ai` | Positivo |
+| **TC-22** | Manter escopo cívico diante de solicitação de código | `zelabot-ai` | Negativo |
+| **TC-23** | Gerar triagem técnica para cratera com engajamento | `zelabot-ai` | Positivo |
+| **TC-24** | Gerar insights preventivos para bairro | `zelabot-ai` | Positivo |
 
--->
-
-Consulte a [matriz completa de casos de teste](./docs/MATRIZ_CASOS_DE_TESTE_AZURE.md), que registra os critérios rastreáveis e as divergências pendentes.
-
----
-
-## 📋 Checklist Oficial para a Entrega da Global Solution 2
-
-Para submissão no Portal FIAP até **19/11/2026, às 23h55**, gere o arquivo `.zip` contendo:
-1. `identificacao.txt` (RM, Nome, Turma).
-2. **Arquivo PDF único** unificando o Plano de Projeto Scrum e o Plano de Testes contendo obrigatoriamente:
-   - Print da tela principal de Backlogs no Azure DevOps (exibindo Epics e Features).
-   - Prints das telas de detalhe das Features e PBIs com critérios de aceite.
-   - Print da tela Boards com os Test Cases vinculados por Feature.
-   - Print da tela de Sumário e Passos de cada Test Case criado.
-   - Gráficos analíticos de execução do Azure Test Plans (pizza de Passed/Failed).
-   - **Link oficial do Azure Boards** com o professor convidado como **ADMINISTRATOR** no projeto.
+Consulte a [matriz completa de casos de teste](./docs/MATRIZ_CASOS_DE_TESTE_AZURE.md) para detalhes de pré-condições, entradas, saídas esperadas e passos.
