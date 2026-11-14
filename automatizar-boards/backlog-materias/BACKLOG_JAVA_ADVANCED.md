@@ -583,7 +583,7 @@
 - [x] Suíte de testes no Worker cobrindo concorrência no `VotoConsumer`, mensageria RabbitMQ e integração real com Groq em `ZelaFixAiServiceTest`.
 - [x] Testes de concorrência e stress multithread passando sem falhas.
 - [x] Isolamento de chaves de IA da Groq nas etapas de build para evitar HTTP 429 na pipeline.
-- [x] Todos os testes passando com sucesso via `.\gradlew test`.
+- [x] Todos os testes passando com sucesso via `.\gradlew test`, incluindo cenários unitários recentes para `ImageMimeTypeDetectorTest`, `ZelaFixAiServiceTest`, `ChamadoAiConsumerTest`, `TriagemPendenteStoreTest`, `GlobalExceptionHandlerTest` e `ChamadoTriagemFeedbackConsumerTest`.
 
 ##### Pull Requests no Azure Repos:
 - PR #7 (`test: remover ZelaFixAiLiveIntegrationTest e manter testes unitarios mockados`)
@@ -600,6 +600,7 @@
 - `49f16e6` fix(ci): isolar chave Groq da etapa unitária para evitar 429 na pipeline
 - `8cc4027` test: remover ZelaFixAiLiveIntegrationTest e manter testes unitarios mockados do ZelaFixAiService
 - `70c6a45` chore: move e atualiza script E2E da IA para zelafix-api/src/test/e2e
+- `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
 
 ---
 
@@ -765,12 +766,12 @@
 * **Effort (Story Points):** `12`
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: migração do Spring AI para Azure AI Foundry (`phi-4-multimodal`), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE`) e recusa sem gravação no Oracle, expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e resiliência com `@Retryable`, isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
+* **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: migração do Spring AI para Azure AI Foundry (`phi-4-multimodal`), otimização de imagens para redução de tokens (`<= 768px` JPEG), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE`), recusa sem gravação e propagação de falhas de triagem (`TriagemIndisponivelException`), expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e resiliência com `@Retryable` (`AbortOnClientErrorPredicate` para 4xx/429), isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
 * **Acceptance Criteria:**
-  - [x] Worker IA migrado para Azure AI Foundry (`phi-4-multimodal`), com `TriagemNormativaTools` (`@Tool consultarNormaMunicipal` e `calcularPrazoSla`), validação de schema e truncamento UTF-8 para Oracle.
-  - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 60s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE`) e retornando `400 Bad Request` quando recusado pela IA.
+  - [x] Worker IA migrado para Azure AI Foundry (`phi-4-multimodal`), com `ImageMimeTypeDetector.redimensionarParaIa()` (`<= 768px` JPEG), `TriagemNormativaTools` (`@Tool consultarNormaMunicipal` e `calcularPrazoSla`), validação de schema e truncamento UTF-8 para Oracle.
+  - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 60s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE`), retornando `400 Bad Request` quando recusado pela IA e propagando falhas críticas do worker via `TriagemIndisponivelException` (`503`).
   - [x] Domínio expandido para 13 tabelas com `Prioridade` e `OrgaoGoverno`, filtros dinâmicos de localização (`cidade`, `bairro`, `estado`, `busca`, `apenasMeus`) e remoção de controllers/DTOs redundantes (`CategoriaController`, `StatusController`, `LoginRequest`, `LoginResponse`, `ChamadoCreateRequest`, `RecusaIaResponse`).
-  - [x] Resiliência garantida com `@Retryable` (backoff exponencial + jitter), retry controlado no RabbitMQ, chaves `@Cacheable` isoladas e tratamento de `AsyncRequestNotUsableException`/`AsyncRequestTimeoutException`.
+  - [x] Resiliência garantida com `@Retryable` (backoff exponencial + jitter e `AbortOnClientErrorPredicate` abortando retries em erros 4xx/429), retry controlado no RabbitMQ, chaves `@Cacheable` isoladas e tratamento de `AsyncRequestNotUsableException`, `AsyncRequestTimeoutException` e `TriagemIndisponivelException`.
 
 #### 🔹 [PBI-19] Migração para Azure AI Foundry (Phi-4 Multimodal), Tool Calling Normativo e Validação de Escopo/Limites UTF-8
 * **Work Item Type:** `Product Backlog Item`
@@ -791,6 +792,7 @@
 - [x] Classe `TriagemNormativaTools` registrando `@Tool consultarNormaMunicipal` (decretos PMSP) e `@Tool calcularPrazoSla` (`America/Sao_Paulo`, `12h`/`24h`/`48h`/`72h`), acionadas apenas quando `ocorrenciaValida = true`.
 - [x] Injeção idiomática de `ChatClient.Builder` com `SimpleLoggerAdvisor`, `defaultTools`, prompt parametrizado (`{bairro}`) e Structured Output validado via `EntityParamSpec::validateSchema`.
 - [x] Validação de escopo urbano (`ocorrenciaValida`) recusando capturas de tela, memes, desenhos, selfies ou ambientes internos, e `TriagemIaResult.comLimitesOracle()` truncando título (`<= 100` bytes) e descrição (`<= 1000` bytes) em UTF-8.
+- [x] Otimização de payload multimodal via `ImageMimeTypeDetector.redimensionarParaIa()` convertendo imagens acima de `768px` (ou `> 150 KB`) para JPEG comprimido para reduzir consumo de tokens visuais (TPM), preservando stubs inválidos/pequenos intactos.
 
 ##### Pull Requests no Azure Repos:
 - PR #9 (`feat(ai): migrar Spring AI para Azure AI Foundry (Phi-4 Multimodal)`)
@@ -800,6 +802,7 @@
 - `bee01b4` feat(ai): migrar Spring AI de Groq/Qwen para Azure AI Foundry (Phi-4 Multimodal)
 - `45a564b` feat(worker): validacao de escopo de imagem na IA, recusa de fotos invalidas e ajuste de prompt/limites UTF-8
 - `6eedee9` feat(ai,config): adicionar tools normativas, retry resiliente e limpar propriedades e secrets
+- `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
 
 ---
 
@@ -822,6 +825,7 @@
 - [x] `POST /chamados` recebendo `multipart/form-data` (`EnderecoRequest` + `foto`), validando magic bytes com `ImageMimeTypeDetector.isImagemSuportada()` e aguardando `ChamadoTriagemFeedbackConsumer`.
 - [x] Quando aprovado pela IA, `ChamadoService.aplicarTriagemIa()` grava chamado, voto automático inicial do autor e histórico inicial com status `EM_ANALISE` (removendo `ABERTO` do enum e migrations); em caso de contingência da IA, grava em `PENDENTE`.
 - [x] Quando recusado pela IA (`recusado = true`), `TriagemPendenteStore.rejeitar()` dispara `IllegalArgumentException` (HTTP `400 Bad Request`) sem inserir registros no Oracle.
+- [x] Quando o worker reporta falha explícita (`TriagemFeedbackMessage.erro()`), `ChamadoTriagemFeedbackConsumer` aciona `TriagemPendenteStore.falhar()` propagando `TriagemIndisponivelException` ao `DeferredResult` sem persistência parcial.
 
 ##### Pull Requests no Azure Repos:
 - PR #8 (`feat(triagem): validar CEP no ViaCEP e expor pre-analise sincrona com Spring AI`)
@@ -834,6 +838,7 @@
 - `59f337d` fix(chamado): concluir triagem de IA com status EM_ANALISE
 - `d5eeff1` feat(triagem): notificar recusa de imagem pela IA sem persistir chamado
 - `a520c3e` refactor(triagem,auth): deferir triagem via DeferredResult e enxugar seguranca e DTOs
+- `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
 
 ---
 
@@ -881,10 +886,10 @@
 > **Para que** falhas transitórias de rede, colisões de cache ou quedas prematuras de cliente não gerem falsos erros 500 nem loops infinitos de fila.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `@EnableResilientMethods` em `ZelaFixWorkerApplication` e `@Retryable(maxRetries = 2, delay = 500, jitter = 150, multiplier = 2, maxDelay = 2_000)` em `ZelaFixAiService.analisarChamado()`.
+- [x] `@EnableResilientMethods` em `ZelaFixWorkerApplication` e `@Retryable(maxRetries = 2, delay = 500, jitter = 150, multiplier = 2, maxDelay = 2_000, predicate = AbortOnClientErrorPredicate.class)` em `ZelaFixAiService.analisarChamado()` com `spring.ai.retry.max-attempts=1`, abortando retries imediatamente em erros `4xx`/`429` (`NonTransientAiException` / `HttpClientErrorException`) e aplicando contingência `PENDENTE` imediata no `ChamadoAiConsumer`.
 - [x] Listeners RabbitMQ configurados com `retry.enabled=true`, `retry.multiplier=2.0`, `default-requeue-rejected=false`, ajuste de timeouts (`read-timeout=40s`) e limpeza de propriedades/secrets redundantes em `application.properties`, `.env.example` e `azure-pipelines.yml`.
 - [x] Isolamento de chaves `@Cacheable` em `CategoriaService` e `StatusService` (`findAll` vs `findByNome`) evitando `ClassCastException`.
-- [x] `GlobalExceptionHandler` ignorando desconexão prematura de cliente (`AsyncRequestNotUsableException` / `ClientAbortException`) e retornando HTTP `504 Gateway Timeout` em `AsyncRequestTimeoutException`.
+- [x] `GlobalExceptionHandler` ignorando desconexão prematura de cliente (`AsyncRequestNotUsableException` / `ClientAbortException`), retornando HTTP `504 Gateway Timeout` em `AsyncRequestTimeoutException` e HTTP `503 Service Unavailable` em `TriagemIndisponivelException`.
 
 ##### Pull Requests no Azure Repos:
 - PR #10 (`fix: ajusta timeout do worker, truncamento de observacoes e requeue do RabbitMQ`)
@@ -899,3 +904,5 @@
 - `ace90a4` fix(cache): isolar chaves @Cacheable em CategoriaService e StatusService
 - `904759f` fix(exception): ignorar desconexao prematura de cliente (AsyncRequestNotUsableException)
 - `6eedee9` feat(ai,config): adicionar tools normativas, retry resiliente e limpar propriedades e secrets
+- `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
+- `0a219aa` Merge pull request #15 from Global-Solution-CitizenTech/develop (fix(ai,queue): otimizar imagem IA, abortar retry 429 e propagar erros da triagem)
