@@ -1,255 +1,2223 @@
 {
   "info": {
-    "_postman_id": "c1f7a829-4d6e-4f11-9e8c-citizentech01",
-    "name": "CitizenTech — QA Integration & E2E Test Suite",
-    "description": "Suíte automatizada de testes de integração com asserções pm.test para validação de endpoints REST da API Java Spring Boot (CitizenTech - Zeladoria Urbana Colaborativa).",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-citizentech01",
+    "name": "CitizenTech — ZelaFix QA Automation Suite (v2.0)",
+    "description": "Suíte completa de QA alinhada 1:1 com ZelaFix API (Java-Advanced / zelafix-api), ZelaFix Worker (zelafix-worker + RabbitMQ + IA) e Oracle Database (Database-Advanced + Flyway V1/V2/V3).\n\nCobertura:\n- 01. Observabilidade, Actuator & OpenAPI (/actuator/*, /v3/api-docs, worker health)\n- 02. Autenticação & RBAC (/login, JWT RSA Stateless, 401/403)\n- 03. Usuários (/usuarios, /usuarios/me, X-Novo-Token, /by-email, /cargo, Bean Validation & 409 Conflict)\n- 04. Endereços (/enderecos — exclusivo ADMIN, normalização CEP ViaCEP)\n- 05. Chamados, Triagem IA (DeferredResult) & Apoio (/chamados multipart/form-data, /foto público, /status com observacao, /apoiar, /estatisticas)\n- 06. Teardown & Limpeza (DELETE /chamados/{id}, DELETE /usuarios/me, DELETE /usuarios/{id})",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "01. Auth - Cadastro de Cidadão",
-      "event": [
+      "name": "01. Observabilidade, Actuator & OpenAPI",
+      "description": "Validação de health checks (API e Worker), informações da aplicação, OpenAPI 3 (/v3/api-docs) e proteção ADMIN em /actuator/metrics.",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 201 Created', function () {",
-              "    pm.response.to.have.status(201);",
-              "});",
-              "pm.test('Resposta contém ID do usuário gerado', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('id');",
-              "    pm.environment.set('usuarioId', jsonData.id);",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"nome\": \"Cidadão QA Teste\",\n  \"email\": \"cidadao.qa@citizentech.org\",\n  \"senha\": \"SenhaForte@2026\",\n  \"cargo\": \"CIDADAO\",\n  \"telefone\": \"11987654321\"\n}"
+          "name": "01.1 API Health Check (Público)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "health"]
+            },
+            "description": "Endpoint público liberado em SecurityConfig. Verifica status UP da API."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('API status is UP', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('UP');",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/api/auth/register",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "register"]
+        {
+          "name": "01.2 Worker Health Check (RabbitMQ & IA)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{workerBaseUrl}}/actuator/health",
+              "host": ["{{workerBaseUrl}}"],
+              "path": ["actuator", "health"]
+            },
+            "description": "Verifica disponibilidade do serviço consumidor zelafix-worker (porta local 8081 ou cloudWorkerBaseUrl)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Worker status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Worker health is UP', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('UP');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "01.3 Actuator Info (Público)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/info",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "info"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "01.4 OpenAPI Spec (/v3/api-docs)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/v3/api-docs",
+              "host": ["{{baseUrl}}"],
+              "path": ["v3", "api-docs"]
+            },
+            "description": "Valida contrato OpenAPI 3 configurado em SwaggerConfig.java."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('OpenAPI metadata matches ZelaFix SwaggerConfig', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.property('openapi');",
+                  "    pm.expect(json.info.title).to.include('ZelaFix API');",
+                  "    pm.expect(json.paths).to.have.property('/login');",
+                  "    pm.expect(json.paths).to.have.property('/usuarios');",
+                  "    pm.expect(json.paths).to.have.property('/chamados');",
+                  "    pm.expect(json.paths).to.have.property('/enderecos');",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
-      }
+      ]
     },
     {
-      "name": "02. Auth - Login e Extração de JWT Bearer Token",
-      "event": [
+      "name": "02. Autenticação & RBAC",
+      "description": "Fluxo de login com seeds Flyway V2/V3 (ADMIN, GESTOR, CIDADAO) e validação de respostas 401/403 (ApiErrorResponse).",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 200 OK', function () {",
-              "    pm.response.to.have.status(200);",
-              "});",
-              "pm.test('Token JWT retornado e armazenado', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('token');",
-              "    pm.environment.set('jwtToken', jsonData.token);",
-              "});",
-              "pm.test('Tempo de resposta inferior a 800ms', function () {",
-              "    pm.expect(pm.response.responseTime).to.be.below(800);",
-              "});"
+          "name": "02.1 Login Admin (Seed V2)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
             ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"email\": \"cidadao.qa@citizentech.org\",\n  \"senha\": \"SenhaForte@2026\"\n}"
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"senha\": \"{{adminSenha}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Autentica como ADMIN seed (admin@zelafix.com.br) e armazena adminToken."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('LoginResponse contains token and ADMIN user', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "    pm.expect(json.user.cargo).to.eql('ADMIN');",
+                  "    pm.expect(json.user.email).to.eql(pm.environment.get('adminEmail'));",
+                  "    pm.environment.set('adminToken', json.token);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/api/auth/login",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "auth", "login"]
+        {
+          "name": "02.2 Login Gestor (Seed V3)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{gestorEmail}}\",\n  \"senha\": \"{{gestorSenha}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Autentica como GESTOR seed (roberto.gestor@subprefeitura.sp.gov.br) e armazena gestorToken."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('LoginResponse contains token and GESTOR user', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "    pm.expect(json.user.cargo).to.eql('GESTOR');",
+                  "    pm.environment.set('gestorToken', json.token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.3 Login Cidadão (Seed V3)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{cidadaoEmail}}\",\n  \"senha\": \"{{cidadaoSenha}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            },
+            "description": "Autentica como CIDADAO seed (enzo.okuizumi@gmail.com) e armazena cidadaoToken e jwtToken."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('LoginResponse contains token and CIDADAO user', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "    pm.expect(json.user.cargo).to.eql('CIDADAO');",
+                  "    pm.environment.set('cidadaoToken', json.token);",
+                  "    pm.environment.set('jwtToken', json.token);",
+                  "    pm.environment.set('usuarioId', String(json.user.id));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.4 Login Credenciais Inválidas (401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"senha\": \"SenhaErrada#999\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401 Unauthorized', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test('Response matches ApiErrorResponse', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql(401);",
+                  "    pm.expect(json).to.have.all.keys('timestamp', 'status', 'error', 'message', 'path');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.5 Login Payload Inválido (400)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"formato-invalido\",\n  \"senha\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response contains Bean Validation erros array', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.erros).to.be.an('array').and.not.empty;",
+                  "    pm.expect(json.erros[0]).to.have.all.keys('campo', 'mensagem');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.6 Acesso Sem Token em Rota Protegida (401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401 Unauthorized', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});",
+                  "pm.test('Response matches ApiErrorResponse', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql(401);",
+                  "    pm.expect(json.path).to.eql('/usuarios/me');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.7 Acesso com JWT Inválido em /chamados (401)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "token.jwt.invalido.assinatura", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 401 Unauthorized', function () {",
+                  "    pm.response.to.have.status(401);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.8 Actuator Metrics como CIDADAO (403 Forbidden)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "metrics"]
+            },
+            "description": "SecurityConfig exige ROLE_ADMIN para /actuator/metrics/**."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('CIDADAO receives 403 Forbidden on /actuator/metrics', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02.9 Actuator Metrics como ADMIN (200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/actuator/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "metrics"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('ADMIN receives 200 OK on /actuator/metrics', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Metrics response contains names array', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.names).to.be.an('array').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
-      }
+      ]
     },
     {
-      "name": "03. Chamados - Abertura de Ocorrência Urbana",
-      "event": [
+      "name": "03. Usuários (/usuarios)",
+      "description": "CRUD e RBAC de UsuarioController. Cadastro público em POST /usuarios (cargo sempre CIDADAO), validação de DDD brasileiro (@DddValidation), CEP ViaCEP, atualização própria com header X-Novo-Token e rotas administrativas.",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 201 Created', function () {",
-              "    pm.response.to.have.status(201);",
-              "});",
-              "pm.test('Status inicial é ABERTO', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData.status).to.eql('ABERTO');",
-              "    pm.environment.set('chamadoId', jsonData.id);",
-              "});"
+          "name": "03.1 Cadastro Público Cidadão (POST /usuarios -> 201)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
             ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"QA Citizen Automated\",\n  \"email\": \"{{qaUserEmail}}\",\n  \"senha\": \"{{qaUserSenha}}\",\n  \"ddd\": \"11\",\n  \"numeroTelefone\": \"987654321\",\n  \"endereco\": {\n    \"cep\": \"01310-100\",\n    \"numero\": \"1500\",\n    \"referencia\": \"Em frente ao MASP\",\n    \"rua\": \"Avenida Paulista\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"]
+            },
+            "description": "UsuarioRequest DTO não aceita campo cargo; o backend define CargoUsuario.CIDADAO automaticamente."
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const uniqueEmail = `qa.cidadao.${Date.now()}@zelafix.test`;",
+                  "pm.environment.set('qaUserEmail', uniqueEmail);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('UsuarioResponse matches contract and forces CIDADAO role', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.id).to.be.a('number');",
+                  "    pm.expect(json.email).to.eql(pm.environment.get('qaUserEmail'));",
+                  "    pm.expect(json.cargo).to.eql('CIDADAO');",
+                  "    pm.expect(json.ddd).to.eql('11');",
+                  "    pm.expect(json.numeroTelefone).to.eql('987654321');",
+                  "    pm.expect(json.endereco.cep).to.eql('01310100');",
+                  "    pm.environment.set('qaUserId', String(json.id));",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "method": "POST",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"titulo\": \"Bueiro Entupido Causando Alagamento\",\n  \"descricao\": \"Bueiro coberto por entulho e folhas após chuva forte.\",\n  \"enderecoRef\": \"Rua Augusta, 500\",\n  \"categoriaId\": 1,\n  \"fotoUrl\": \"https://storage.citizentech.org/evidencias/bueiro.jpg\"\n}"
+        {
+          "name": "03.2 Cadastro E-mail Duplicado (409 Conflict)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"QA Citizen Duplicado\",\n  \"email\": \"{{qaUserEmail}}\",\n  \"senha\": \"{{qaUserSenha}}\",\n  \"ddd\": \"11\",\n  \"numeroTelefone\": \"987654321\",\n  \"endereco\": {\n    \"cep\": \"01310-100\",\n    \"numero\": \"1500\",\n    \"referencia\": \"Em frente ao MASP\",\n    \"rua\": \"Avenida Paulista\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 409 Conflict on duplicate email', function () {",
+                  "    pm.response.to.have.status(409);",
+                  "});",
+                  "pm.test('Response matches ApiErrorResponse', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql(409);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "url": {
-          "raw": "{{baseUrl}}/api/chamados",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "chamados"]
+        {
+          "name": "03.3 Cadastro com DDD/CEP/Senha Inválidos (400)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"\",\n  \"email\": \"email-invalido\",\n  \"senha\": \"123\",\n  \"ddd\": \"00\",\n  \"numeroTelefone\": \"123\",\n  \"endereco\": {\n    \"cep\": \"000\",\n    \"numero\": \"\",\n    \"referencia\": \"\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Validation erros array returned for invalid fields', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.erros).to.be.an('array').and.not.empty;",
+                  "    const campos = json.erros.map(e => e.campo);",
+                  "    pm.expect(campos).to.include('ddd');",
+                  "    pm.expect(campos).to.include('senha');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.4 Login Novo Usuário QA (POST /login -> 200)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{qaUserEmail}}\",\n  \"senha\": \"{{qaUserSenha}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["login"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Stores qaUserToken and jwtToken', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.token).to.be.a('string').and.not.empty;",
+                  "    pm.environment.set('qaUserToken', json.token);",
+                  "    pm.environment.set('jwtToken', json.token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.5 Consultar Próprio Perfil (GET /usuarios/me -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Profile matches QA user', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(String(json.id)).to.eql(pm.environment.get('qaUserId'));",
+                  "    pm.expect(json.email).to.eql(pm.environment.get('qaUserEmail'));",
+                  "    pm.expect(json).to.have.property('endereco');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.6 Atualizar Próprio Perfil + X-Novo-Token (PUT /usuarios/me -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"QA Citizen Atualizado\",\n  \"email\": \"{{qaUserEmail}}\",\n  \"senha\": \"{{qaUserSenha}}\",\n  \"ddd\": \"21\",\n  \"numeroTelefone\": \"998877665\",\n  \"endereco\": {\n    \"cep\": \"01310-100\",\n    \"numero\": \"1578\",\n    \"referencia\": \"Entrada principal MASP\",\n    \"rua\": \"Avenida Paulista\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "me"]
+            },
+            "description": "PUT /usuarios/me retorna header X-Novo-Token com novo JWT emitido para o usuário atualizado."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Profile updated and X-Novo-Token header returned', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.nome).to.eql('QA Citizen Atualizado');",
+                  "    pm.expect(json.ddd).to.eql('21');",
+                  "    pm.response.to.have.header('X-Novo-Token');",
+                  "    const novoToken = pm.response.headers.get('X-Novo-Token');",
+                  "    pm.expect(novoToken).to.be.a('string').and.not.empty;",
+                  "    pm.environment.set('qaUserToken', novoToken);",
+                  "    pm.environment.set('jwtToken', novoToken);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.7 Listar Usuários como CIDADAO (403 Forbidden)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios?page=0&size=10&sort=nmUsuario,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "sort", "value": "nmUsuario,asc" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('CIDADAO receives 403 Forbidden on GET /usuarios', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.8 Listar Usuários Paginado como ADMIN (GET /usuarios -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios?page=0&size=10&sort=nmUsuario,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "sort", "value": "nmUsuario,asc" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Response is Spring Page<UsuarioResponse>', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.content).to.be.an('array').and.not.empty;",
+                  "    pm.expect(json.totalElements).to.be.at.least(4);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.9 Buscar Usuário por ID como ADMIN (GET /usuarios/{{qaUserId}} -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{qaUserId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{qaUserId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Matches qaUserId', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(String(json.id)).to.eql(pm.environment.get('qaUserId'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.10 Buscar Usuário por E-mail como ADMIN (GET /usuarios/by-email -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/by-email?email={{qaUserEmail}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "by-email"],
+              "query": [
+                { "key": "email", "value": "{{qaUserEmail}}" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Matches qaUserEmail', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.email).to.eql(pm.environment.get('qaUserEmail'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.11 Atualizar Usuário por ID como ADMIN (PUT /usuarios/{{qaUserId}} -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"QA Citizen Admin Edited\",\n  \"email\": \"{{qaUserEmail}}\",\n  \"senha\": \"{{qaUserSenha}}\",\n  \"ddd\": \"11\",\n  \"numeroTelefone\": \"912345678\",\n  \"endereco\": {\n    \"cep\": \"01310-100\",\n    \"numero\": \"1578\",\n    \"referencia\": \"MASP Paulista\",\n    \"rua\": \"Avenida Paulista\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{qaUserId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{qaUserId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Updated name and phone reflected', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.nome).to.eql('QA Citizen Admin Edited');",
+                  "    pm.expect(json.ddd).to.eql('11');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.12 Alterar Cargo como CIDADAO (403 Forbidden)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cargo\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{qaUserId}}/cargo",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{qaUserId}}", "cargo"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('CIDADAO receives 403 Forbidden on PATCH /cargo', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.13 Alterar Cargo para GESTOR como ADMIN (PATCH /usuarios/{{qaUserId}}/cargo -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cargo\": \"GESTOR\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{qaUserId}}/cargo",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{qaUserId}}", "cargo"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Cargo updated to GESTOR', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.cargo).to.eql('GESTOR');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03.14 Restaurar Cargo para CIDADAO como ADMIN (PATCH /usuarios/{{qaUserId}}/cargo -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cargo\": \"CIDADAO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{qaUserId}}/cargo",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{qaUserId}}", "cargo"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Cargo restored to CIDADAO', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.cargo).to.eql('CIDADAO');",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
-      }
+      ]
     },
     {
-      "name": "04. Chamados - Consulta e Validação de Schema",
-      "event": [
+      "name": "04. Endereços (/enderecos — ADMIN only)",
+      "description": "EnderecoController possui @PreAuthorize(\"hasRole('ADMIN')\") na classe inteira. CIDADAO e GESTOR devem receber 403 Forbidden.",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 200 OK', function () {",
-              "    pm.response.to.have.status(200);",
-              "});",
-              "pm.test('Objeto possui campos obrigatórios de zeladoria', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData).to.have.property('id');",
-              "    pm.expect(jsonData).to.have.property('titulo');",
-              "    pm.expect(jsonData).to.have.property('status');",
-              "    pm.expect(jsonData).to.have.property('dtAbertura');",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+          "name": "04.1 Listar Endereços como CIDADAO (403 Forbidden)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enderecos",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('CIDADAO receives 403 Forbidden on /enderecos', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "method": "GET",
-        "url": {
-          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "chamados", "{{chamadoId}}"]
+        {
+          "name": "04.2 Criar Endereço como ADMIN (POST /enderecos -> 201)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"01001-000\",\n  \"numero\": \"100\",\n  \"referencia\": \"Marco Zero QA\",\n  \"rua\": \"Praça da Sé\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enderecos",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('EnderecoResponse normalizes CEP and resolves hierarchy', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.id).to.be.a('number');",
+                  "    pm.expect(json.cep).to.eql('01001000');",
+                  "    pm.expect(json).to.have.all.keys('id', 'rua', 'numero', 'referencia', 'cep', 'bairro', 'cidade', 'estado');",
+                  "    pm.environment.set('enderecoId', String(json.id));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04.3 Criar Endereço CEP Inválido (400 Bad Request)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"CEP-INVALIDO\",\n  \"numero\": \"\",\n  \"referencia\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enderecos",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Bean Validation erros returned', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.erros).to.be.an('array').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04.4 Listar Endereços Paginado como ADMIN (GET /enderecos -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enderecos?page=0&size=10&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" },
+                { "key": "sort", "value": "id,asc" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Page<EnderecoResponse> valid', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.content).to.be.an('array').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04.5 Buscar Endereço por ID (GET /enderecos/{{enderecoId}} -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos", "{{enderecoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Matches enderecoId', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(String(json.id)).to.eql(pm.environment.get('enderecoId'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04.6 Atualizar Endereço (PUT /enderecos/{{enderecoId}} -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"01001-000\",\n  \"numero\": \"250\",\n  \"referencia\": \"Ao lado da Catedral da Sé\",\n  \"rua\": \"Praça da Sé\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos", "{{enderecoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Updated numero reflected', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.numero).to.eql('250');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04.7 Deletar Endereço (DELETE /enderecos/{{enderecoId}} -> 204)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos", "{{enderecoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 204 No Content', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04.8 Buscar Endereço Removido (404 Not Found)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["enderecos", "{{enderecoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
-      }
+      ]
     },
     {
-      "name": "05. Voto - Registro de Apoio Comunitário",
-      "event": [
+      "name": "05. Chamados, Triagem IA (DeferredResult) & Apoio",
+      "description": "Fluxo completo de zeladoria: POST /chamados via multipart/form-data com processamento assíncrono RabbitMQ + Gemini Vision (DeferredResult até 60s), recusa IA sem persistência (400), filtros dinâmicos, GET /chamados/{id}/foto público, PUT /chamados/{id}, PATCH /chamados/{id}/status (observacao singular), POST /chamados/{id}/apoiar e GET /chamados/estatisticas.",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 200 OK ou 201 Created', function () {",
-              "    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+          "name": "05.1 Abrir Chamado via Multipart + Triagem IA (POST /chamados -> 201)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "cep", "value": "01310-100", "type": "text" },
+                { "key": "numero", "value": "1578", "type": "text" },
+                { "key": "referencia", "value": "Em frente ao MASP", "type": "text" },
+                { "key": "rua", "value": "Avenida Paulista", "type": "text" },
+                { "key": "foto", "type": "file", "src": "{{fotoSamplePath}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"]
+            },
+            "description": "Envia @ModelAttribute EnderecoRequest (cep, numero, referencia, rua?) + @RequestPart(\"foto\") MultipartFile (JPEG/PNG/WEBP/GIF, máx 10MB). Retorna DeferredResult<ChamadoResponse> (timeout 60s; 504 Gateway Timeout se exceder). Ao concluir com sucesso, persiste e retorna 201 Created com titulo, descricao, categoriaNome, prioridadeNome e orgaoNome classificados pela IA (ou fallback de contingência)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201 Created (DeferredResult resolved)', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('ChamadoResponse contains AI classification and initial vote/history', function () {",
+                  "    const json = pm.response.json();",
+                  "    const categorias = ['ILUMINACAO_PUBLICA', 'VIAS_E_PAVIMENTACAO', 'DRENAGEM_E_ESGOTO', 'LIMPEZA_URBANA', 'ARVORES_E_PARQUES', 'SINALIZACAO_E_TRANSITO'];",
+                  "    const prioridades = ['BAIXA', 'MEDIA', 'ALTA', 'URGENTE'];",
+                  "    const orgaos = ['SECRETARIA_OBRAS', 'CET_TRANSITO', 'ILUMINACAO_PUBLICA', 'DEFESA_CIVIL', 'SUBPREFEITURA', 'SANEAMENTO_BASICO'];",
+                  "    pm.expect(json.idChamado).to.be.a('number');",
+                  "    pm.expect(json.titulo).to.be.a('string').and.not.empty;",
+                  "    pm.expect(json.descricao).to.be.a('string').and.not.empty;",
+                  "    pm.expect(categorias).to.include(json.categoriaNome);",
+                  "    pm.expect(prioridades).to.include(json.prioridadeNome);",
+                  "    pm.expect(orgaos).to.include(json.orgaoNome);",
+                  "    pm.expect(json.status).to.be.oneOf(['EM_ANALISE', 'PENDENTE']);",
+                  "    pm.expect(json.totalVotos).to.eql(1);",
+                  "    pm.expect(json.apoiadoPorMim).to.eql(true);",
+                  "    pm.expect(json.foto).to.eql(`/chamados/${json.idChamado}/foto`);",
+                  "    pm.expect(json.historico).to.be.an('array').with.lengthOf.at.least(1);",
+                  "    pm.environment.set('chamadoId', String(json.idChamado));",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "method": "POST",
-        "url": {
-          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}/votos",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "chamados", "{{chamadoId}}", "votos"]
+        {
+          "name": "05.2 Abrir Chamado Sem Part 'foto' (400 Bad Request)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "cep", "value": "01310-100", "type": "text" },
+                { "key": "numero", "value": "1578", "type": "text" },
+                { "key": "referencia", "value": "Sem foto anexada", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request when foto part is missing', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('ApiErrorResponse mentions missing foto part', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql(400);",
+                  "    pm.expect(json.message.toLowerCase()).to.include('foto');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.3 Abrir Chamado com Endereço Inválido (400 Bean Validation)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "cep", "value": "000", "type": "text" },
+                { "key": "numero", "value": "", "type": "text" },
+                { "key": "referencia", "value": "", "type": "text" },
+                { "key": "foto", "type": "file", "src": "{{fotoSamplePath}}" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Bean Validation erros returned for EnderecoRequest fields', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.erros).to.be.an('array').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.4 Recusa IA / Foto Não-Urbana (DeferredResult -> 400 sem Persistência)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "cep", "value": "01310-100", "type": "text" },
+                { "key": "numero", "value": "1578", "type": "text" },
+                { "key": "referencia", "value": "Teste recusa imagem não urbana", "type": "text" },
+                { "key": "foto", "type": "file", "src": "Java-Advanced/README.md" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"]
+            },
+            "description": "Cenário negativo: ao enviar arquivo com magic bytes inválidos (ex: .md/.txt) ou imagem não-urbana recusada pela IA (ocorrenciaValida=false), a API rejeita o DeferredResult com 400 Bad Request (ApiErrorResponse) sem persistir chamado no Oracle. Em timeout >60s do Worker, retorna 504 Gateway Timeout."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request (invalid image or AI refusal)', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Response matches ApiErrorResponse without persisting', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql(400);",
+                  "    pm.expect(json.message).to.be.a('string').and.not.empty;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.5 Listar Chamados Paginado (GET /chamados -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados?page=0&size=20&sort=dtAbertura,desc&apenasMeus=false",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"],
+              "query": [
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "20" },
+                { "key": "sort", "value": "dtAbertura,desc" },
+                { "key": "apenasMeus", "value": "false" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Page<ChamadoResponse> uses idChamado and expected fields', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.content).to.be.an('array').and.not.empty;",
+                  "    const first = json.content[0];",
+                  "    pm.expect(first.idChamado).to.be.a('number');",
+                  "    pm.expect(first).to.have.property('categoriaNome');",
+                  "    pm.expect(first).to.have.property('prioridadeNome');",
+                  "    pm.expect(first).to.have.property('orgaoNome');",
+                  "    pm.expect(first).to.have.property('foto');",
+                  "    pm.expect(first).to.have.property('totalVotos');",
+                  "    pm.expect(first).to.have.property('apoiadoPorMim');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.6 Filtrar Chamados por Status, Categoria e Busca (GET /chamados -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados?status=PENDENTE&apenasMeus=false&page=0&size=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados"],
+              "query": [
+                { "key": "status", "value": "PENDENTE" },
+                { "key": "apenasMeus", "value": "false" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            },
+            "description": "Filtros opcionais suportados em ChamadoFiltroRequest: status, categoria, busca, apenasMeus, cidade, bairro, estado."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Filtered items all have status PENDENTE', function () {",
+                  "    const json = pm.response.json();",
+                  "    json.content.forEach(item => {",
+                  "        pm.expect(item.status).to.eql('PENDENTE');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.7 Buscar Chamado por ID com Histórico (GET /chamados/{{chamadoId}} -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('ChamadoResponse includes populated historico list', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(String(json.idChamado)).to.eql(pm.environment.get('chamadoId'));",
+                  "    pm.expect(json.historico).to.be.an('array').with.lengthOf.at.least(1);",
+                  "    pm.expect(json.historico[0]).to.have.all.keys('id', 'data', 'status', 'observacao', 'autorNome');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.8 Download Binário da Foto (GET /chamados/{{seedChamadoId}}/foto — Público -> 200)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{seedChamadoId}}/foto",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{seedChamadoId}}", "foto"]
+            },
+            "description": "Endpoint público (permitAll em SecurityConfig). Retorna bytes da imagem com Content-Type detectado por magic bytes e Content-Disposition inline."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK without Bearer token', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Content-Type is valid image/* and Content-Disposition is inline', function () {",
+                  "    const ct = pm.response.headers.get('Content-Type');",
+                  "    const cd = pm.response.headers.get('Content-Disposition');",
+                  "    pm.expect(ct).to.match(/^image\\/(jpeg|png|webp|gif)/);",
+                  "    pm.expect(cd).to.include('inline');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.9 Buscar Chamado Inexistente (404 Not Found)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/999999",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "999999"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404 Not Found', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.10 Atualizar Chamado como Autor (PUT /chamados/{{chamadoId}} -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"titulo\": \"Buraco profundo no asfalto atualizado QA\",\n  \"descricao\": \"Cratera próxima à faixa de pedestres na Av. Paulista causando risco a ciclistas e veículos.\",\n  \"categoria\": \"VIAS_E_PAVIMENTACAO\",\n  \"endereco\": {\n    \"cep\": \"01310-100\",\n    \"numero\": \"1578\",\n    \"referencia\": \"Em frente ao MASP - faixa direita\",\n    \"rua\": \"Avenida Paulista\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}"]
+            },
+            "description": "ChamadoRequest exige titulo, descricao, categoria (CategoriaEnum) e endereco."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Chamado updated successfully', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.titulo).to.eql('Buraco profundo no asfalto atualizado QA');",
+                  "    pm.expect(json.categoriaNome).to.eql('VIAS_E_PAVIMENTACAO');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.11 Alterar Status como CIDADAO (403 Forbidden)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"EM_ANALISE\",\n  \"observacao\": \"Tentativa de alteração por usuário CIDADAO\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}", "status"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('CIDADAO receives 403 Forbidden on PATCH /status', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.12 Alterar Status como GESTOR (PATCH /chamados/{{chamadoId}}/status -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{gestorToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"EM_EXECUCAO\",\n  \"observacao\": \"Equipe técnica da subprefeitura designada para vistoria e execução.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}", "status"]
+            },
+            "description": "ChamadoStatusRequest usa { status, observacao } (singular!). Atualiza para EM_EXECUCAO."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Status transitioned to EM_EXECUCAO and historico recorded observacao', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.status).to.eql('EM_EXECUCAO');",
+                  "    pm.expect(json.historico).to.be.an('array').with.lengthOf.at.least(2);",
+                  "    const obsList = json.historico.map(h => h.observacao);",
+                  "    pm.expect(obsList).to.include('Equipe técnica da subprefeitura designada para vistoria e execução.');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.13 Alterar Status com Payload Inválido (400 Bad Request)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{gestorToken}}", "type": "string" }
+              ]
+            },
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"CONCLUIDO\",\n  \"observacao\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}", "status"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 400 Bad Request when observacao is blank', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "pm.test('Validation erros returned for observacao', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.erros).to.be.an('array').and.not.empty;",
+                  "    pm.expect(json.erros.map(e => e.campo)).to.include('observacao');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.14 Apoiar Chamado — Toggle ON (POST /chamados/{{chamadoId}}/apoiar -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}/apoiar",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}", "apoiar"]
+            },
+            "description": "Alterna o voto do usuário autenticado (apoiar) e publica VotoMessage no RabbitMQ."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Vote toggled ON and totalVotos incremented', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.apoiadoPorMim).to.eql(true);",
+                  "    pm.expect(json.totalVotos).to.be.at.least(2);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.15 Desapoiar Chamado — Toggle OFF (POST /chamados/{{chamadoId}}/apoiar -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}/apoiar",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}", "apoiar"]
+            },
+            "description": "Segunda chamada ao mesmo endpoint alterna o voto para OFF (apoiadoPorMim = false)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('Vote toggled OFF and totalVotos decremented', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.apoiadoPorMim).to.eql(false);",
+                  "    pm.expect(json.totalVotos).to.eql(1);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05.16 Estatísticas Gerais de Chamados (GET /chamados/estatisticas -> 200)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/estatisticas",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "estatisticas"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 200 OK', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('EstatisticasResponse matches contract', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json).to.have.all.keys('total', 'abertos', 'emAndamento', 'resolvidos', 'rejeitados', 'totalApoios');",
+                  "    pm.expect(json.total).to.be.a('number').and.at.least(3);",
+                  "    pm.expect(json.totalApoios).to.be.a('number').and.at.least(0);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
-      }
+      ]
     },
     {
-      "name": "06. Gestão - Atualização de Status para EM_EXECUCAO",
-      "event": [
+      "name": "06. Teardown & Limpeza",
+      "description": "Valida regra de exclusão (apenas AUTOR ou ADMIN pode deletar chamado; GESTOR não-autor recebe 403), remove chamado QA e exclui o usuário de teste via /usuarios/me e /usuarios/{id}.",
+      "item": [
         {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 200 OK', function () {",
-              "    pm.response.to.have.status(200);",
-              "});",
-              "pm.test('Status atualizado para EM_EXECUCAO', function () {",
-              "    var jsonData = pm.response.json();",
-              "    pm.expect(jsonData.status).to.eql('EM_EXECUCAO');",
-              "});"
+          "name": "06.1 Deletar Chamado como GESTOR Não-Autor (403 Forbidden)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{gestorToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Non-author GESTOR receives 403 Forbidden on DELETE /chamados/{id}', function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06.2 Deletar Chamado QA como Autor (DELETE /chamados/{{chamadoId}} -> 204)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 204 No Content', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06.3 Confirmar Chamado Deletado (404 Not Found)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["chamados", "{{chamadoId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 404 Not Found after deletion', function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06.4 Excluir Próprio Usuário QA (DELETE /usuarios/me -> 204)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "me"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 204 No Content', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06.5 Criar Usuário Temporário para Exclusão ADMIN (POST /usuarios -> 201)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
             ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Temp Admin Delete\",\n  \"email\": \"{{qaTempAdminEmail}}\",\n  \"senha\": \"TempDelete#2026\",\n  \"ddd\": \"11\",\n  \"numeroTelefone\": \"999998888\",\n  \"endereco\": {\n    \"cep\": \"01310-100\",\n    \"numero\": \"10\",\n    \"referencia\": \"Temp\",\n    \"rua\": \"Avenida Paulista\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('qaTempAdminEmail', `qa.temp.del.${Date.now()}@zelafix.test`);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status code is 201 Created', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "pm.test('Stores qaTempAdminDeleteId', function () {",
+                  "    const json = pm.response.json();",
+                  "    pm.expect(json.id).to.be.a('number');",
+                  "    pm.environment.set('qaTempAdminDeleteId', String(json.id));",
+                  "});"
+                ]
+              }
+            }
+          ]
         },
-        "method": "PATCH",
-        "header": [
-          { "key": "Content-Type", "value": "application/json" }
-        ],
-        "body": {
-          "mode": "raw",
-          "raw": "{\n  \"status\": \"EM_EXECUCAO\",\n  \"observacoes\": \"Equipe de desobstrução de galerias enviada ao local.\"\n}"
-        },
-        "url": {
-          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}/status",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "chamados", "{{chamadoId}}", "status"]
+        {
+          "name": "06.6 Deletar Usuário por ID como ADMIN (DELETE /usuarios/{{qaTempAdminDeleteId}} -> 204)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{qaTempAdminDeleteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "{{qaTempAdminDeleteId}}"]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('ADMIN deletes user by ID with 204 No Content', function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});"
+                ]
+              }
+            }
+          ]
         }
-      }
-    },
+      ]
+    }
+  ],
+  "variable": [
     {
-      "name": "07. Teardown - Exclusão de Chamado de Teste",
-      "event": [
-        {
-          "listen": "test",
-          "script": {
-            "exec": [
-              "pm.test('Status code é 204 No Content ou 200 OK', function () {",
-              "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
-              "});"
-            ],
-            "type": "text/javascript"
-          }
-        }
-      ],
-      "request": {
-        "auth": {
-          "type": "bearer",
-          "bearer": [{ "key": "token", "value": "{{jwtToken}}", "type": "string" }]
-        },
-        "method": "DELETE",
-        "url": {
-          "raw": "{{baseUrl}}/api/chamados/{{chamadoId}}",
-          "host": ["{{baseUrl}}"],
-          "path": ["api", "chamados", "{{chamadoId}}"]
-        }
-      }
+      "key": "collectionVersion",
+      "value": "2.0.0",
+      "type": "string"
     }
   ]
 }
