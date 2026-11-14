@@ -92,6 +92,98 @@ class BacklogDocument:
     raw_file_path: str = ""
 
 
+class BacklogValidationError(ValueError):
+    """Erro disparado quando um backlog viola o contrato mínimo de campos obrigatórios."""
+
+    def __init__(self, errors: List[str]):
+        self.errors = errors
+        summary = "\n - ".join(errors)
+        super().__init__(f"Backlog inválido ({len(errors)} erro(s)):\n - {summary}")
+
+
+def validate_backlog_document(
+    doc: BacklogDocument,
+    required_tag: Optional[str] = None,
+    exact_tag_only: bool = False,
+) -> List[str]:
+    """
+    Valida que Epic, Features e PBIs preservam todas as variáveis obrigatórias
+    (Start Date, Target Date, Tags, Effort/Story Points, Priority, Business Value,
+    Description e Acceptance Criteria) para evitar exclusão acidental de metadados.
+    """
+    errors: List[str] = []
+    epic = doc.epic
+
+    def _check_dates(scope: str, start: Optional[str], target: Optional[str]) -> None:
+        if not start:
+            errors.append(f"{scope}: 'Start Date' obrigatório ausente.")
+        if not target:
+            errors.append(f"{scope}: 'Target Date' obrigatório ausente.")
+        if start and target and start > target:
+            errors.append(f"{scope}: 'Start Date' ({start}) não pode ser posterior a 'Target Date' ({target}).")
+
+    def _check_tags(scope: str, tags: List[str]) -> None:
+        if not tags:
+            errors.append(f"{scope}: 'Tags' obrigatório ausente.")
+            return
+        if required_tag and required_tag not in tags:
+            errors.append(f"{scope}: tag obrigatória '{required_tag}' ausente em {tags}.")
+        if exact_tag_only and required_tag and tags != [required_tag]:
+            errors.append(f"{scope}: tags devem conter exclusivamente ['{required_tag}'], encontrado {tags}.")
+
+    if not epic.title.strip():
+        errors.append("Epic: 'Title' obrigatório ausente.")
+    if not epic.description.strip():
+        errors.append("Epic: 'Description' obrigatória ausente.")
+    _check_dates("Epic", epic.start_date, epic.target_date)
+    _check_tags("Epic", epic.tags)
+    if epic.effort <= 0:
+        errors.append("Epic: 'Effort (Story Points)' deve ser maior que zero.")
+    if epic.priority not in (1, 2, 3, 4):
+        errors.append(f"Epic: 'Priority' inválida ({epic.priority}).")
+    if epic.business_value <= 0:
+        errors.append("Epic: 'Business Value' deve ser maior que zero.")
+    if not epic.features:
+        errors.append("Epic: deve possuir ao menos uma Feature com PBIs.")
+
+    for f_idx, feat in enumerate(epic.features, 1):
+        f_scope = f"Feature {f_idx} ({feat.title[:45]})"
+        if not feat.title.strip():
+            errors.append(f"{f_scope}: 'Title' obrigatório ausente.")
+        if not feat.description.strip():
+            errors.append(f"{f_scope}: 'Description' obrigatória ausente.")
+        _check_dates(f_scope, feat.start_date, feat.target_date)
+        if exact_tag_only:
+            _check_tags(f_scope, feat.tags)
+        elif not feat.tags:
+            errors.append(f"{f_scope}: 'Tags' obrigatório ausente.")
+        if feat.effort <= 0:
+            errors.append(f"{f_scope}: 'Effort' deve ser maior que zero.")
+        if not feat.pbis:
+            errors.append(f"{f_scope}: deve possuir ao menos um PBI.")
+
+        for p_idx, pbi in enumerate(feat.pbis, 1):
+            p_scope = f"Feature {f_idx} -> PBI {p_idx} ({pbi.title[:45]})"
+            if not pbi.title.strip():
+                errors.append(f"{p_scope}: 'Title' obrigatório ausente.")
+            if not pbi.description.strip():
+                errors.append(f"{p_scope}: 'Descrição (User Story)' obrigatória ausente.")
+            if not pbi.acceptance_criteria.strip():
+                errors.append(f"{p_scope}: 'Critérios de Aceite (Acceptance Criteria)' obrigatório ausente.")
+            if pbi.story_points <= 0:
+                errors.append(f"{p_scope}: 'Effort (Story Points)' deve ser maior que zero.")
+            if pbi.priority not in (1, 2, 3, 4):
+                errors.append(f"{p_scope}: 'Priority' inválida ({pbi.priority}).")
+            if pbi.business_value <= 0:
+                errors.append(f"{p_scope}: 'Business Value' deve ser maior que zero.")
+            if exact_tag_only:
+                _check_tags(p_scope, pbi.tags)
+            elif not pbi.tags:
+                errors.append(f"{p_scope}: 'Tags' obrigatório ausente.")
+
+    return errors
+
+
 def _markdown_to_clean_html(text: str) -> str:
     """
     Converte markdown para HTML limpo sem estilizações invasivas (sem barras azuis, sem títulos extras).
@@ -302,10 +394,16 @@ def _parse_tags(raw_tags: str) -> List[str]:
     return tags
 
 
-def parse_backlog_markdown(file_path: str) -> BacklogDocument:
+def parse_backlog_markdown(
+    file_path: str,
+    strict: bool = False,
+    required_tag: Optional[str] = None,
+    exact_tag_only: bool = False,
+) -> BacklogDocument:
     """
     Lê um arquivo Markdown e extrai a hierarquia de Epics, Features, PBIs e Tasks,
     separando estritamente Description de Acceptance Criteria e calculando Effort/Business Value.
+    Se `strict=True`, valida todos os campos obrigatórios e levanta `BacklogValidationError` em caso de ausência.
     """
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -657,8 +755,19 @@ def parse_backlog_markdown(file_path: str) -> BacklogDocument:
 
     epic_item.effort = total_epic_effort
 
-    return BacklogDocument(
+    doc = BacklogDocument(
         discipline=discipline,
         epic=epic_item,
         raw_file_path=file_path
     )
+
+    if strict:
+        validation_errors = validate_backlog_document(
+            doc,
+            required_tag=required_tag,
+            exact_tag_only=exact_tag_only,
+        )
+        if validation_errors:
+            raise BacklogValidationError(validation_errors)
+
+    return doc

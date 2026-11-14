@@ -39,6 +39,7 @@ Exemplos de Uso:
   python run_sync.py --commits                # Varre os 7 repositórios locais e vincula commits
   python run_sync.py --govern                 # Aplica atribuição de responsáveis e estados
   python run_sync.py --status                 # Exibe o painel de saúde e métricas do projeto
+  python run_sync.py --validate               # Valida todos os backlogs contra o contrato mínimo
   python run_sync.py --hooks                  # Instala post-commit hooks nos 7 repositórios
   python run_sync.py --full                   # Executa carga, commits e governança completa
   python run_sync.py --dry-run --all          # Simula a importação sem alterar o Azure
@@ -51,6 +52,7 @@ Exemplos de Uso:
     parser.add_argument("--govern", "-g", action="store_true", help="Aplicar governança de responsáveis e estados (In Progress/Committed)")
     parser.add_argument("--hooks", action="store_true", help="Instalar post-commit hooks nos 7 repositórios locais")
     parser.add_argument("--status", "-s", action="store_true", help="Exibir resumo consolidado de saúde dos Work Items")
+    parser.add_argument("--validate", "-v", action="store_true", help="Validar campos obrigatórios de todos os backlogs")
     parser.add_argument("--clean", action="store_true", help="Limpar todos os Work Items do projeto com segurança")
     parser.add_argument("--check-auth", action="store_true", help="Verificar conexão e permissões no Azure DevOps")
     parser.add_argument("--full", action="store_true", help="Executar carga, governança e commits de ponta a ponta")
@@ -58,7 +60,7 @@ Exemplos de Uso:
 
     args = parser.parse_args()
 
-    if not any([args.all, args.discipline, args.commits, args.govern, args.hooks, args.status, args.clean, args.check_auth, args.full]):
+    if not any([args.all, args.discipline, args.commits, args.govern, args.hooks, args.status, args.validate, args.clean, args.check_auth, args.full]):
         print_banner()
         engine = SyncEngine()
         engine.get_project_status()
@@ -101,6 +103,12 @@ Exemplos de Uso:
 
     if args.govern:
         engine.apply_governance(dry_run=args.dry_run)
+
+    if args.validate:
+        ok = engine.validate_all_backlogs()
+        if not ok:
+            sys.exit(1)
+        return
 
     if args.hooks:
         install_hooks()

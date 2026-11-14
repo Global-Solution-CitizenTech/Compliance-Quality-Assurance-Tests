@@ -21,7 +21,12 @@ from config import (
     DISCIPLINES, TEAM_MEMBERS
 )
 from azure_client import AzureClient
-from parser_backlog import parse_backlog_markdown, clean_title
+from parser_backlog import (
+    parse_backlog_markdown,
+    clean_title,
+    validate_backlog_document,
+    BacklogValidationError,
+)
 
 
 class SyncEngine:
@@ -46,7 +51,13 @@ class SyncEngine:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"Arquivo de backlog não encontrado: {file_path}")
 
-        doc = parse_backlog_markdown(file_path)
+        exact_tag_only = discipline_key.lower() in ("iot", "mobile")
+        doc = parse_backlog_markdown(
+            file_path,
+            strict=True,
+            required_tag=d_info["tag"],
+            exact_tag_only=exact_tag_only,
+        )
         stats = {"epics": 0, "features": 0, "pbis": 0, "errors": 0}
 
         prefix = "[DRY-RUN] " if dry_run else ""
@@ -329,7 +340,40 @@ class SyncEngine:
         return {"total": len(ids), "types": types_count, "states": states_count, "members": assigned_count}
 
     # =========================================================================
-    # 5. LIMPEZA TOTAL DO BOARD
+    # 5. VALIDAÇÃO ESTRITA DOS BACKLOGS (CONTRATO DE CAMPOS OBRIGATÓRIOS)
+    # =========================================================================
+    def validate_all_backlogs(self) -> bool:
+        """Valida localmente todos os 7 arquivos de backlog contra o contrato mínimo obrigatório."""
+        print("\n🔎 Validando contrato obrigatório de todos os 7 backlogs...")
+        all_ok = True
+        for key, d_info in DISCIPLINES.items():
+            file_path = os.path.join(self.backlogs_dir, d_info["file"])
+            if not os.path.exists(file_path):
+                print(f"  ❌ [{key}] Arquivo não encontrado: {file_path}")
+                all_ok = False
+                continue
+            doc = parse_backlog_markdown(file_path)
+            exact_tag_only = key.lower() in ("iot", "mobile")
+            errors = validate_backlog_document(
+                doc,
+                required_tag=d_info["tag"],
+                exact_tag_only=exact_tag_only,
+            )
+            if errors:
+                all_ok = False
+                print(f"  ❌ [{key}] {d_info['file']} — {len(errors)} erro(s):")
+                for err in errors:
+                    print(f"     • {err}")
+            else:
+                pbis_count = sum(len(f.pbis) for f in doc.epic.features)
+                print(
+                    f"  ✅ [{key:10s}] {d_info['file']} | Epic ({doc.epic.start_date}..{doc.epic.target_date}) "
+                    f"| {len(doc.epic.features)} Features | {pbis_count} PBIs | {doc.epic.effort:.0f} SP"
+                )
+        return all_ok
+
+    # =========================================================================
+    # 6. LIMPEZA TOTAL DO BOARD
     # =========================================================================
     def clean_board(self, destroy: bool = True) -> int:
         """Limpa todos os Work Items do projeto com segurança."""
