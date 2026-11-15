@@ -25,32 +25,32 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software
+[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software [AB#27]
 │
-├── 🏆 [FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais
-│   ├── 📄 [PBI-01] Estruturação da Clean Architecture e Endpoints de Notificação (3 pts)
-│   └── 📄 [PBI-02] Regras de Negócio de Despacho de Alertas por Região e Categoria (3 pts)
+├── 🏆 [FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais [AB#28]
+│   ├── 📄 [PBI-01] Estruturação da Clean Architecture e Endpoints de Notificação (3 pts) [AB#29]
+│   └── 📄 [PBI-02] Regras de Negócio de Despacho de Alertas por Região e Categoria (3 pts) [AB#30]
 │
-├── 🏆 [FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)
-│   ├── 📄 [PBI-03] Instrumentação com OpenTelemetry e Exportação de Métricas Prometheus (3 pts)
-│   └── 📄 [PBI-04] Health Checks Customizados e Logs Estruturados com Serilog (3 pts)
+├── 🏆 [FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks) [AB#31]
+│   ├── 📄 [PBI-03] Instrumentação com OpenTelemetry e Exportação de Métricas Prometheus (3 pts) [AB#32]
+│   └── 📄 [PBI-04] Health Checks Customizados e Logs Estruturados com Serilog (3 pts) [AB#33]
 │
-└── 🏆 [FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit
-    └── 📄 [PBI-05] Suíte de Testes Unitários com xUnit no Padrão AAA e FluentAssertions (3 pts)
+└── 🏆 [FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit [AB#34]
+    └── 📄 [PBI-05] Suíte de Testes Unitários com xUnit no Padrão AAA e FluentAssertions (3 pts) [AB#35]
 ```
 
 ---
 
 ## 📊 2. Tabela Resumo do Backlog
 
-| Feature Pai | ID do PBI | Título do Item de Backlog (PBI) | Story Points | Prioridade | Horas Estimadas |
-| :--- | :--- | :--- | :---: | :---: | :---: |
-| **[FEATURE 01] API & Alertas** | **PBI-01** | Estruturação da Clean Architecture e Endpoints de Notificação | 3 pts | 1 - Critical | 7.0h |
-| | **PBI-02** | Regras de Negócio de Despacho de Alertas por Região e Categoria | 3 pts | 1 - Critical | 6.5h |
-| **[FEATURE 02] Observabilidade**| **PBI-03** | Instrumentação com OpenTelemetry e Exportação de Métricas Prometheus | 3 pts | 1 - Critical | 7.5h |
-| | **PBI-04** | Health Checks Customizados e Logs Estruturados com Serilog | 3 pts | 1 - Critical | 6.0h |
-| **[FEATURE 03] Testes xUnit** | **PBI-05** | Suíte de Testes Unitários com xUnit no Padrão AAA e FluentAssertions | 3 pts | 1 - Critical | 8.0h |
-| **TOTAL CONSOLIDADO** | **3 Features** | **5 PBIs / 15 Child Tasks Técnicas** | **15 pts** | — | **35.0h** |
+| Feature Pai | ID do PBI | Título do Item de Backlog (PBI) | Story Points | Prioridade | Horas Estimadas | ID Azure Boards |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: |
+| **[FEATURE 01] API & Alertas** | **PBI-01** | Estruturação da Clean Architecture e Endpoints de Notificação | 3 pts | 1 - Critical | 7.0h | **#29** |
+| | **PBI-02** | Regras de Negócio de Despacho de Alertas por Região e Categoria | 3 pts | 1 - Critical | 6.5h | **#30** |
+| **[FEATURE 02] Observabilidade**| **PBI-03** | Instrumentação com OpenTelemetry e Exportação de Métricas Prometheus | 3 pts | 1 - Critical | 7.5h | **#32** |
+| | **PBI-04** | Health Checks Customizados e Logs Estruturados com Serilog | 3 pts | 1 - Critical | 6.0h | **#33** |
+| **[FEATURE 03] Testes xUnit** | **PBI-05** | Suíte de Testes Unitários com xUnit no Padrão AAA e FluentAssertions | 3 pts | 1 - Critical | 8.0h | **#35** |
+| **TOTAL CONSOLIDADO** | **3 Features** | **5 PBIs / 15 Child Tasks Técnicas** | **15 pts** | — | **35.0h** | — |
 
 ---
 
@@ -60,6 +60,7 @@
 
 ### 🏛️ ÉPICO
 * **Work Item Type:** `Epic`
+* **Azure Boards ID:** `#27`
 * **Title:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
 * **Tags:** `DotNet, GlobalSolution2, CSharp, OpenTelemetry, Serilog, xUnit`
 * **Start Date:** `2026-11-04`
@@ -73,7 +74,8 @@
 
 ### 🏆 [FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Azure Boards ID:** `#28`
+* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software` (#27)
 * **Title:** `[FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais`
 * **Tags:** `DotNet, CleanArchitecture, WebAPI`
 * **Start Date:** `2026-11-04`
@@ -88,7 +90,8 @@
 
 #### 🔹 [PBI-01] Estruturação da Clean Architecture e Endpoints de Notificação
 * **Work Item Type:** `Product Backlog Item`
-* **Parent Feature:** `[FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais`
+* **Azure Boards ID:** `#29`
+* **Parent Feature:** `[FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais` (#28)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `DotNet, CleanArch, Setup`
@@ -106,7 +109,8 @@
 
 #### 🔹 [PBI-02] Regras de Negócio de Despacho de Alertas por Região e Categoria
 * **Work Item Type:** `Product Backlog Item`
-* **Parent Feature:** `[FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais`
+* **Azure Boards ID:** `#30`
+* **Parent Feature:** `[FEATURE 01] Arquitetura Limpa e API de Alertas e Notificações Municipais` (#28)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `DotNet, BusinessRules, Notifications`
@@ -124,7 +128,8 @@
 
 ### 🏆 [FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Azure Boards ID:** `#31`
+* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software` (#27)
 * **Title:** `[FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)`
 * **Tags:** `DotNet, Observability, OpenTelemetry, Serilog, HealthChecks`
 * **Start Date:** `2026-11-09`
@@ -141,7 +146,8 @@
 
 #### 🔹 [PBI-03] Instrumentação com OpenTelemetry e Exportação de Métricas Prometheus
 * **Work Item Type:** `Product Backlog Item`
-* **Parent Feature:** `[FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)`
+* **Azure Boards ID:** `#32`
+* **Parent Feature:** `[FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)` (#31)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `DotNet, OpenTelemetry, Prometheus`
@@ -158,7 +164,8 @@
 
 #### 🔹 [PBI-04] Health Checks Customizados e Logs Estruturados com Serilog
 * **Work Item Type:** `Product Backlog Item`
-* **Parent Feature:** `[FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)`
+* **Azure Boards ID:** `#33`
+* **Parent Feature:** `[FEATURE 02] Observabilidade Completa (OpenTelemetry, Prometheus e HealthChecks)` (#31)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `DotNet, HealthChecks, Serilog`
@@ -175,7 +182,8 @@
 
 ### 🏆 [FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit
 * **Work Item Type:** `Feature`
-* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software`
+* **Azure Boards ID:** `#34`
+* **Parent:** `[EPIC] Advanced Business Development with .NET: Microsserviço de Notificações Urbanas, Observabilidade e Qualidade de Software` (#27)
 * **Title:** `[FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit`
 * **Tags:** `DotNet, Testing, xUnit, AAA, Quality`
 * **Start Date:** `2026-11-12`
@@ -191,7 +199,8 @@
 
 #### 🔹 [PBI-05] Suíte de Testes Unitários com xUnit no Padrão AAA e FluentAssertions
 * **Work Item Type:** `Product Backlog Item`
-* **Parent Feature:** `[FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit`
+* **Azure Boards ID:** `#35`
+* **Parent Feature:** `[FEATURE 03] Qualidade de Software e Cobertura de Testes Automatizados xUnit` (#34)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `DotNet, xUnit, FluentAssertions`
