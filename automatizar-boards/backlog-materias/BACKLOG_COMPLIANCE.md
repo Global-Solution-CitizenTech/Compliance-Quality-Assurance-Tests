@@ -272,7 +272,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `15` casos positivos especificados cobrindo `TC-01`, `TC-07`, `TC-09`, `TC-10`, `TC-12`, `TC-13`, `TC-14`, `TC-16`, `TC-17`, `TC-18`, `TC-19`, `TC-21`, `TC-22`, `TC-24` e `TC-25`.
 - [x] Suíte Postman organizada em `6` pastas (`01. Observabilidade`, `02. Autenticação & RBAC`, `03. Usuários`, `04. Endereços`, `05. Chamados, Triagem IA (DeferredResult) & Apoio`, `06. Teardown & Limpeza`) com `57` requests e `57` `pm.test()`.
-- [x] Ambiente `CitizenTech_QA_Environment.postman_environment.json` configurado com `25` variáveis compatíveis com Local (`8080`/`8081`) e Cloud Azure (`app-zelafix-561432.azurewebsites.net`).
+- [x] Ambiente `CitizenTech_QA_Environment.postman_environment.json` configurado com `25` variáveis compatíveis com Local (`8080`/`8081`) e Cloud Azure (`app-zelafix.azurewebsites.net`).
 
 ##### Commits vinculados (GitHub Repository):
 - [`6766e2e`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/6766e2e) — `feat: Adicionando mudanças no readme e criando matriz de casos de teste.` *(vinculado em AB#73)*

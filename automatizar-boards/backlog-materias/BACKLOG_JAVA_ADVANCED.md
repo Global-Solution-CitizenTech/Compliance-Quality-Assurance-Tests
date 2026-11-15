@@ -622,7 +622,7 @@
 * **Acceptance Criteria:**
   - [x] Estrutura Gradle Multi-Project (`rootProject.name = 'zelafix-backend'`, `zelafix-api`, `zelafix-worker`) compilando e testando atomicamente via `gradlew test bootJar`.
   - [x] Dockerfiles multi-stage build (`gradle:8.10-jdk21-alpine` para `eclipse-temurin:21-jre-alpine`) com usuário `appuser:appgroup`, timezone `America/Sao_Paulo` e geração dinâmica de chaves RSA via openssl.
-  - [x] Pipeline Azure DevOps funcional (`azure-pipelines.yml`) realizando build, validação e deploy em Azure App Services (`app-zelafix-561432` e `app-zelafix-worker-561432`).
+  - [x] Pipeline Azure DevOps funcional (`azure-pipelines.yml`) realizando build, validação e deploy em Azure App Services (`app-zelafix` e `app-zelafix-worker`).
   - [x] Proteção de branch na branch `main` do Azure Repos (`TF402455`) exigindo Pull Requests de homologação e governança técnica documentada no `AGENT.md`.
 
 #### 🔹 [PBI-15] Modularização em Gradle Multi-Project e Alinhamento Java 21 LTS
@@ -697,7 +697,7 @@
 > **Para que** deploys nos Azure App Services ocorram de forma automática e auditada exclusivamente via Pull Requests de homologação.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `azure-pipelines.yml` executando build do Gradle e deploy nos Azure App Services (`app-zelafix-561432` e `app-zelafix-worker-561432`).
+- [x] `azure-pipelines.yml` executando build do Gradle e deploy nos Azure App Services (`app-zelafix` e `app-zelafix-worker`).
 - [x] Workflow `.github/workflows/mirror-to-azure.yml` espelhando branches `main` e `develop`.
 - [x] Política de proteção de branch na `main` bloqueando pushes diretos e exigindo PRs com revisão.
 - [x] Tratamento de isolamento de variáveis e chaves da API de IA para evitar erros 429 na esteira de CI.

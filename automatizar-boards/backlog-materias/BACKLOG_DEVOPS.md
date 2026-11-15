@@ -3,8 +3,8 @@
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** DevOps Tools & Cloud Computing (FIAP — 2TDSPG)  
 > **Repositório GitHub:** [Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing)  
-> **API em Produção (Azure Web App):** [https://app-zelafix-561432.azurewebsites.net](https://app-zelafix-561432.azurewebsites.net)  
-> **Worker em Produção (Azure Web App):** [https://app-zelafix-worker-561432.azurewebsites.net](https://app-zelafix-worker-561432.azurewebsites.net)  
+> **API em Produção (Azure Web App):** [https://app-zelafix.azurewebsites.net](https://app-zelafix.azurewebsites.net)  
+> **Worker em Produção (Azure Web App):** [https://app-zelafix-worker.azurewebsites.net](https://app-zelafix-worker.azurewebsites.net)  
 > **Organização / Projeto Azure DevOps:** `ZelaFixGS` / `ZelaFix`  
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`  
 > **Tag Oficial:** `DevOps`  
@@ -13,7 +13,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
-> **Diretrizes Estratégicas:** Infraestrutura em nuvem **Microsoft Azure** provisionada de forma declarativa e idempotente via **Azure CLI** (`scripts/script-provisionamento.sh`) utilizando App Service Plan Linux `F1` Free Tier compartilhado para API REST (`app-zelafix-561432`, porta `8080`) e Worker Assíncrono (`app-zelafix-worker-561432`, porta `8081`), **Provedor de LLM Multimodal** (via `AI_MODEL`), mensageria TLS via **CloudAMQP** (`RABBITMQ_URI`), banco **Oracle 19c** (`scripts/script-bd.sql` com 13 tabelas 3FN + `auditoria_dml_chamado`), **Dockerfiles multi-stage** non-root e esteira CI/CD multi-service no **Azure Pipelines** (`azure-pipelines.yml`) executando **211 testes automatizados JUnit 5**.
+> **Diretrizes Estratégicas:** Infraestrutura em nuvem **Microsoft Azure** provisionada de forma declarativa e idempotente via **Azure CLI** (`scripts/script-provisionamento.sh`) utilizando App Service Plan Linux `F1` Free Tier compartilhado para API REST (`app-zelafix`, porta `8080`) e Worker Assíncrono (`app-zelafix-worker`, porta `8081`), **Provedor de LLM Multimodal** (via `AI_MODEL`), mensageria TLS via **CloudAMQP** (`RABBITMQ_URI`), banco **Oracle 19c** (`scripts/script-bd.sql` com 13 tabelas 3FN + `auditoria_dml_chamado`), **Dockerfiles multi-stage** non-root e esteira CI/CD multi-service no **Azure Pipelines** (`azure-pipelines.yml`) executando **211 testes automatizados JUnit 5**.
 
 ---
 
@@ -87,7 +87,7 @@
 * **Acceptance Criteria:**
   - [x] Dockerfiles multi-stage (`Dockerfile.api` e `Dockerfile.worker`) utilizando `gradle:8.10-jdk21-alpine` + `eclipse-temurin:21-jre-alpine`, usuário não-root (`appuser`) e geração de chaves RSA 2048-bit.
   - [x] Mensageria CloudAMQP (`amqps://`) configurada via `SPRING_RABBITMQ_ADDRESSES` com desacoplamento total entre Worker e Oracle DB.
-  - [x] Script IaC `scripts/script-provisionamento.sh` idempotente provisionando `rg-zelafix`, `asp-zelafix` (F1 Linux), Web Apps `app-zelafix-561432` e `app-zelafix-worker-561432` e Serviços de IA Multimodal (deployment multimodal).
+  - [x] Script IaC `scripts/script-provisionamento.sh` idempotente provisionando `rg-zelafix`, `asp-zelafix` (F1 Linux), Web Apps `app-zelafix` e `app-zelafix-worker` e Serviços de IA Multimodal (deployment multimodal).
   - [x] Script DDL `scripts/script-bd.sql` alinhado às 13 tabelas 3FN + `auditoria_dml_chamado` no Oracle 19c e migrations Flyway (`V1`, `V2`, `V3`).
   - [x] Esteira CI/CD `azure-pipelines.yml` executando build Gradle multi-project, 211 testes JUnit 5 (`181` API + `30` Worker) e deploy contínuo nos dois Azure Web Apps, documentada com diagrama Draw.io.
 
@@ -216,7 +216,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Criação idempotente de `rg-zelafix` (`eastus`), plano Linux `asp-zelafix` (`SKU F1`) e flag opcional `--clean` para reconstrução limpa.
-- [x] Provisionamento dos Web Apps `app-zelafix-561432` (API porta `8080`) e `app-zelafix-worker-561432` (Worker porta `8081`) com runtime `JAVA|21-java21`, startup commands customizados e `JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"`.
+- [x] Provisionamento dos Web Apps `app-zelafix` (API porta `8080`) e `app-zelafix-worker` (Worker porta `8081`) com runtime `JAVA|21-java21`, startup commands customizados e `JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"`.
 - [x] Provisionamento do serviço de IA (kind `AIServices`, SKU `S0`) e deployment do modelo multimodal configurados via Azure CLI idempotente, obtendo `AI_API_KEY` dinamicamente.
 
 ---
@@ -321,7 +321,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Estágio `Build` executando `gradlew.bat clean test bootJar --no-daemon` com JDK 21 e variáveis mascaradas (`ORACLE_*`, `RABBITMQ_URI`, `AI_MODEL`).
 - [x] Publicação dos relatórios XML de testes JUnit via `PublishTestResults@2` (`failTaskOnFailedTests: true`) e empacotamento de `zelafix-api.jar`, `app.jar` e `zelafix-worker.jar` no artefato `drop`.
-- [x] Estágio `Deploy` utilizando Service Connection `ZelaFix-Connection` e tarefas `AzureWebApp@1` para publicar `app-zelafix-561432` (porta `8080`) e `app-zelafix-worker-561432` (porta `8081`).
+- [x] Estágio `Deploy` utilizando Service Connection `ZelaFix-Connection` e tarefas `AzureWebApp@1` para publicar `app-zelafix` (porta `8080`) e `app-zelafix-worker` (porta `8081`).
 
 ---
 
@@ -347,7 +347,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Diagrama `docs/gs2-zelafix-diagrama.drawio` e imagem renderizada `docs/gs2-zelafix-diagrama.png` incorporada no `README.md` retratando GitHub Actions, Azure Repos, Azure Pipelines, CloudAMQP TLS, Oracle 19c e Provedor de LLM Multimodal (`AI_MODEL`).
-- [x] `README.md` atualizado com links ativos (`app-zelafix-561432`, `app-zelafix-worker-561432`, Swagger UI, Actuator Health, OpenAPI), justificativa do plano F1, 13 tabelas 3FN, 211 testes e governança do Azure DevOps.
+- [x] `README.md` atualizado com links ativos (`app-zelafix`, `app-zelafix-worker`, Swagger UI, Actuator Health, OpenAPI), justificativa do plano F1, 13 tabelas 3FN, 211 testes e governança do Azure DevOps.
 - [x] Payloads JSON de exemplo atualizados para `POST /login`, `POST/GET/PUT/DELETE /usuarios` e `POST/GET/PUT/DELETE /chamados` (`multipart/form-data` com `DeferredResult` e `/apoiar`).
 
 ---

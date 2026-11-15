@@ -37,11 +37,11 @@
 
 | Componente | Descrição | Link |
 | :--- | :--- | :--- |
-| 🌐 **API REST Java (Azure Web App)** | Gateway Spring Boot (`zelafix-api`) com JWT RSA, `DeferredResult` e Oracle 19c | https://app-zelafix-561432.azurewebsites.net |
-| ⚙️ **Worker IA em Produção (Azure Web App)** | Worker stateless (`zelafix-worker`) com RabbitMQ e Spring AI (LLM Multimodal + Tool Calling) | https://app-zelafix-worker-561432.azurewebsites.net |
+| 🌐 **API REST Java (Azure Web App)** | Gateway Spring Boot (`zelafix-api`) com JWT RSA, `DeferredResult` e Oracle 19c | https://app-zelafix.azurewebsites.net |
+| ⚙️ **Worker IA em Produção (Azure Web App)** | Worker stateless (`zelafix-worker`) com RabbitMQ e Spring AI (LLM Multimodal + Tool Calling) | https://app-zelafix-worker.azurewebsites.net |
 | 🤖 **ZelaBot AI (Render Cloud)** | Microsserviço FastAPI com RAG ChromaDB (31 chunks PMSP), SQLite WAL e Oracle Thin Client | https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com/ |
-| 📖 **Swagger UI Interativo (OpenAPI 3.0)** | Documentação de endpoints (`Autenticação`, `Usuarios`, `Chamados`, `Endereco`) | https://app-zelafix-561432.azurewebsites.net/swagger-ui.html |
-| 🩺 **Actuator Health (API & Worker)** | Healthcheck em tempo real (Oracle + CloudAMQP + Liveness/Readiness) | https://app-zelafix-561432.azurewebsites.net/actuator/health |
+| 📖 **Swagger UI Interativo (OpenAPI 3.0)** | Documentação de endpoints (`Autenticação`, `Usuarios`, `Chamados`, `Endereco`) | https://app-zelafix.azurewebsites.net/swagger-ui.html |
+| 🩺 **Actuator Health (API & Worker)** | Healthcheck em tempo real (Oracle + CloudAMQP + Liveness/Readiness) | https://app-zelafix.azurewebsites.net/actuator/health |
 | 🚀 **Repositório DevOps & Cloud** | IaC Azure CLI, Dockerfiles multi-stage, `azure-pipelines.yml` (211 testes) e DDL Oracle | https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing |
 
 ---
@@ -189,7 +189,7 @@ python run_sync.py --full
 
 A coleção oficial de testes de API está disponível em [`postman/CitizenTech_QA_Automation.postman_collection.json`](./postman/CitizenTech_QA_Automation.postman_collection.json) acompanhada do ambiente [`postman/CitizenTech_QA_Environment.postman_environment.json`](./postman/CitizenTech_QA_Environment.postman_environment.json):
 
-- **Escopo:** **6 pastas**, **57 requests** e **57 scripts de asserção `pm.test()`** com **25 variáveis de ambiente** (suportando ambiente Local `http://localhost:8080` / `8081` e Cloud Azure `https://app-zelafix-561432.azurewebsites.net` / `https://app-zelafix-worker-561432.azurewebsites.net`).
+- **Escopo:** **6 pastas**, **57 requests** e **57 scripts de asserção `pm.test()`** com **25 variáveis de ambiente** (suportando ambiente Local `http://localhost:8080` / `8081` e Cloud Azure `https://app-zelafix.azurewebsites.net` / `https://app-zelafix-worker.azurewebsites.net`).
 - **Pastas da Coleção:**
   1. `01. Observabilidade, Actuator & OpenAPI` (**4 requests**): `/actuator/health` (API e Worker), `/actuator/info` e `/v3/api-docs`.
   2. `02. Autenticação & RBAC` (**9 requests**): `POST /login` para `ADMIN`, `GESTOR` e `CIDADAO` (seeds Flyway V2/V3), rejeições `401`/`400` (`erros[]`) e bloqueio `403` em `/actuator/metrics` para `CIDADAO`.
