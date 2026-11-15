@@ -1335,7 +1335,7 @@
     },
     {
       "name": "05. Chamados, Triagem IA (DeferredResult) & Apoio",
-      "description": "Fluxo completo de zeladoria: POST /chamados via multipart/form-data com processamento assíncrono RabbitMQ + Gemini Vision (DeferredResult até 60s), recusa IA sem persistência (400), filtros dinâmicos, GET /chamados/{id}/foto público, PUT /chamados/{id}, PATCH /chamados/{id}/status (observacao singular), POST /chamados/{id}/apoiar e GET /chamados/estatisticas.",
+      "description": "Fluxo completo de zeladoria: POST /chamados via multipart/form-data com processamento assíncrono RabbitMQ + LLM Multimodal (DeferredResult até 60s), recusa IA sem persistência (400), filtros dinâmicos, GET /chamados/{id}/foto público, PUT /chamados/{id}, PATCH /chamados/{id}/status (observacao singular), POST /chamados/{id}/apoiar e GET /chamados/estatisticas.",
       "item": [
         {
           "name": "05.1 Abrir Chamado via Multipart + Triagem IA (POST /chamados -> 201)",

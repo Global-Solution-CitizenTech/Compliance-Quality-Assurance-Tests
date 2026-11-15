@@ -13,7 +13,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
-> **Diretrizes Estratégicas:** Infraestrutura em nuvem **Microsoft Azure** provisionada de forma declarativa e idempotente via **Azure CLI** (`scripts/script-provisionamento.sh`) utilizando App Service Plan Linux `F1` Free Tier compartilhado para API REST (`app-zelafix-561432`, porta `8080`) e Worker Assíncrono (`app-zelafix-worker-561432`, porta `8081`), **Azure AI Foundry** (`ai-zelafix-561432` com LLM Multimodal via `AI_MODEL`), mensageria TLS via **CloudAMQP** (`RABBITMQ_URI`), banco **Oracle 19c** (`scripts/script-bd.sql` com 13 tabelas 3FN + `auditoria_dml_chamado`), **Dockerfiles multi-stage** non-root e esteira CI/CD multi-service no **Azure Pipelines** (`azure-pipelines.yml`) executando **211 testes automatizados JUnit 5**.
+> **Diretrizes Estratégicas:** Infraestrutura em nuvem **Microsoft Azure** provisionada de forma declarativa e idempotente via **Azure CLI** (`scripts/script-provisionamento.sh`) utilizando App Service Plan Linux `F1` Free Tier compartilhado para API REST (`app-zelafix-561432`, porta `8080`) e Worker Assíncrono (`app-zelafix-worker-561432`, porta `8081`), **Provedor de LLM Multimodal** (via `AI_MODEL`), mensageria TLS via **CloudAMQP** (`RABBITMQ_URI`), banco **Oracle 19c** (`scripts/script-bd.sql` com 13 tabelas 3FN + `auditoria_dml_chamado`), **Dockerfiles multi-stage** non-root e esteira CI/CD multi-service no **Azure Pipelines** (`azure-pipelines.yml`) executando **211 testes automatizados JUnit 5**.
 
 ---
 
@@ -38,8 +38,8 @@
 │   ├── 🔹 [PBI-01] Criação de Dockerfiles Multi-Stage Seguros e Otimizados (API e Worker) [AB#50] (3 pts)
 │   └── 🔹 [PBI-02] Integração da Mensageria RabbitMQ Online via CloudAMQP (TLS AMQPS) [AB#51] (3 pts)
 │
-├── 🏆 [FEATURE 02] Infraestrutura como Código (IaC), Azure AI Foundry, Banco Oracle 19c e DevSecOps [AB#52]
-│   ├── 🔹 [PBI-03] Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Azure AI Foundry Multimodal) [AB#53] (5 pts)
+├── 🏆 [FEATURE 02] Infraestrutura como Código (IaC), Serviços de IA Multimodal, Banco Oracle 19c e DevSecOps [AB#52]
+│   ├── 🔹 [PBI-03] Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Serviços de IA Multimodal) [AB#53] (5 pts)
 │   ├── 🔹 [PBI-04] DevSecOps: Isolamento de Variáveis Sensíveis (.env/AppSettings) e Limpeza de Hardcodes [AB#54] (3 pts)
 │   └── 🔹 [PBI-05] Script DDL Oracle 19c em Nuvem (13 Tabelas 3FN, Auditoria DML e Alinhamento Flyway) [AB#191] (3 pts)
 │
@@ -56,12 +56,12 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Feature 01** `[AB#49]` | **PBI-01** | Criação de Dockerfiles Multi-Stage Seguros e Otimizados (API e Worker) | **#50** | 3 pts | 1 - Critical | 100 | 2 | Done |
 | | **PBI-02** | Integração da Mensageria RabbitMQ Online via CloudAMQP (TLS AMQPS) | **#51** | 3 pts | 1 - Critical | 100 | 3 | Done |
-| **Feature 02** `[AB#52]` | **PBI-03** | Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Azure AI Foundry Multimodal) | **#53** | 5 pts | 1 - Critical | 100 | 4 | Done |
+| **Feature 02** `[AB#52]` | **PBI-03** | Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Serviços de IA Multimodal) | **#53** | 5 pts | 1 - Critical | 100 | 4 | Done |
 | | **PBI-04** | DevSecOps: Isolamento de Variáveis Sensíveis (`.env`/AppSettings) e Limpeza de Hardcodes | **#54** | 3 pts | 1 - Critical | 100 | 3 | Done |
 | | **PBI-05** | Script DDL Oracle 19c em Nuvem (13 Tabelas 3FN, Auditoria DML e Alinhamento Flyway) | **#191** | 3 pts | 1 - Critical | 100 | 1 | Done |
 | **Feature 03** `[AB#55]` | **PBI-06** | Esteira CI/CD Multi-Service no Azure Pipelines (Build Gradle, 211 Testes JUnit e Deploy API + Worker) | **#56** | 5 pts | 1 - Critical | 100 | 2 | Done |
 | | **PBI-07** | Diagrama Arquitetural Draw.io, Documentação Operacional (`README.md`) e Contratos de Entrega | **#57** | 3 pts | 2 - High | 80 | 6 | Done |
-| **TOTAL CONSOLIDADO** | **3 Features** | **7 PBIs (11 Work Items no Azure Boards)** | **`#48`..`#57`, `#191`** | **25 pts** | — | — | **21 commits** | **100% Sincronizado** |
+| **TOTAL CONSOLIDADO** | **3 Features** | **7 PBIs (11 Work Items no Azure Boards)** | **`#48`..`#57`, `#191`** | **25 pts** | — | — | **22 commits** | **100% Sincronizado** |
 
 ---
 
@@ -83,11 +83,11 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `25`
 * **Business Value:** `100`
-* **Description:** Implementação completa da cultura DevOps, Infraestrutura como Código (IaC) e arquitetura em nuvem Microsoft Azure para o ecossistema ZelaFix, contemplando Dockerfiles multi-stage non-root para Java 21 (`dockerfiles/Dockerfile.api` e `dockerfiles/Dockerfile.worker`), mensageria TLS gerenciada via CloudAMQP (`RABBITMQ_URI`), provisionamento idempotente via Azure CLI (`scripts/script-provisionamento.sh`) incluindo App Service Plan Linux F1, Web Apps (API + Worker) e Azure AI Foundry Multimodal, DDL Oracle 19c em 3FN (`scripts/script-bd.sql`), isolamento DevSecOps de credenciais e esteira CI/CD multi-service no Azure Pipelines (`azure-pipelines.yml`) com 211 testes JUnit 5.
+* **Description:** Implementação completa da cultura DevOps, Infraestrutura como Código (IaC) e arquitetura em nuvem Microsoft Azure para o ecossistema ZelaFix, contemplando Dockerfiles multi-stage non-root para Java 21 (`dockerfiles/Dockerfile.api` e `dockerfiles/Dockerfile.worker`), mensageria TLS gerenciada via CloudAMQP (`RABBITMQ_URI`), provisionamento idempotente via Azure CLI (`scripts/script-provisionamento.sh`) incluindo App Service Plan Linux F1, Web Apps (API + Worker) e Serviços de IA Multimodal, DDL Oracle 19c em 3FN (`scripts/script-bd.sql`), isolamento DevSecOps de credenciais e esteira CI/CD multi-service no Azure Pipelines (`azure-pipelines.yml`) com 211 testes JUnit 5.
 * **Acceptance Criteria:**
   - [x] Dockerfiles multi-stage (`Dockerfile.api` e `Dockerfile.worker`) utilizando `gradle:8.10-jdk21-alpine` + `eclipse-temurin:21-jre-alpine`, usuário não-root (`appuser`) e geração de chaves RSA 2048-bit.
   - [x] Mensageria CloudAMQP (`amqps://`) configurada via `SPRING_RABBITMQ_ADDRESSES` com desacoplamento total entre Worker e Oracle DB.
-  - [x] Script IaC `scripts/script-provisionamento.sh` idempotente provisionando `rg-zelafix`, `asp-zelafix` (F1 Linux), Web Apps `app-zelafix-561432` e `app-zelafix-worker-561432` e Azure AI Foundry `ai-zelafix-561432` (deployment multimodal).
+  - [x] Script IaC `scripts/script-provisionamento.sh` idempotente provisionando `rg-zelafix`, `asp-zelafix` (F1 Linux), Web Apps `app-zelafix-561432` e `app-zelafix-worker-561432` e Serviços de IA Multimodal (deployment multimodal).
   - [x] Script DDL `scripts/script-bd.sql` alinhado às 13 tabelas 3FN + `auditoria_dml_chamado` no Oracle 19c e migrations Flyway (`V1`, `V2`, `V3`).
   - [x] Esteira CI/CD `azure-pipelines.yml` executando build Gradle multi-project, 211 testes JUnit 5 (`181` API + `30` Worker) e deploy contínuo nos dois Azure Web Apps, documentada com diagrama Draw.io.
 
@@ -167,16 +167,16 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Variável `RABBITMQ_URI` (`amqps://USER:SENHA@HOST/VHOST`) injetada como `SPRING_RABBITMQ_ADDRESSES` nos App Settings da API e do Worker e na esteira CI.
 - [x] Remoção do provisionamento legado de Azure Container Instances (ACI) no script IaC e alinhamento de health check resiliente do RabbitMQ no Worker.
-- [x] Garantia arquitetural de que o Worker permanece 100% desacoplado do banco Oracle, comunicando-se apenas via CloudAMQP e Azure AI Foundry.
+- [x] Garantia arquitetural de que o Worker permanece 100% desacoplado do banco Oracle, comunicando-se apenas via CloudAMQP e Provedor de LLM Multimodal.
 
 ---
 
-### 🏆 [FEATURE 02] Infraestrutura como Código (IaC), Azure AI Foundry, Banco Oracle 19c e DevSecOps
+### 🏆 [FEATURE 02] Infraestrutura como Código (IaC), Serviços de IA Multimodal, Banco Oracle 19c e DevSecOps
 
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#52`
 * **Parent:** `[EPIC] DevOps Tools & Cloud Computing: Infraestrutura em Nuvem Azure, Containerização Docker e Esteira de CI/CD` (`#48`)
-* **Title:** `[FEATURE 02] Infraestrutura como Código (IaC), Azure AI Foundry, Banco Oracle 19c e DevSecOps`
+* **Title:** `[FEATURE 02] Infraestrutura como Código (IaC), Serviços de IA Multimodal, Banco Oracle 19c e DevSecOps`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DevOps`
@@ -186,20 +186,20 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `11`
 * **Business Value:** `100`
-* **Description:** Provisionamento declarativo e idempotente da infraestrutura em nuvem no Microsoft Azure via Azure CLI (`scripts/script-provisionamento.sh`), incluindo Resource Group `rg-zelafix`, App Service Plan Linux `F1`, Web Apps Java 21 (API e Worker), serviço cognitivo Azure AI Foundry Multimodal, governança DevSecOps de segredos e script DDL oficial Oracle 19c (`scripts/script-bd.sql`).
+* **Description:** Provisionamento declarativo e idempotente da infraestrutura em nuvem no Microsoft Azure via Azure CLI (`scripts/script-provisionamento.sh`), incluindo Resource Group `rg-zelafix`, App Service Plan Linux `F1`, Web Apps Java 21 (API e Worker), serviço cognitivo de IA Multimodal, governança DevSecOps de segredos e script DDL oficial Oracle 19c (`scripts/script-bd.sql`).
 * **Acceptance Criteria:**
-  - [x] Script `scripts/script-provisionamento.sh` idempotente (com suporte a `--clean`) criando Resource Group, Plan `F1`, Azure AI Foundry (AIServices S0 com deployment multimodal) e dois Web Apps Linux Java 21.
+  - [x] Script `scripts/script-provisionamento.sh` idempotente (com suporte a `--clean`) criando Resource Group, Plan `F1`, Serviço cognitivo (AIServices S0 com deployment multimodal) e dois Web Apps Linux Java 21.
   - [x] Segredos isolados em `.env` (protegido via `.gitignore`), `.env.example` documentado e App Settings injetados sem credenciais ou URLs hardcoded no repositório.
   - [x] Script `scripts/script-bd.sql` contendo DDL completo Oracle 19c com 13 tabelas em 3FN + `auditoria_dml_chamado` alinhado ao Flyway.
 
 ---
 
-#### 🔹 [PBI-03] Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Azure AI Foundry Multimodal)
+#### 🔹 [PBI-03] Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Serviços de IA Multimodal)
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#53`
-* **Parent Feature:** `[FEATURE 02] Infraestrutura como Código (IaC), Azure AI Foundry, Banco Oracle 19c e DevSecOps` (`#52`)
-* **Title:** `[PBI-03] Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Azure AI Foundry Multimodal)`
+* **Parent Feature:** `[FEATURE 02] Infraestrutura como Código (IaC), Serviços de IA Multimodal, Banco Oracle 19c e DevSecOps` (`#52`)
+* **Title:** `[PBI-03] Provisionamento IaC via Azure CLI (App Service Plan F1, Web Apps e Serviços de IA Multimodal)`
 * **State:** `Done`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DevOps`
@@ -211,13 +211,13 @@
 
 ##### Descrição (História de Usuário)
 > **Como** arquiteto de nuvem,  
-> **Eu quero** automatizar o provisionamento do Resource Group, App Service Plan Linux F1, Azure Web Apps (API e Worker) e Azure AI Foundry (deployment do modelo multimodal via variáveis de ambiente) via Azure CLI em `scripts/script-provisionamento.sh`,  
+> **Eu quero** automatizar o provisionamento do Resource Group, App Service Plan Linux F1, Azure Web Apps (API e Worker) e serviço de IA multimodal (deployment do modelo multimodal via variáveis de ambiente) via Azure CLI em `scripts/script-provisionamento.sh`,  
 > **Para que** toda a infraestrutura da solução seja reproduzível, idempotente, otimizada em memória e a custo zero no Free Tier.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Criação idempotente de `rg-zelafix` (`eastus`), plano Linux `asp-zelafix` (`SKU F1`) e flag opcional `--clean` para reconstrução limpa.
 - [x] Provisionamento dos Web Apps `app-zelafix-561432` (API porta `8080`) e `app-zelafix-worker-561432` (Worker porta `8081`) com runtime `JAVA|21-java21`, startup commands customizados e `JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"`.
-- [x] Provisionamento do Azure AI Foundry (`ai-zelafix-561432`, kind `AIServices`, SKU `S0`) e deployment do modelo multimodal configurados via Azure CLI idempotente, obtendo `AI_API_KEY` dinamicamente.
+- [x] Provisionamento do serviço de IA (kind `AIServices`, SKU `S0`) e deployment do modelo multimodal configurados via Azure CLI idempotente, obtendo `AI_API_KEY` dinamicamente.
 
 ---
 
@@ -225,7 +225,7 @@
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#54`
-* **Parent Feature:** `[FEATURE 02] Infraestrutura como Código (IaC), Azure AI Foundry, Banco Oracle 19c e DevSecOps` (`#52`)
+* **Parent Feature:** `[FEATURE 02] Infraestrutura como Código (IaC), Serviços de IA Multimodal, Banco Oracle 19c e DevSecOps` (`#52`)
 * **Title:** `[PBI-04] DevSecOps: Isolamento de Variáveis Sensíveis (.env/AppSettings) e Limpeza de Hardcodes`
 * **State:** `Done`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -238,13 +238,13 @@
 
 ##### Descrição (História de Usuário)
 > **Como** especialista em DevSecOps,  
-> **Eu quero** isolar todas as credenciais (Oracle FIAP, CloudAMQP e Azure AI Foundry) em arquivos `.env` ignorados pelo Git, documentar o contrato em `.env.example` e limpar variáveis obsoletas ou URLs hardcoded,  
+> **Eu quero** isolar todas as credenciais (Oracle FIAP, CloudAMQP e Provedor de IA) em arquivos `.env` ignorados pelo Git, documentar o contrato em `.env.example` e limpar variáveis obsoletas ou URLs hardcoded,  
 > **Para que** nenhum segredo ou parâmetro redundante seja exposto no repositório público e os Application Settings dos Web Apps reflitam apenas a configuração ativa.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `.gitignore` bloqueando `.env` e `.env.example` fornecendo template completo para Azure, Oracle (`ORACLE_URL`, `ORACLE_USER`, `ORACLE_PASSWORD`), `RABBITMQ_URI` e Azure AI Foundry (`AI_ACCOUNT_NAME`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`).
+- [x] `.gitignore` bloqueando `.env` e `.env.example` fornecendo template completo para Azure, Oracle (`ORACLE_URL`, `ORACLE_USER`, `ORACLE_PASSWORD`), `RABBITMQ_URI` e Provedor de IA (`AI_ACCOUNT_NAME`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`).
 - [x] Injeção automatizada das configurações seguras via `az webapp config appsettings set` na API e no Worker, validando presença obrigatória de `RABBITMQ_URI`.
-- [x] Limpeza de variáveis obsoletas (`FLYWAY_ENABLED`, `JPA_DDL_AUTO`, `PORT`, `WORKER_PORT`, `WORKER_URL`, `RABBITMQ_CONCURRENCY`) e remoção de URL hardcoded do Azure AI em `.env.example`, `azure-pipelines.yml` e `scripts/script-provisionamento.sh`.
+- [x] Limpeza de variáveis obsoletas (`FLYWAY_ENABLED`, `JPA_DDL_AUTO`, `PORT`, `WORKER_PORT`, `WORKER_URL`, `RABBITMQ_CONCURRENCY`) e remoção de URL hardcoded da API de IA em `.env.example`, `azure-pipelines.yml` e `scripts/script-provisionamento.sh`.
 
 ---
 
@@ -252,7 +252,7 @@
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#191`
-* **Parent Feature:** `[FEATURE 02] Infraestrutura como Código (IaC), Azure AI Foundry, Banco Oracle 19c e DevSecOps` (`#52`)
+* **Parent Feature:** `[FEATURE 02] Infraestrutura como Código (IaC), Serviços de IA Multimodal, Banco Oracle 19c e DevSecOps` (`#52`)
 * **Title:** `[PBI-05] Script DDL Oracle 19c em Nuvem (13 Tabelas 3FN, Auditoria DML e Alinhamento Flyway)`
 * **State:** `Done`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -338,7 +338,7 @@
 * **Priority:** `2 - High`
 * **Effort (Story Points):** `3`
 * **Business Value:** `80`
-* **Commits Vinculados:** `3924462`, `e45cb07`, `cc4081b`, `5c22825`, `d70063b`, `0c7ff10`
+* **Commits Vinculados:** `3924462`, `e45cb07`, `cc4081b`, `5c22825`, `d70063b`, `0c7ff10`, `0bb681e`
 
 ##### Descrição (História de Usuário)
 > **Como** avaliador da FIAP e mantenedor do projeto,  
@@ -346,7 +346,7 @@
 > **Para que** toda a arquitetura em nuvem Azure, as 10 etapas da esteira CI/CD, o modelo de dados e os endpoints possam ser auditados e homologados com clareza.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Diagrama `docs/gs2-zelafix-diagrama.drawio` e imagem renderizada `docs/gs2-zelafix-diagrama.png` incorporada no `README.md` retratando GitHub Actions, Azure Repos, Azure Pipelines, CloudAMQP TLS, Oracle 19c e Azure AI Foundry (`AI_MODEL` Multimodal).
+- [x] Diagrama `docs/gs2-zelafix-diagrama.drawio` e imagem renderizada `docs/gs2-zelafix-diagrama.png` incorporada no `README.md` retratando GitHub Actions, Azure Repos, Azure Pipelines, CloudAMQP TLS, Oracle 19c e Provedor de LLM Multimodal (`AI_MODEL`).
 - [x] `README.md` atualizado com links ativos (`app-zelafix-561432`, `app-zelafix-worker-561432`, Swagger UI, Actuator Health, OpenAPI), justificativa do plano F1, 13 tabelas 3FN, 211 testes e governança do Azure DevOps.
 - [x] Payloads JSON de exemplo atualizados para `POST /login`, `POST/GET/PUT/DELETE /usuarios` e `POST/GET/PUT/DELETE /chamados` (`multipart/form-data` com `DeferredResult` e `/apoiar`).
 
@@ -365,15 +365,16 @@
 | [`4385ad2`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/4385ad2) | 2026-11-11 | `chore(devops): script de provisionamento apenas em /scripts, Flyway habilitado e ACI opcional` | **PBI-03** (`#53`) |
 | [`7a7355f`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/7a7355f) | 2026-11-11 | `chore(devops): CloudAMQP via RABBITMQ_URI, remove ACI do provisionamento` | **PBI-02** (`#51`) |
 | [`83c015e`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/83c015e) | 2026-11-11 | `chore(devops): alinhar JPA_DDL_AUTO=none e remover restos locais` | **PBI-02** (`#51`) |
-| [`52c0476`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/52c0476) | 2026-11-11 | `fix(ci): passar GROQ_BASE_URL com /v1 na esteira de build` | **PBI-06** (`#56`) |
-| [`f6dfa88`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/f6dfa88) | 2026-11-11 | `fix(ci): evitar rate limit Groq 429 nos testes unitários da esteira` | **PBI-06** (`#56`) |
+| [`52c0476`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/52c0476) | 2026-11-11 | `fix(ci): passar AI_BASE_URL com /v1 na esteira de build` | **PBI-06** (`#56`) |
+| [`f6dfa88`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/f6dfa88) | 2026-11-11 | `fix(ci): evitar rate limit 429 de IA nos testes unitários da esteira` | **PBI-06** (`#56`) |
 | [`e45cb07`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/e45cb07) | 2026-11-12 | `docs: atualizar README com arquitetura multi-service, CloudAMQP, Dockerfiles e CI/CD` | **PBI-07** (`#57`) |
-| [`cc4081b`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/cc4081b) | 2026-11-12 | `docs: padronizar status de chamados e modelo Qwen 3.8 27B Vision no README e diagramas` | **PBI-07** (`#57`) |
+| [`cc4081b`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/cc4081b) | 2026-11-12 | `docs: padronizar status de chamados e modelo LLM Multimodal Vision no README e diagramas` | **PBI-07** (`#57`) |
 | [`5c22825`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/5c22825) | 2026-11-12 | `docs: substituir diagrama ascii pela imagem renderizada do Draw.io no README` | **PBI-07** (`#57`) |
 | [`7bc8cbd`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/7bc8cbd) | 2026-11-12 | `refactor(docker): atualizar Dockerfile.api e Dockerfile.worker para multi-stage build profissional idêntico ao repositório Java` | **PBI-01** (`#50`) |
 | [`4f8f830`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/4f8f830) | 2026-11-12 | `feat: atualizando script provisionamento` | **PBI-03** (`#53`) |
-| [`ee58679`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/ee58679) | 2026-11-13 | `chore(devops): atualizar scripts, diagrama e README para Azure AI Foundry` | **PBI-03** (`#53`) |
-| [`e0ff9ac`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/e0ff9ac) | 2026-11-14 | `chore(devops): limpar variaveis obsoletas e remover URL hardcoded do Azure AI` | **PBI-04** (`#54`) |
+| [`ee58679`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/ee58679) | 2026-11-13 | `chore(devops): atualizar scripts, diagrama e README para servicos de IA multimodal` | **PBI-03** (`#53`) |
+| [`e0ff9ac`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/e0ff9ac) | 2026-11-14 | `chore(devops): limpar variaveis obsoletas e remover URL hardcoded da API de IA` | **PBI-04** (`#54`) |
 | [`d70063b`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/d70063b) | 2026-11-14 | `docs(devops): atualizar README com 13 tabelas, 211 testes e contratos atuais` | **PBI-07** (`#57`) |
 | [`d9c87a6`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/d9c87a6) | 2026-11-14 | `feat: atualizando script banco` | **PBI-05** (`#191`) |
 | [`0c7ff10`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/0c7ff10) | 2026-11-15 | `docs: generalizar especificacoes e variaveis do modelo de IA no README e env.example` | **PBI-07** (`#57`) |
+| [`0bb681e`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/0bb681e) | 2026-11-15 | `docs(devops): generalizar servicos de IA e desvincular modelos especificos de IaC e diagramas` | **PBI-07** (`#57`) |

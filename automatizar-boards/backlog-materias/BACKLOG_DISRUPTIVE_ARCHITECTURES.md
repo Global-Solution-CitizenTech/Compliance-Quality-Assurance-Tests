@@ -8,11 +8,11 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`  
 > **Tag Oficial:** `DisruptiveArchitectures`  
 > **Responsible Owner:** `RM561432@fiap.com.br` (Enzo Okuizumi)  
-> **Epic Principal:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (**AB#58**)  
+> **Epic Principal:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (**AB#58**)  
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
-> **Diretrizes Estratégicas:** Microsserviço em Python (FastAPI) publicado no Render Cloud integrando **Azure AI Foundry** (Modelo Multimodal dinâmico via `AI_MODEL` e Embeddings 1536D via `AI_EMBEDDING_MODEL`), **RAG Normativo PMSP** no **ChromaDB** (31 chunks em 8 módulos), histórico multi-turno em **SQLite WAL**, leitura em tempo real no **Oracle FIAP** (modo Thin somente `SELECT`) via **Tool Calling ReAct nativo**, análise visual computacional Base64 e priorização por engajamento comunitário **IoB (+1)** com guardrails LGPD.
+> **Diretrizes Estratégicas:** Microsserviço em Python (FastAPI) publicado no Render Cloud integrando **Provedor de LLM Multimodal** (Modelo Multimodal dinâmico via `AI_MODEL` e Embeddings 1536D via `AI_EMBEDDING_MODEL`), **RAG Normativo PMSP** no **ChromaDB** (31 chunks em 8 módulos), histórico multi-turno em **SQLite WAL**, leitura em tempo real no **Oracle FIAP** (modo Thin somente `SELECT`) via **Tool Calling ReAct nativo**, análise visual computacional Base64 e priorização por engajamento comunitário **IoB (+1)** com guardrails LGPD.
 
 ---
 
@@ -31,15 +31,15 @@
 ## 🌳 1. Estrutura Hierárquica no Azure Boards
 
 ```text
-📌 [EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional) [AB#58]
+📌 [EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional) [AB#58]
 │
 ├── 🏆 [FEATURE 01] Arquitetura FastAPI, Base Normativa PMSP e Persistência Vetorial/SQLite [AB#59]
 │   ├── 🔹 [PBI-01] Estrutura Modular FastAPI, Schemas Pydantic v2, Health Checks e Deploy em Nuvem Render [AB#60] (3 pts)
 │   ├── 🔹 [PBI-02] Base Normativa PMSP (31 Chunks em 8 Módulos), ChromaDB HNSW e Persistência Multi-turno SQLite WAL [AB#61] (5 pts)
 │   └── 🔹 [PBI-03] Recuperação Híbrida (Embeddings Vetoriais 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões [AB#186] (3 pts)
 │
-├── 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana [AB#62]
-│   ├── 🔹 [PBI-04] Pipeline Generativo Dinâmico em Azure AI Foundry Único e sem Fallbacks [AB#63] (5 pts)
+├── 🏆 [FEATURE 02] Motor Cognitivo LLM Multimodal, ZelaBot e Visão Computacional Urbana [AB#62]
+│   ├── 🔹 [PBI-04] Pipeline Generativo Dinâmico com LLM Multimodal Único e sem Fallbacks [AB#63] (5 pts)
 │   ├── 🔹 [PBI-05] Chat Cidadão ZelaBot (POST /ai/chat) com JSON Estruturado, IoB e Guardrails LGPD [AB#64] (5 pts)
 │   └── 🔹 [PBI-06] Laudo Técnico de Triagem (POST /ai/triagem), Visão Computacional Multimodal e Insights por Bairro [AB#187] (3 pts)
 │
@@ -61,14 +61,14 @@
 | **Feature 01** `[AB#59]` | **PBI-01** | Estrutura Modular FastAPI, Schemas Pydantic v2, Health Checks e Deploy em Nuvem Render | **#60** | 3 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-02** | Base Normativa PMSP (31 Chunks em 8 Módulos), ChromaDB HNSW e Persistência Multi-turno SQLite WAL | **#61** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-03** | Recuperação Híbrida (Embeddings Vetoriais 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões | **#186** | 3 pts | 1 - Critical | 100 | 1 | Committed |
-| **Feature 02** `[AB#62]` | **PBI-04** | Pipeline Generativo Dinâmico em Azure AI Foundry Único e sem Fallbacks | **#63** | 5 pts | 1 - Critical | 100 | 5 | Committed |
+| **Feature 02** `[AB#62]` | **PBI-04** | Pipeline Generativo Dinâmico com LLM Multimodal Único e sem Fallbacks | **#63** | 5 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-05** | Chat Cidadão ZelaBot (`POST /ai/chat`) com JSON Estruturado, IoB e Guardrails LGPD | **#64** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-06** | Laudo Técnico de Triagem (`POST /ai/triagem`), Visão Computacional Multimodal e Insights por Bairro | **#187** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | **Feature 03** `[AB#65]` | **PBI-07** | Cliente Oracle `oracledb` Modo Thin (`SELECT` em `CHAMADOS`/`CATEGORIAS`/`APOIADORES`), BLOB e Segurança de Credenciais | **#66** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-08** | Tool Calling Nativo ReAct (`consultar_chamados_oracle` e `calcular_prazo_sla`) e Endpoints `/ai/chamados` | **#188** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | **Feature 04** `[AB#185]` | **PBI-09** | Suítes Automatizadas (`test_knowledge_coverage`, `test_zelafix_scenarios`) e Homologação E2E | **#189** | 5 pts | 2 - High | 80 | 6 | Committed |
-| | **PBI-10** | Especificação `AGENT.md`, Documentação `README.md` com Diagramas ASCII, URLs de Produção e Manifesto | **#190** | 3 pts | 2 - High | 80 | 7 | Committed |
-| **TOTAL CONSOLIDADO** | **4 Features** | **10 PBIs (15 Work Items no Azure Boards)** | **`#58`..`#66`, `#185`..`#190`** | **40 pts** | — | — | **36 commits** | **100% Sincronizado** |
+| | **PBI-10** | Especificação `AGENT.md`, Documentação `README.md` com Diagramas ASCII, URLs de Produção e Manifesto | **#190** | 3 pts | 2 - High | 80 | 8 | Committed |
+| **TOTAL CONSOLIDADO** | **4 Features** | **10 PBIs (15 Work Items no Azure Boards)** | **`#58`..`#66`, `#185`..`#190`** | **40 pts** | — | — | **37 commits** | **100% Sincronizado** |
 
 ---
 
@@ -80,7 +80,7 @@
 
 * **Work Item Type:** `Epic`
 * **Azure Boards ID:** `#58`
-* **Title:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)`
+* **Title:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional)`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DisruptiveArchitectures`
@@ -90,11 +90,11 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `40`
 * **Business Value:** `100`
-* **Description:** Desenvolvimento e refatoração do microsserviço inteligente **ZelaFix AI** (Python + FastAPI) integrado ao ecossistema CitizenTech, combinando **Azure AI Foundry** (LLM multimodal compatível OpenAI v1 via `AI_MODEL` e embeddings semânticos 1536D via `AI_EMBEDDING_MODEL`), banco vetorial **ChromaDB** com 31 chunks normativos municipais PMSP em 8 módulos, histórico multi-turno em **SQLite WAL**, consulta somente leitura ao **Oracle FIAP** via Tool Calling ReAct nativo e engajamento comunitário **IoB (+1)**, publicado em produção no Render Cloud.
+* **Description:** Desenvolvimento e refatoração do microsserviço inteligente **ZelaFix AI** (Python + FastAPI) integrado ao ecossistema CitizenTech, combinando **Provedor de LLM Multimodal** (compatível OpenAI v1 via `AI_MODEL` e embeddings semânticos 1536D via `AI_EMBEDDING_MODEL`), banco vetorial **ChromaDB** com 31 chunks normativos municipais PMSP em 8 módulos, histórico multi-turno em **SQLite WAL**, consulta somente leitura ao **Oracle FIAP** via Tool Calling ReAct nativo e engajamento comunitário **IoB (+1)**, publicado em produção no Render Cloud.
 * **Acceptance Criteria:**
   - [x] Microsserviço FastAPI modular em `deploy_zelafixai_render/` com entrypoint `main.py` e deploy em produção ativo no Render.
   - [x] Base normativa municipal PMSP indexada no ChromaDB (HNSW cosseno 1536D) com `AI_EMBEDDING_MODEL` e reranking híbrido lexical.
-  - [x] Motor cognitivo único em Azure AI Foundry via `AI_MODEL` sem modelos fallback legados, cobrindo `/ai/chat`, `/ai/triagem` (com visão Base64) e `/ai/insights`.
+  - [x] Motor cognitivo único via `AI_MODEL` sem modelos fallback legados, cobrindo `/ai/chat`, `/ai/triagem` (com visão Base64) e `/ai/insights`.
   - [x] Cliente Oracle FIAP em modo Thin (somente `SELECT`) com Tool Calling nativo ReAct e sanitização LGPD.
   - [x] Suíte automatizada de 49 verificações funcionais (RAG normativo e cenários E2E) aprovada com 100% de cobertura e proteção contra esgotamento de quota.
 
@@ -104,7 +104,7 @@
 
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#59`
-* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
+* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
 * **Title:** `[FEATURE 01] Arquitetura FastAPI, Base Normativa PMSP e Persistência Vetorial/SQLite`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -217,12 +217,12 @@
 
 ---
 
-### 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana
+### 🏆 [FEATURE 02] Motor Cognitivo LLM Multimodal, ZelaBot e Visão Computacional Urbana
 
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#62`
-* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
-* **Title:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana`
+* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
+* **Title:** `[FEATURE 02] Motor Cognitivo LLM Multimodal, ZelaBot e Visão Computacional Urbana`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DisruptiveArchitectures`
@@ -232,20 +232,20 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `13`
 * **Business Value:** `100`
-* **Description:** Orquestração de IA generativa exclusivamente no Azure AI Foundry utilizando modelo multimodal compatível OpenAI v1 via `AI_MODEL` para chat cidadão estruturado (`/ai/chat`), laudo técnico de triagem com visão computacional Base64 (`/ai/triagem`), diagnósticos preventivos por bairro (`/ai/insights`), sinais IoB (+1) e guardrails LGPD.
+* **Description:** Orquestração de IA generativa utilizando modelo multimodal compatível OpenAI v1 via `AI_MODEL` para chat cidadão estruturado (`/ai/chat`), laudo técnico de triagem com visão computacional Base64 (`/ai/triagem`), diagnósticos preventivos por bairro (`/ai/insights`), sinais IoB (+1) e guardrails LGPD.
 * **Acceptance Criteria:**
-  - [x] Integração direta ao Azure AI Foundry (`FoundryService`) utilizando modelo único multimodal via `AI_MODEL` e embeddings 1536D via `AI_EMBEDDING_MODEL`, sem fallback de provedores legados.
+  - [x] Integração direta ao Provedor de IA utilizando modelo único multimodal via `AI_MODEL` e embeddings 1536D via `AI_EMBEDDING_MODEL`, sem fallback de provedores legados.
   - [x] Chat ZelaBot em JSON estruturado com `resposta`, `categoria`, `urgencia` e `acoes_recomendadas` contextuais.
   - [x] Triagem multimodal de ocorrências com enquadramento legal PMSP, SLA, checklist operacional e validação visual de evidências em Base64.
 
 ---
 
-#### 🔹 [PBI-04] Pipeline Generativo Dinâmico em Azure AI Foundry Único e sem Fallbacks
+#### 🔹 [PBI-04] Pipeline Generativo Dinâmico com LLM Multimodal Único e sem Fallbacks
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#63`
-* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana` (`#62`)
-* **Title:** `[PBI-04] Pipeline Generativo Dinâmico em Azure AI Foundry Único e sem Fallbacks`
+* **Parent Feature:** `[FEATURE 02] Motor Cognitivo LLM Multimodal, ZelaBot e Visão Computacional Urbana` (`#62`)
+* **Title:** `[PBI-04] Pipeline Generativo Dinâmico com LLM Multimodal Único e sem Fallbacks`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DisruptiveArchitectures`
@@ -256,20 +256,20 @@
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de IA,  
-> **Eu quero** centralizar toda inferência generativa e geração de embeddings exclusivamente no Azure AI Foundry via `FoundryService` usando modelo multimodal dinâmico via `AI_MODEL` e embeddings via `AI_EMBEDDING_MODEL`,  
+> **Eu quero** centralizar toda inferência generativa e geração de embeddings no Provedor de IA usando modelo multimodal dinâmico via `AI_MODEL` e embeddings via `AI_EMBEDDING_MODEL`,  
 > **Para que** a plataforma opere com modelo único multimodal econômico, previsível e livre de complexidade de fallbacks legados.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Cliente unificado `FoundryService` via `OpenAI(base_url=AI_BASE_URL, api_key=AI_API_KEY)` suportando texto, visão Base64 e Tool Calling.
-- [x] Embeddings vetoriais de 1536 dimensões gerados via `AI_EMBEDDING_MODEL` via endpoint REST Foundry.
-- [x] Eliminação completa de provedores e modelos de fallback (Gemini, Groq, Qwen, Kimi e hash local 512D).
+- [x] Cliente unificado via `OpenAI(base_url=AI_BASE_URL, api_key=AI_API_KEY)` suportando texto, visão Base64 e Tool Calling.
+- [x] Embeddings vetoriais de 1536 dimensões gerados via `AI_EMBEDDING_MODEL` via endpoint REST padronizado.
+- [x] Eliminação completa de dependência de múltiplos provedores e modelos de fallback legados.
 
 ##### Commits vinculados (GitHub Repository):
-- [`6f3e57b`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/6f3e57b) — `feat(ai-core): implementacao de visao computacional, rag normativo, gemini genai, iot e iob` *(vinculado em AB#63)*
-- [`1c23ffd`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/1c23ffd) — `feat(api): implement multiprovider generative AI services (Groq/Gemini-3.5) and REST endpoints` *(vinculado em AB#63)*
-- [`ba95048`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/ba95048) — `feat(ai): migracao para Groq Multimodal Qwen 3.8 27B com visao computacional e remocao do Gemini` *(vinculado em AB#63)*
-- [`162c4a5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/162c4a5) — `refactor(foundry): replace Groq and local hash embeddings with Azure AI Foundry` *(vinculado em AB#63)*
-- [`e754b84`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e754b84) — `refactor(ai): atualizar modelo padrao para gpt-5-nano e aprimorar contingencia normativa` *(vinculado em AB#63)*
+- [`6f3e57b`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/6f3e57b) — `feat(ai-core): implementacao de visao computacional, rag normativo, motor generativo, iot e iob` *(vinculado em AB#63)*
+- [`1c23ffd`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/1c23ffd) — `feat(api): implement multiprovider generative AI services and REST endpoints` *(vinculado em AB#63)*
+- [`ba95048`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/ba95048) — `feat(ai): migracao para LLM Multimodal com visao computacional` *(vinculado em AB#63)*
+- [`162c4a5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/162c4a5) — `refactor(ia): unificar servico de inferencia e embeddings em nuvem` *(vinculado em AB#63)*
+- [`e754b84`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e754b84) — `refactor(ai): atualizar configuracao de modelo e aprimorar contingencia normativa` *(vinculado em AB#63)*
 
 ---
 
@@ -277,7 +277,7 @@
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#64`
-* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana` (`#62`)
+* **Parent Feature:** `[FEATURE 02] Motor Cognitivo LLM Multimodal, ZelaBot e Visão Computacional Urbana` (`#62`)
 * **Title:** `[PBI-05] Chat Cidadão ZelaBot (POST /ai/chat) com JSON Estruturado, IoB e Guardrails LGPD`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -309,7 +309,7 @@
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#187`
-* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana` (`#62`)
+* **Parent Feature:** `[FEATURE 02] Motor Cognitivo LLM Multimodal, ZelaBot e Visão Computacional Urbana` (`#62`)
 * **Title:** `[PBI-06] Laudo Técnico de Triagem (POST /ai/triagem), Visão Computacional Multimodal e Insights por Bairro`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -330,7 +330,7 @@
 - [x] `POST /ai/insights` consolidando diagnósticos e alertas preventivos comunitários por bairro via ODS 11.
 
 ##### Commits vinculados (GitHub Repository):
-- [`4102d6b`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/4102d6b) — `feat(ai,oracle): integrate Qwen JSON triage, IoT telemetry, read-only Oracle queries and session memory` *(vinculado em AB#187)*
+- [`4102d6b`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/4102d6b) — `feat(ai,oracle): integrate multimodal JSON triage, IoT telemetry, read-only Oracle queries and session memory` *(vinculado em AB#187)*
 
 ---
 
@@ -338,7 +338,7 @@
 
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#65`
-* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
+* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
 * **Title:** `[FEATURE 03] Integração Oracle FIAP Thin Client (Somente Leitura) e Tool Calling Nativo ReAct`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -404,7 +404,7 @@
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de agentes conversacionais,  
-> **Eu quero** equipar o ZelaBot com Tool Calling nativo ReAct no Foundry e expor endpoints REST de consulta e triagem direta de chamados do Oracle,  
+> **Eu quero** equipar o ZelaBot com Tool Calling nativo ReAct no Provedor de IA e expor endpoints REST de consulta e triagem direta de chamados do Oracle,  
 > **Para que** o modelo busque protocolos reais ou panoramas de bairro sob demanda e calcule prazos exatos de SLA no fuso de São Paulo.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
@@ -414,7 +414,7 @@
 
 ##### Commits vinculados (GitHub Repository):
 - [`aeceaf5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/aeceaf5) — `fix(oracle,qa): parse 'chamado numero X' in regex and validate real vision output in QA` *(vinculado em AB#188)*
-- [`7f651f4`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f651f4) — `refactor(oracle,chat): remove ViaCEP/regex bloat and use native Groq tool calling for Oracle queries` *(vinculado em AB#188)*
+- [`7f651f4`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f651f4) — `refactor(oracle,chat): remove ViaCEP/regex bloat and use native tool calling for Oracle queries` *(vinculado em AB#188)*
 
 ---
 
@@ -422,7 +422,7 @@
 
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#185`
-* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
+* **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (LLM Multimodal, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
 * **Title:** `[FEATURE 04] Garantia de Qualidade (49 Testes Automatizados), Homologação E2E e Documentação Técnica`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -433,11 +433,11 @@
 * **Priority:** `2 - High`
 * **Effort (Story Points):** `8`
 * **Business Value:** `80`
-* **Description:** Garantia de confiabilidade, segurança contra prompt injection, alinhamento normativo e rastreabilidade documental do microsserviço ZelaFix AI por meio de suítes automatizadas funcionais (49 testes), script de homologação E2E com Azure Foundry + Oracle e documentação arquitetural completa (`README.md`, `AGENT.md` e `ENTREGA_GS_2026_2.txt`).
+* **Description:** Garantia de confiabilidade, segurança contra prompt injection, alinhamento normativo e rastreabilidade documental do microsserviço ZelaFix AI por meio de suítes automatizadas funcionais (49 testes), script de homologação E2E com Provedor de IA + Oracle e documentação arquitetural completa (`README.md`, `AGENT.md` e `ENTREGA_GS_2026_2.txt`).
 * **Acceptance Criteria:**
   - [x] 49 testes automatizados aprovados cobrindo RAG (37) e cenários E2E (12) com eliminação de testes de sobrecarga destrutiva para preservação de cota de tokens (TPM/RPM).
   - [x] Roteiro de homologação `run_qa_demo.py` validando Oracle FIAP, Visão Computacional e ZelaBot em 10 cenários.
-  - [x] Documentação técnica atualizada com arquitetura Foundry, links de produção no Render e manifesto de entrega.
+  - [x] Documentação técnica atualizada com arquitetura de IA, links de produção no Render e manifesto de entrega.
 
 ---
 
@@ -471,7 +471,7 @@
 - [`c3d1489`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/c3d1489) — `test(qa): add comprehensive test suites for RAG coverage, scenarios and adversarial stress` *(vinculado em AB#189)*
 - [`d6022e5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/d6022e5) — `test(qa): implementacao do run_qa_demo com 10 cenarios de homologacao, delay e integracao Oracle/Visao` *(vinculado em AB#189)*
 - [`b54102e`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/b54102e) — `test,docs(qa): expand automated QA suites to 82 tests and sync README and AGENT docs` *(vinculado em AB#189)*
-- [`fb21647`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/fb21647) — `test(qa): align RAG, scenario, and stress suites with phi-4-multimodal and embed-v-4-0` *(vinculado em AB#189)*
+- [`fb21647`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/fb21647) — `test(qa): align RAG, scenario, and stress suites with multimodal LLM and 1536D embeddings` *(vinculado em AB#189)*
 - [`5b6a8a4`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/5b6a8a4) — `refactor(qa,docs): generalizar especificacao de modelo de IA e remover testes de estresse de alto consumo` *(vinculado em AB#189)*
 
 ---
@@ -493,11 +493,11 @@
 ##### Descrição (História de Usuário)
 > **Como** mantenedor do repositório e avaliador técnico,  
 > **Eu quero** dispor de documentação padronizada (`README.md`, `AGENT.md` e `ENTREGA_GS_2026_2.txt`) com diagramas ASCII, contratos de API e links ativos do Render,  
-> **Para que** qualquer desenvolvedor ou avaliador compreenda e teste imediatamente a arquitetura Foundry + RAG + Oracle do projeto.
+> **Para que** qualquer desenvolvedor ou avaliador compreenda e teste imediatamente a arquitetura RAG + IA Multimodal + Oracle do projeto.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `README.md` padronizado no padrão CitizenTech com URL de produção no Render, Swagger `/docs` e links de saúde/telemetria.
-- [x] `AGENT.md` especificando arquitetura Foundry agnóstica a modelo (via `AI_MODEL` e `AI_EMBEDDING_MODEL`), regras operacionais e estrutura de diretórios.
+- [x] `AGENT.md` especificando arquitetura de IA agnóstica a modelo (via `AI_MODEL` e `AI_EMBEDDING_MODEL`), regras operacionais e estrutura de diretórios.
 - [x] Manifesto formal `ENTREGA_GS_2026_2.txt` atualizado em sincronia com a entrega final da Global Solution.
 
 ##### Commits vinculados (GitHub Repository):
@@ -505,6 +505,7 @@
 - [`196ee22`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/196ee22) — `docs(architecture): adicao do AGENT.md e atualizacao do README.md com diagramas ASCII e especificacoes` *(vinculado em AB#190)*
 - [`c1735b5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/c1735b5) — `docs(readme): add live Render production URL, Swagger and telemetry links` *(vinculado em AB#190)*
 - [`efc0648`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/efc0648) — `docs(ai): padronizar README e remover secoes de edital` *(vinculado em AB#190)*
-- [`f3f9526`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/f3f9526) — `docs: update README and AGENT specs for Azure AI Foundry` *(vinculado em AB#190)*
-- [`7f6c1f8`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f6c1f8) — `docs: alinhar AGENT e README com modelo gpt-5-nano e especificacao de deploy` *(vinculado em AB#190)*
+- [`f3f9526`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/f3f9526) — `docs: update README and AGENT specs for multimodal AI services` *(vinculado em AB#190)*
+- [`7f6c1f8`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f6c1f8) — `docs: alinhar AGENT e README com modelo multimodal e especificacao de deploy` *(vinculado em AB#190)*
 - [`e931757`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e931757) — `docs(readme,config): generalizar embeddings 1536D e variaveis no .env.example` *(vinculado em AB#190)*
+- [`efa24ff`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/efa24ff) — `refactor(ai): desacoplar servicos e documentacao de provedores e modelos especificos` *(vinculado em AB#190)*

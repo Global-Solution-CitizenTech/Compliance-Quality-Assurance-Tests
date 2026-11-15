@@ -399,7 +399,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 - **Tags Azure:** `Compliance`, `QA`, `WorkerAI`, `RabbitMQ`
 - **Cobertura / Endpoints:** 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) (`POST /chamados, RabbitMQ zelafix.chamados.triagem.queue -> zelafix.chamados.feedback.queue`)
 - **Objetivo:** Validar o pipeline reativo zelafix-api -> RabbitMQ (chamado.triagem.queue) -> zelafix-worker (ZelaFixAiService + TriagemNormativaTools @Tool + @Retryable) -> chamado.triagem-concluida.queue com classificação nos enums oficiais e proteção de limites UTF-8 do Oracle.
-- **Pré-condições:** zelafix-api, RabbitMQ e zelafix-worker conectados com Azure AI Foundry ativo; foto válida de ocorrência urbana.
+- **Pré-condições:** zelafix-api, RabbitMQ e zelafix-worker conectados com Provedor de LLM Multimodal ativo; foto válida de ocorrência urbana.
 - **Dados de Entrada / Payload:** POST /chamados multipart com foto real de buraco/lixo/poste/alagamento em via pública.
 - **Resultado Esperado & HTTP Codes:** Worker executa consultarNormaMunicipal e calcularPrazoSla, gera TriagemIaResult válido (título <= 100 bytes UTF-8, descrição <= 1000 bytes UTF-8, sem CAPS LOCK/inglês), API persiste chamado com status EM_ANALISE e enums coerentes.
 

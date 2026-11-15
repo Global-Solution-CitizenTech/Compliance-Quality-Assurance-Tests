@@ -528,8 +528,8 @@
 - [x] Algoritmo de fallback heurístico e contingência em caso de indisponibilidade de rede ou falha de cota da LLM.
 
 ##### Commits vinculados (Development no Azure Repos):
-- `18caf51` feat(ai): implementar triagem multimodal com Qwen 3.8 27B e suporte a imagens mobile
-- `1b8382c` chore(config): configurar integracao com Groq LLM no worker e remover configuracoes redundantes da api
+- `18caf51` feat(ai): implementar triagem multimodal com LLM e suporte a imagens mobile
+- `1b8382c` chore(config): configurar integracao com LLM no worker e remover configuracoes redundantes da api
 - `c7117fa` refactor(worker): desacoplar totalmente do banco e publicar parecer de IA na fila de retorno
 - `c8bba67` feat(api): configurar fila de retorno e consumer para persistir parecer da triagem por IA
 - `ce55cca` refactor(chamado): aplicar parecer de IA no historico e tratar exclusao cascata via repositorio
@@ -593,11 +593,11 @@
 - `4f499bf` test(suite): atualizar testes unitarios e documentacao de compliance de arquitetura
 - `749078f` test(suite): adicionar testes unitarios para usuarioservice e zelafixaiservice
 - `877e260` test(api): implementar suite de testes pesados para servicos, controllers, seguranca e excecoes da api
-- `5995252` test(worker): implementar suite de testes para consumidor rabbitmq, concorrencia e integracao real com groq
+- `5995252` test(worker): implementar suite de testes para consumidor rabbitmq, concorrencia e integracao real com llm
 - `3184b84` test(e2e): adicionar suite completa de testes de integracao, concorrencia e stress maximo
 - `b6193e3` test(chamado): expandir testes extremos de controller, blindar cache e unificar exceptions
-- `c7031b5` fix(test,ci): ajustar GROQ_BASE_URL=/v1 no ZelaFixAiLiveIntegrationTest e pipeline
-- `49f16e6` fix(ci): isolar chave Groq da etapa unitária para evitar 429 na pipeline
+- `c7031b5` fix(test,ci): ajustar AI_BASE_URL=/v1 no ZelaFixAiLiveIntegrationTest e pipeline
+- `49f16e6` fix(ci): isolar chave de IA da etapa unitária para evitar 429 na pipeline
 - `8cc4027` test: remover ZelaFixAiLiveIntegrationTest e manter testes unitarios mockados do ZelaFixAiService
 - `70c6a45` chore: move e atualiza script E2E da IA para zelafix-api/src/test/e2e
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
@@ -795,11 +795,11 @@
 - [x] Otimização de payload multimodal via `ImageMimeTypeDetector.redimensionarParaIa()` convertendo imagens acima de `768px` (ou `> 150 KB`) para JPEG comprimido para reduzir consumo de tokens visuais (TPM), preservando stubs inválidos/pequenos intactos.
 
 ##### Pull Requests no Azure Repos:
-- PR #9 (`feat(ai): migrar Spring AI para Azure AI Foundry (Phi-4 Multimodal)`)
+- PR #9 (`feat(ai): migrar Spring AI para Provedor de LLM Multimodal`)
 - PR #20 (`feat(worker): validacao de escopo de imagem na IA, recusa de fotos invalidas e ajuste de prompt/limites UTF-8`)
 
 ##### Commits vinculados (Development no Azure Repos):
-- `bee01b4` feat(ai): migrar Spring AI de Groq/Qwen para Azure AI Foundry (Phi-4 Multimodal)
+- `bee01b4` feat(ai): migrar Spring AI para Provedor de LLM Multimodal
 - `45a564b` feat(worker): validacao de escopo de imagem na IA, recusa de fotos invalidas e ajuste de prompt/limites UTF-8
 - `6eedee9` feat(ai,config): adicionar tools normativas, retry resiliente e limpar propriedades e secrets
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
