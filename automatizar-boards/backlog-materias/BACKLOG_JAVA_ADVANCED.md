@@ -561,12 +561,14 @@
 - [x] Publicação de evento de retorno `PrioridadeEscaladaMessage` na fila `chamado.prioridade-escalada.queue` via exchange `zelafix.direct`.
 - [x] Consumo assíncrono na API (`ChamadoPrioridadeEscaladaConsumer`) com escalonamento estritamente ascendente no Oracle e auditoria histórica em `HistChamado`.
 - [x] Preservação do desacoplamento do worker (100% stateless, sem conexões de banco de dados).
+- [x] Anotação `@RabbitListener(queues = RabbitWorkerConfig.QUEUE_CHAMADO_VOTO, concurrency = "1")` garantindo consumo serializado da fila de votos e eliminando race conditions na agregação do buffer.
 
 ##### Commits vinculados (Development no Azure Repos):
 - `d13aa34` feat(rabbitmq): estruturar produtores e consumidores assincronos com tipagem AMQP e buffer concorrente
 - `21d09e5` feat(worker): consolidar triagem multimodal obrigatoria com foto e consumidor de votos enxuto
 - `0f24e96` feat(voto): implementar escalonamento comunitario via rabbitmq e documentar catalogo rest
 - `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
+- `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
 
 ---
 
@@ -714,6 +716,7 @@
 ##### Pull Requests no Azure Repos:
 - PR #1 (`fix(devops,flyway): CloudAMQP, migrations V2/V3 e CI/CD unificado`)
 - PR #5 (`ci: ajustar script do mirror para protecao de branch do Azure Repos`)
+- PR #34 (`ci: adiciona variaveis de IA AI_BASE_URL e AI_API_KEY no job de build da pipeline`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `6981364` ci: adicionar esteira azure-pipelines para build e deploy dos microsservicos api e worker
@@ -748,12 +751,14 @@
 - [x] Guia `AGENT.md` detalhando arquitetura reativa, separação de responsabilidades e regras Ponytail.
 - [x] `README.md` atualizado com justificativa corporativa do Gradle Multi-Project e arquitetura de nuvem.
 - [x] Lista oficial dos 5 integrantes em ordem alfabética estrita com RMs e atribuições.
+- [x] Inclusão de seção de Modelagem de Dados Relacional & Lógica (Oracle Database em 3FN) no `README.md` com os diagramas oficiais `docs/logical.png` e `docs/relational.png`.
 
 ##### Pull Requests no Azure Repos:
 - PR #4 (`docs: atualizar README com justificativa Gradle multi-project e arquitetura de nuvem`)
 - PR #6 (`docs: atualizar AGENT.md com arquitetura Gradle multi-project e CI/CD`)
 - PR #12 (`chore: merge develop com fixes de resiliencia, properties e seed V2/V3`)
 - PR #15 (`docs(readme): atualizar README do Java com fluxo assincrono da IA e pacotes`)
+- PR #35 (`docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `7582fbd` docs(readme): atualizar lista oficial de integrantes do grupo para entrega da GS AB#26
@@ -770,6 +775,7 @@
 - `bdc0b8c` docs: atualizar imagem do diagrama arquitetural
 - `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
 - `63cba54` docs: alinhar modelos de ia, terminologia orientada a eventos e isolamento docker
+- `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
 
 ---
 
@@ -913,6 +919,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Estratégia Fail-Fast imediata em `ZelaFixAiService.analisarChamado()` com `spring.ai.retry.max-attempts=1` (eliminando `@Retryable` e `@EnableResilientMethods` para evitar latências humanas abusivas no app mobile) e aplicando contingência `PENDENTE` imediata no `ChamadoAiConsumer`.
 - [x] Listeners RabbitMQ configurados com `retry.enabled=true`, `retry.multiplier=2.0`, `default-requeue-rejected=false`, ajuste de timeouts (`read-timeout=40s`) e limpeza de propriedades/secrets redundantes em `application.properties`, `.env.example` e `azure-pipelines.yml`.
+- [x] Otimização de concorrência e prefetch RabbitMQ no worker (`prefetch=1`, `concurrency=2`, `max-concurrency=4`) e pool Hikari dinâmico (`${HIKARI_MAX_POOL_SIZE:5}`, `minimum-idle=1`) para alta eficiência de conexões no Oracle Cloud.
 - [x] Isolamento de chaves `@Cacheable` em `CategoriaService` e `StatusService` (`findAll` vs `findByNome`) evitando `ClassCastException`.
 - [x] `GlobalExceptionHandler` ignorando desconexão prematura de cliente (`AsyncRequestNotUsableException` / `ClientAbortException`), retornando HTTP `504 Gateway Timeout` em `AsyncRequestTimeoutException` e HTTP `503 Service Unavailable` em `TriagemIndisponivelException`.
 
@@ -921,6 +928,8 @@
 - PR #12 (`chore: merge develop com fixes de resiliencia, properties e seed V2/V3`)
 - PR #16 (`fix(cache): evitar colisao de chaves @Cacheable entre findAll e findDefault`)
 - PR #17 (`fix(exception): ignorar desconexao prematura de cliente (AsyncRequestNotUsableException)`)
+- PR #33 (`fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste`)
+- PR #35 (`fix: pool Hikari, concorrencia VotoConsumer e prefetch RabbitMQ`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `cb79f7b` fix: ajusta timeout do worker, truncamento de observacoes e requeue do RabbitMQ
@@ -935,3 +944,4 @@
 - `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
 - `5e2d3d1` feat(worker): contingencia imediata de triagem no consumidor quando AI_API_KEY estiver vazia
 - `8803ca0` fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste
+- `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
