@@ -214,6 +214,8 @@
 
 ##### Commits vinculados (GitHub Repository):
 - [`1960ca3`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/1960ca3) — `fix(rag): preserve urgency metadata, strict category filtering and hybrid lexical reranking` *(vinculado em AB#186)*
+- [`9277f18`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/9277f18) — `fix(ai): bypass chamadas remotas de embedding quando desabilitado ou offline` *(vinculado em AB#186)*
+- [`553911d`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/553911d) — `feat(ai): configurar modelo de embedding free nvidia/nemotron-3.5-embed-1b:free com fallback resiliente` *(vinculado em AB#186)*
 
 ---
 
@@ -270,6 +272,8 @@
 - [`ba95048`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/ba95048) — `feat(ai): migracao para LLM Multimodal com visao computacional` *(vinculado em AB#63)*
 - [`162c4a5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/162c4a5) — `refactor(ia): unificar servico de inferencia e embeddings em nuvem` *(vinculado em AB#63)*
 - [`e754b84`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e754b84) — `refactor(ai): atualizar configuracao de modelo e aprimorar contingencia normativa` *(vinculado em AB#63)*
+- [`2221cef`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/2221cef) — `fix(ai-service): suportar base_url padrao v1 sem forcar /openai/v1` *(vinculado em AB#63)*
+- [`af9300c`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/af9300c) — `refactor(ai): substituir FoundryService por AiService agnostico e remover arquivos legados` *(vinculado em AB#63)*
 
 ---
 
@@ -509,3 +513,4 @@
 - [`7f6c1f8`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f6c1f8) — `docs: alinhar AGENT e README com modelo multimodal e especificacao de deploy` *(vinculado em AB#190)*
 - [`e931757`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e931757) — `docs(readme,config): generalizar embeddings 1536D e variaveis no .env.example` *(vinculado em AB#190)*
 - [`efa24ff`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/efa24ff) — `refactor(ai): desacoplar servicos e documentacao de provedores e modelos especificos` *(vinculado em AB#190)*
+- [`504394d`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/504394d) — `feat: ajuste no readme` *(vinculado em AB#190)*

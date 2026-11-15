@@ -673,6 +673,14 @@ def parse_backlog_markdown(
                 i += 1
                 continue
 
+            commits_vinc_match = re.search(r"^\*?\s*\*\*(?:Commits?\s*Vinculados?):?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
+            if commits_vinc_match:
+                shas = re.findall(r"`([0-9a-fA-F]{7,40})`", commits_vinc_match.group(1))
+                for sha in shas:
+                    current_pbi.linked_commits.append((sha.strip(), f"Commit {sha[:7]}"))
+                i += 1
+                continue
+
             # Cabeçalhos de Seções internas do PBI
             if re.search(r"^#{4,5}\s+.*(?:Descri[çc][ãa]o|Description|User Story|Hist[óo]ria)", stripped, re.IGNORECASE):
                 current_section = 'desc'
@@ -702,9 +710,13 @@ def parse_backlog_markdown(
                 if stripped.startswith("- [ ]") or stripped.startswith("* [ ]") or stripped.startswith("- ") or stripped.startswith("* **Task") or stripped.startswith("* **[TASK") or stripped.startswith("* *Descri") or "descrição:" in stripped.lower() or "descricao:" in stripped.lower():
                     task_buffer.append(stripped)
             elif current_section == 'commits':
-                commit_match = re.search(r"^[-*]\s*`([0-9a-fA-F]{7,40})`\s*(.+)", stripped)
+                commit_match = re.search(r"^[-*]\s*(?:\[`?([0-9a-fA-F]{7,40})`?\](?:\([^)]+\))?|`([0-9a-fA-F]{7,40})`)\s*(?:[—–-]\s*)?(.+)", stripped)
                 if commit_match:
-                    current_pbi.linked_commits.append((commit_match.group(1).strip(), commit_match.group(2).strip()))
+                    sha = (commit_match.group(1) or commit_match.group(2)).strip()
+                    raw_msg = commit_match.group(3).strip()
+                    raw_msg = re.sub(r"\s*\*\(vinculado.*?\)\*\s*$", "", raw_msg, flags=re.IGNORECASE).strip()
+                    raw_msg = re.sub(r"^`|`$", "", raw_msg).strip()
+                    current_pbi.linked_commits.append((sha, raw_msg))
 
         # Se estamos dentro de uma Feature
         elif current_feature is not None:
@@ -791,6 +803,34 @@ def parse_backlog_markdown(
             feat.business_value = _priority_to_business_value(feat.priority)
 
     epic_item.effort = total_epic_effort
+
+    # Mapeamento adicional de tabelas de rastreabilidade (ex: DevOps Matriz de Commits)
+    try:
+        with open(file_path, "r", encoding="utf-8") as f_full:
+            full_content = f_full.read()
+        table_commits = re.findall(
+            r"\|\s*\[`?([0-9a-fA-F]{7,40})`?\]\([^)]+\)\s*\|\s*[^|]*\s*\|\s*`?([^|`]+)`?\s*\|\s*.*?#(\d+)",
+            full_content
+        )
+        if table_commits:
+            pbi_map = {}
+            for f in epic_item.features:
+                for p in f.pbis:
+                    if p.azure_id:
+                        pbi_map[p.azure_id] = p
+            for sha, msg, target_id in table_commits:
+                tid = int(target_id)
+                if tid in pbi_map:
+                    target_pbi = pbi_map[tid]
+                    existing_shas = {s for s, _ in target_pbi.linked_commits}
+                    if sha not in existing_shas:
+                        target_pbi.linked_commits.append((sha, msg.strip()))
+                    else:
+                        for idx, (s, m) in enumerate(target_pbi.linked_commits):
+                            if s == sha and (not m or m.startswith("Commit ")):
+                                target_pbi.linked_commits[idx] = (sha, msg.strip())
+    except Exception:
+        pass
 
     doc = BacklogDocument(
         discipline=discipline,

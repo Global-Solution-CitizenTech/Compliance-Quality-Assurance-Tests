@@ -187,6 +187,7 @@
 - `6d0d05b` refactor(data): otimizar repositorios e expurgar enums legados nao mapeados
 - `9237241` refactor(core): otimizar consultas com entitygraph, remover cascade indevido e configurar cors
 - `ceb5f50` perf(persistence): adicionar entity graphs e consultas agregadas em lote para eliminar N+1
+- `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
 
 ---
 
@@ -399,6 +400,7 @@
 - `8dbf652` refactor(service): refatorar ChamadoService com enriquecimento em lote e validacoes isoladas (padrao Clyvo 4)
 - `0151504` refactor(chamado): otimizar ChamadoService com ifPresentOrElse, toEntity e enriquecimento inline
 - `7e3ca5e` refactor(chamado): eliminar sobrecargas em ChamadoService, unificar create e permitir edicao por Gestor
+- `674dbc9` feat: implementar historico de chamados, tipar enums de triagem e simplificar worker
 
 ---
 
@@ -562,6 +564,8 @@
 ##### Commits vinculados (Development no Azure Repos):
 - `d13aa34` feat(rabbitmq): estruturar produtores e consumidores assincronos com tipagem AMQP e buffer concorrente
 - `21d09e5` feat(worker): consolidar triagem multimodal obrigatoria com foto e consumidor de votos enxuto
+- `0f24e96` feat(voto): implementar escalonamento comunitario via rabbitmq e documentar catalogo rest
+- `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
 
 ---
 
@@ -603,6 +607,8 @@
 - `8cc4027` test: remover ZelaFixAiLiveIntegrationTest e manter testes unitarios mockados do ZelaFixAiService
 - `70c6a45` chore: move e atualiza script E2E da IA para zelafix-api/src/test/e2e
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
+- `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
+- `8803ca0` fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste
 
 ---
 
@@ -679,6 +685,8 @@
 - `ec9928b` chore(infra): padronizar Dockerfiles para runtime alpine e remover artefatos orfaos de build
 - `70f9c43` chore(infra): injetar env em tasks do gradle e configurar docker compose e propriedades
 - `b7e1297` refactor(docker): migrar dockerfiles para multi-stage build com temurin 21 e usuario nao-root
+- `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
+- `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
 
 ---
 
@@ -713,6 +721,11 @@
 - `a5847ec` ci: remover FLYWAY_ENABLED=false da pipeline
 - `2546b3d` ci(github-actions): espelhar automaticamente github -> azure repos ao push em main/develop
 - `082d516` ci(github-actions): tratar protecao de branch TF402455 do Azure Repos no espelhamento da main
+- `002dfcc` fix(ci): adicionar pipefail no mirror-to-azure para detectar TF402455 corretamente
+- `327261f` chore: sincronizar historico de merge commits do azure repos na main
+- `7d8ad86` fix(ci): tratar rejected e fetch first no espelhamento da branch main
+- `f69251c` refactor(ci): atualizar nomes dos Web Apps para app-zelafix e app-zelafix-worker
+- `9db6251` ci: adiciona variaveis de IA AI_BASE_URL e AI_API_KEY no job de build da pipeline
 
 ---
 
@@ -753,6 +766,9 @@
 - `96eda68` docs(readme): atualizar arquitetura, pacotes, IA e credenciais no README
 - `71e7a9c` docs(readme): atualizar arquitetura DeferredResult, tools IA e resiliencia
 - `913154c` feat: pequeno ajuste no readme!
+- `bdc0b8c` docs: atualizar imagem do diagrama arquitetural
+- `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
+- `63cba54` docs: alinhar modelos de ia, terminologia orientada a eventos e isolamento docker
 
 ---
 
@@ -805,6 +821,8 @@
 - `45a564b` feat(worker): validacao de escopo de imagem na IA, recusa de fotos invalidas e ajuste de prompt/limites UTF-8
 - `6eedee9` feat(ai,config): adicionar tools normativas, retry resiliente e limpar propriedades e secrets
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
+- `9461331` feat(worker): tornar modelo de IA dinâmico via env e aprimorar logs de triagem
+- `eea41a6` refactor(worker): remove field injection @Value e condicional de api key em ZelaFixAiService
 
 ---
 
@@ -841,6 +859,9 @@
 - `d5eeff1` feat(triagem): notificar recusa de imagem pela IA sem persistir chamado
 - `a520c3e` refactor(triagem,auth): deferir triagem via DeferredResult e enxugar seguranca e DTOs
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
+- `674dbc9` feat: implementar historico de chamados, tipar enums de triagem e simplificar worker
+- `3b50a72` feat(ai,triagem): adotar fail-fast na IA, historico duplo no chamado e sincronizar docs
+- `5e2d3d1` feat(worker): contingencia imediata de triagem no consumidor quando AI_API_KEY estiver vazia
 
 ---
 
@@ -908,3 +929,7 @@
 - `6eedee9` feat(ai,config): adicionar tools normativas, retry resiliente e limpar propriedades e secrets
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
 - `0a219aa` Merge pull request #15 from Global-Solution-CitizenTech/develop (fix(ai,queue): otimizar imagem IA, abortar retry 429 e propagar erros da triagem)
+- `3b50a72` feat(ai,triagem): adotar fail-fast na IA, historico duplo no chamado e sincronizar docs
+- `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
+- `5e2d3d1` feat(worker): contingencia imediata de triagem no consumidor quando AI_API_KEY estiver vazia
+- `8803ca0` fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste

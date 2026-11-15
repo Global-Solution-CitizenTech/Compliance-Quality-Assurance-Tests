@@ -207,7 +207,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `5`
 * **Business Value:** `100`
-* **Commits Vinculados:** `0e19e6a`, `4385ad2`, `4f8f830`, `ee58679`
+* **Commits Vinculados:** `0e19e6a`, `4385ad2`, `4f8f830`, `ee58679`, `d802cfb`, `7c11343`
 
 ##### Descrição (História de Usuário)
 > **Como** arquiteto de nuvem,  
@@ -261,7 +261,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Business Value:** `100`
-* **Commits Vinculados:** `d9c87a6`
+* **Commits Vinculados:** `d9c87a6`, `15c98e5`
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de banco de dados e infraestrutura,  
@@ -311,7 +311,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `5`
 * **Business Value:** `100`
-* **Commits Vinculados:** `52c0476`, `f6dfa88`
+* **Commits Vinculados:** `52c0476`, `f6dfa88`, `990f81a`
 
 ##### Descrição (História de Usuário)
 > **Como** equipe de engenharia ZelaFix,  
@@ -338,7 +338,7 @@
 * **Priority:** `2 - High`
 * **Effort (Story Points):** `3`
 * **Business Value:** `80`
-* **Commits Vinculados:** `3924462`, `e45cb07`, `cc4081b`, `5c22825`, `d70063b`, `0c7ff10`, `0bb681e`
+* **Commits Vinculados:** `3924462`, `e45cb07`, `cc4081b`, `5c22825`, `d70063b`, `0c7ff10`, `0bb681e`, `1da20c0`, `094f8ce`, `2d9193a`
 
 ##### Descrição (História de Usuário)
 > **Como** avaliador da FIAP e mantenedor do projeto,  
@@ -378,3 +378,10 @@
 | [`d9c87a6`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/d9c87a6) | 2026-11-14 | `feat: atualizando script banco` | **PBI-05** (`#191`) |
 | [`0c7ff10`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/0c7ff10) | 2026-11-15 | `docs: generalizar especificacoes e variaveis do modelo de IA no README e env.example` | **PBI-07** (`#57`) |
 | [`0bb681e`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/0bb681e) | 2026-11-15 | `docs(devops): generalizar servicos de IA e desvincular modelos especificos de IaC e diagramas` | **PBI-07** (`#57`) |
+| [`d802cfb`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/d802cfb) | 2026-11-15 | `refactor(diagram,script): atualizar box de IA no diagrama e desacoplar script de provisionamento de servico de IA especifico` | **PBI-03** (`#53`) |
+| [`7c11343`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/7c11343) | 2026-11-15 | `refactor(infra): remover sufixo RM dos Web Apps app-zelafix e app-zelafix-worker` | **PBI-03** (`#53`) |
+| [`15c98e5`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/15c98e5) | 2026-11-15 | `feat: atualizando script bd` | **PBI-05** (`#191`) |
+| [`990f81a`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/990f81a) | 2026-11-15 | `ci: adiciona AI_BASE_URL e AI_API_KEY no job de build da pipeline` | **PBI-06** (`#56`) |
+| [`1da20c0`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/1da20c0) | 2026-11-15 | `feat: atualizando imagens drawio` | **PBI-07** (`#57`) |
+| [`094f8ce`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/094f8ce) | 2026-11-15 | `docs(devops): adicionar link para a documentacao oficial em PDF` | **PBI-07** (`#57`) |
+| [`2d9193a`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/2d9193a) | 2026-11-15 | `docs: atualizar diagrama arquitetural com as 4 filas RabbitMQ e documentacao PDF` | **PBI-07** (`#57`) |
