@@ -9,7 +9,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Opção Distribuída Escolhida:** **Opção A — Mensageria Assíncrona com RabbitMQ** (2 microsserviços autônomos: `zelafix-api` e `zelafix-worker`)  
-> **Diretrizes Estratégicas:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Spring Framework 7), estruturada no padrão corporativo **Gradle Multi-Project** (`rootProject.name = 'zelafix-backend'`, `zelafix-api` e `zelafix-worker`), persistência relacional no Oracle Database 11g/19c/23c com Spring Data JPA em 3FN (`citizenTech.ddl`, 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento de schema com Flyway Migrations (V1, V2, V3 com imagens BLOB reais via `DBMS_LOB.WRITEAPPEND`), segurança stateless com Spring Security e par de chaves RSA Nimbus JWT, controle de acesso baseado em papéis (RBAC: CIDADAO, GESTOR e ADMIN), mensageria assíncrona gerenciada com RabbitMQ / CloudAMQP (Direct Exchange `zelafix.direct`), triagem multimodal com **Spring AI + Azure AI Foundry (`phi-4-multimodal`)**, **Tool Calling normativo (`TriagemNormativaTools`)**, **DeferredResult (`TriagemPendenteStore`)** com recusa de imagem fora de escopo sem persistência e resiliência `@Retryable`, agregador de votos com buffer thread-safe (`ConcurrentHashMap` - Padrão Paredão), containerização otimizada com Docker multi-stage build (Temurin 21 alpine com usuário não-root `appuser:appgroup`), esteira de CI/CD automatizada no Azure DevOps (`azure-pipelines.yml`) com espelhamento contínuo GitHub Actions e proteção estrita de branch na main (`TF402455`) com Pull Requests de homologação.
+> **Diretrizes Estratégicas:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Spring Framework 7), estruturada no padrão corporativo **Gradle Multi-Project** (`rootProject.name = 'zelafix-backend'`, `zelafix-api` e `zelafix-worker`), persistência relacional no Oracle Database 11g/19c/23c com Spring Data JPA em 3FN (`citizenTech.ddl`, 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento de schema com Flyway Migrations (V1, V2, V3 com imagens BLOB reais via `DBMS_LOB.WRITEAPPEND`), segurança stateless com Spring Security e par de chaves RSA Nimbus JWT, controle de acesso baseado em papéis (RBAC: CIDADAO, GESTOR e ADMIN), mensageria assíncrona gerenciada com RabbitMQ / CloudAMQP (Direct Exchange `zelafix.direct`), triagem multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **DeferredResult (`TriagemPendenteStore`)** com recusa de imagem fora de escopo sem persistência e resiliência `@Retryable`, agregador de votos com buffer thread-safe (`ConcurrentHashMap` - Padrão Paredão), containerização otimizada com Docker multi-stage build (Temurin 21 alpine com usuário não-root `appuser:appgroup`), esteira de CI/CD automatizada no Azure DevOps (`azure-pipelines.yml`) com espelhamento contínuo GitHub Actions e proteção estrita de branch na main (`TF402455`) com Pull Requests de homologação.
 
 ---
 
@@ -58,8 +58,8 @@
 │   ├── 📄 [PBI-17] Esteira de CI/CD no Azure DevOps e Espelhamento com Políticas de Branch (3 pts) [AB#173]
 │   └── 📄 [PBI-18] Governança Técnica, Padrão de Engenharia (AGENT.md) e Documentação Corporativa (3 pts) [AB#174]
 │
-└── 🏆 [FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio [AB#192]
-    ├── 📄 [PBI-19] Migração para Azure AI Foundry (Phi-4 Multimodal), Tool Calling Normativo e Validação de Escopo/Limites UTF-8 (3 pts) [AB#193]
+└── 🏆 [FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio [AB#192]
+    ├── 📄 [PBI-19] Integração com LLM Multimodal via Spring AI, Tool Calling Normativo e Validação de Escopo/Limites UTF-8 (3 pts) [AB#193]
     ├── 📄 [PBI-20] Triagem Assíncrona via DeferredResult (TriagemPendenteStore), Persistência Pós-IA (EM_ANALISE) e Recusa sem Gravação (3 pts) [AB#194]
     ├── 📄 [PBI-21] Expansão de Domínio 13 Tabelas (Prioridade e OrgaoGoverno), Filtros de Localização e Limpeza de Endpoints/DTOs/Segurança (3 pts) [AB#195]
     └── 📄 [PBI-22] Resiliência com @Retryable e RabbitMQ Requeue, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona (3 pts) [AB#196]
@@ -89,7 +89,7 @@
 | | **PBI-16** | Containerização Multi-Stage com Docker, Imagem Alpine e Usuário Não-Root | 3 pts | 1 - Critical | 7.0h | **#172** |
 | | **PBI-17** | Esteira de CI/CD no Azure DevOps e Espelhamento com Políticas de Branch | 3 pts | 1 - Critical | 8.5h | **#173** |
 | | **PBI-18** | Governança Técnica, Padrão de Engenharia (AGENT.md) e Documentação Corporativa | 3 pts | 1 - Critical | 6.0h | **#174** |
-| **[FEATURE 06] AI Foundry, DeferredResult & Resiliência** | **PBI-19** | Migração para Azure AI Foundry (Phi-4 Multimodal), Tool Calling Normativo e Validação de Escopo/Limites UTF-8 | 3 pts | 1 - Critical | 7.5h | **#193** |
+| **[FEATURE 06] Spring AI, DeferredResult & Resiliência** | **PBI-19** | Integração com LLM Multimodal via Spring AI, Tool Calling Normativo e Validação de Escopo/Limites UTF-8 | 3 pts | 1 - Critical | 7.5h | **#193** |
 | | **PBI-20** | Triagem Assíncrona via DeferredResult (TriagemPendenteStore), Persistência Pós-IA (EM_ANALISE) e Recusa sem Gravação | 3 pts | 1 - Critical | 8.0h | **#194** |
 | | **PBI-21** | Expansão de Domínio 13 Tabelas (Prioridade e OrgaoGoverno), Filtros de Localização e Limpeza de Endpoints/DTOs/Segurança | 3 pts | 1 - Critical | 7.0h | **#195** |
 | | **PBI-22** | Resiliência com @Retryable e RabbitMQ Requeue, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona | 3 pts | 1 - Critical | 6.5h | **#196** |
@@ -112,7 +112,7 @@
 * **Effort (Story Points):** `66`
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Description:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Opção A da Global Solution), composta pela API REST Gateway (`zelafix-api`) e pelo Worker de processamento assíncrono (`zelafix-worker`) estruturados no padrão corporativo **Gradle Multi-Project**. Contempla banco de dados relacional Oracle 11g/19c/23c em Terceira Forma Normal (3FN — 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento com Flyway (V1, V2, V3 com imagens BLOB reais), autenticação via tokens JWT assinados por par de chaves RSA assimétricas, controle de acesso RBAC, mensageria com RabbitMQ / CloudAMQP (Exchange `zelafix.direct` e filas duráveis), triagem inteligente multimodal com **Spring AI + Azure AI Foundry (`phi-4-multimodal`)**, **Tool Calling normativo (`TriagemNormativaTools`)**, **`DeferredResult` (`TriagemPendenteStore`)** com validação de escopo e recusa sem persistência no Oracle, resiliência `@Retryable`, agregador de votos comunitários em buffer de memória thread-safe (Padrão Paredão), documentação OpenAPI 3.0 / Swagger UI, containerização multi-stage build com Docker (Temurin 21 alpine com usuário não-root) e esteira de CI/CD completa no Azure DevOps (`azure-pipelines.yml`) com espelhamento GitHub Actions e proteção de branch na main (`TF402455`).
+* **Description:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Opção A da Global Solution), composta pela API REST Gateway (`zelafix-api`) e pelo Worker de processamento assíncrono (`zelafix-worker`) estruturados no padrão corporativo **Gradle Multi-Project**. Contempla banco de dados relacional Oracle 11g/19c/23c em Terceira Forma Normal (3FN — 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento com Flyway (V1, V2, V3 com imagens BLOB reais), autenticação via tokens JWT assinados por par de chaves RSA assimétricas, controle de acesso RBAC, mensageria com RabbitMQ / CloudAMQP (Exchange `zelafix.direct` e filas duráveis), triagem inteligente multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **`DeferredResult` (`TriagemPendenteStore`)** com validação de escopo e recusa sem persistência no Oracle, resiliência `@Retryable`, agregador de votos comunitários em buffer de memória thread-safe (Padrão Paredão), documentação OpenAPI 3.0 / Swagger UI, containerização multi-stage build com Docker (Temurin 21 alpine com usuário não-root) e esteira de CI/CD completa no Azure DevOps (`azure-pipelines.yml`) com espelhamento GitHub Actions e proteção de branch na main (`TF402455`).
 
 ---
 
@@ -466,10 +466,10 @@
 * **Effort (Story Points):** `12`
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Description:** Implementação da arquitetura distribuída com 2 microsserviços autônomos, mensageria RabbitMQ / CloudAMQP, triagem inteligente com Spring AI / Groq LLM multimodal, buffer de votos em memória, documentação Swagger e suíte de testes unitários.
+* **Description:** Implementação da arquitetura distribuída com 2 microsserviços autônomos, mensageria RabbitMQ / CloudAMQP, triagem inteligente com Spring AI (LLM Multimodal), buffer de votos em memória, documentação Swagger e suíte de testes unitários.
 * **Acceptance Criteria:**
   - [x] Microsserviço `zelafix-worker` 100% Stateless (zero conexões JDBC/JPA com banco de dados).
-  - [x] Triagem automatizada de criticidade e parecer com Spring AI (Groq Qwen 3.8 27B Vision com fallback heurístico).
+  - [x] Triagem automatizada de criticidade e parecer com Spring AI (LLM Multimodal com fallback e contingência).
   - [x] Fila de feedback bidirecional (`chamado.triagem-concluida.queue`) para persistência ACID pela API.
   - [x] Agregador de votos em memória com `ConcurrentHashMap` e flush periódico em lote via `@Scheduled`.
   - [x] Documentação interativa Swagger UI e suíte completa de testes com JUnit 5 e Mockito.
@@ -517,15 +517,15 @@
 
 ##### Descrição (História de Usuário)
 > **Como** equipe de triagem municipal,  
-> **Eu quero** um microsserviço worker 100% stateless que consuma ocorrências da fila e consulte uma LLM multimodal (Groq / Qwen 3.8 27B) com análise visual da imagem enviada pelo cidadão,  
+> **Eu quero** um microsserviço worker 100% stateless que consuma ocorrências da fila e consulte um modelo LLM multimodal via Spring AI com análise visual da imagem enviada pelo cidadão,  
 > **Para que** ocorrências perigosas sejam priorizadas imediatamente por análise visual e textual combinada sem sobrecarregar o banco de dados.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Microsserviço autônomo `zelafix-worker` com consumidor `ChamadoAiConsumer.java` anotado com `@RabbitListener`.
-- [x] `ZelaFixAiService.java` integrado com modelo multimodal (Qwen 3.8 27B via Groq) processando a foto da ocorrência.
+- [x] `ZelaFixAiService.java` integrado com modelo LLM multimodal via Spring AI processando a foto da ocorrência.
 - [x] Detecção dinâmica de MIME type via magic bytes (`ImageMimeTypeDetector`).
 - [x] Publicação do parecer na fila de retorno `chamado.triagem-concluida.queue` (Feedback Pattern) consumida pela API para escrita ACID no Oracle.
-- [x] Algoritmo de fallback heurístico em caso de indisponibilidade de rede ou falha de cota da LLM.
+- [x] Algoritmo de fallback heurístico e contingência em caso de indisponibilidade de rede ou falha de cota da LLM.
 
 ##### Commits vinculados (Development no Azure Repos):
 - `18caf51` feat(ai): implementar triagem multimodal com Qwen 3.8 27B e suporte a imagens mobile
@@ -580,9 +580,9 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Swagger UI interativo disponível em `http://localhost:8080/swagger-ui.html` com suporte a autenticação Bearer JWT.
 - [x] Suíte pesada de testes unitários na API cobrindo `ChamadoService`, `UsuarioService`, `AuthController` e tratamento global de exceções.
-- [x] Suíte de testes no Worker cobrindo concorrência no `VotoConsumer`, mensageria RabbitMQ e integração real com Groq em `ZelaFixAiServiceTest`.
+- [x] Suíte de testes no Worker cobrindo concorrência no `VotoConsumer`, mensageria RabbitMQ e testes de integração com LLM Multimodal em `ZelaFixAiServiceTest`.
 - [x] Testes de concorrência e stress multithread passando sem falhas.
-- [x] Isolamento de chaves de IA da Groq nas etapas de build para evitar HTTP 429 na pipeline.
+- [x] Isolamento de chaves da API de IA nas etapas de build para evitar HTTP 429 na pipeline.
 - [x] Todos os testes passando com sucesso via `.\gradlew test`, incluindo cenários unitários recentes para `ImageMimeTypeDetectorTest`, `ZelaFixAiServiceTest`, `ChamadoAiConsumerTest`, `TriagemPendenteStoreTest`, `GlobalExceptionHandlerTest` e `ChamadoTriagemFeedbackConsumerTest`.
 
 ##### Pull Requests no Azure Repos:
@@ -698,7 +698,7 @@
 - [x] `azure-pipelines.yml` executando build do Gradle e deploy nos Azure App Services (`app-zelafix-561432` e `app-zelafix-worker-561432`).
 - [x] Workflow `.github/workflows/mirror-to-azure.yml` espelhando branches `main` e `develop`.
 - [x] Política de proteção de branch na `main` bloqueando pushes diretos e exigindo PRs com revisão.
-- [x] Tratamento de isolamento de variáveis e chaves da Groq para evitar erros 429 na esteira de CI.
+- [x] Tratamento de isolamento de variáveis e chaves da API de IA para evitar erros 429 na esteira de CI.
 
 ##### Pull Requests no Azure Repos:
 - PR #1 (`fix(devops,flyway): CloudAMQP, migrations V2/V3 e CI/CD unificado`)
@@ -754,41 +754,41 @@
 
 ---
 
-### 🏆 [FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio
+### 🏆 [FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#192`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
-* **Title:** `[FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio`
-* **Tags:** `JavaAdvanced, AzureAIFoundry, Phi4, DeferredResult, ToolCalling, Resilience`
+* **Title:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio`
+* **Tags:** `JavaAdvanced, SpringAI, Multimodal, DeferredResult, ToolCalling, Resilience`
 * **Start Date:** `2026-11-12`
 * **Target Date:** `2026-11-14`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `12`
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: migração do Spring AI para Azure AI Foundry (`phi-4-multimodal`), otimização de imagens para redução de tokens (`<= 768px` JPEG), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE`), recusa sem gravação e propagação de falhas de triagem (`TriagemIndisponivelException`), expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e resiliência com `@Retryable` (`AbortOnClientErrorPredicate` para 4xx/429), isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
+* **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: integração do Spring AI com provedor de LLM Multimodal (OpenAI API Standard), otimização de imagens para redução de tokens (`<= 768px` JPEG), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE`), recusa sem gravação e propagação de falhas de triagem (`TriagemIndisponivelException`), expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e resiliência com `@Retryable` (`AbortOnClientErrorPredicate` para 4xx/429), isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
 * **Acceptance Criteria:**
-  - [x] Worker IA migrado para Azure AI Foundry (`phi-4-multimodal`), com `ImageMimeTypeDetector.redimensionarParaIa()` (`<= 768px` JPEG), `TriagemNormativaTools` (`@Tool consultarNormaMunicipal` e `calcularPrazoSla`), validação de schema e truncamento UTF-8 para Oracle.
+  - [x] Worker IA integrado a provedor de LLM Multimodal via Spring AI (`temperature=0.1`), com `ImageMimeTypeDetector.redimensionarParaIa()` (`<= 768px` JPEG), `TriagemNormativaTools` (`@Tool consultarNormaMunicipal` e `calcularPrazoSla`), validação de schema e truncamento UTF-8 para Oracle.
   - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 60s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE`), retornando `400 Bad Request` quando recusado pela IA e propagando falhas críticas do worker via `TriagemIndisponivelException` (`503`).
   - [x] Domínio expandido para 13 tabelas com `Prioridade` e `OrgaoGoverno`, filtros dinâmicos de localização (`cidade`, `bairro`, `estado`, `busca`, `apenasMeus`) e remoção de controllers/DTOs redundantes (`CategoriaController`, `StatusController`, `LoginRequest`, `LoginResponse`, `ChamadoCreateRequest`, `RecusaIaResponse`).
   - [x] Resiliência garantida com `@Retryable` (backoff exponencial + jitter e `AbortOnClientErrorPredicate` abortando retries em erros 4xx/429), retry controlado no RabbitMQ, chaves `@Cacheable` isoladas e tratamento de `AsyncRequestNotUsableException`, `AsyncRequestTimeoutException` e `TriagemIndisponivelException`.
 
-#### 🔹 [PBI-19] Migração para Azure AI Foundry (Phi-4 Multimodal), Tool Calling Normativo e Validação de Escopo/Limites UTF-8
+#### 🔹 [PBI-19] Integração com LLM Multimodal via Spring AI, Tool Calling Normativo e Validação de Escopo/Limites UTF-8
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#193`
-* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio` (#192)
+* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, AzureAIFoundry, Phi4, ToolCalling, SpringAI`
+* **Tags:** `JavaAdvanced, SpringAI, Multimodal, ToolCalling`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de IA e arquiteto de microsserviços,  
-> **Eu quero** migrar o `ZelaFixAiService` para o Azure AI Foundry (`phi-4-multimodal`) com Tool Calling normativo (`TriagemNormativaTools`), validação estrita de escopo urbano e truncamento UTF-8 por code-points,  
+> **Eu quero** integrar o `ZelaFixAiService` a um provedor de LLM Multimodal (OpenAI API Standard) com Tool Calling normativo (`TriagemNormativaTools`), validação estrita de escopo urbano e truncamento UTF-8 por code-points,  
 > **Para que** fotos inválidas sejam recusadas com segurança e laudos aprovados citem normas municipais PMSP e prazos SLA sem estourar colunas `VARCHAR2(... BYTE)` do Oracle.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Configuração de `spring.ai.openai.*` migrada para Azure AI Foundry (`phi-4-multimodal`, `temperature=0.1`) no `zelafix-worker` e variáveis `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`.
+- [x] Configuração de `spring.ai.openai.*` desacoplada para provedor LLM Multimodal (OpenAI API Standard) no `zelafix-worker` e variáveis `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`.
 - [x] Classe `TriagemNormativaTools` registrando `@Tool consultarNormaMunicipal` (decretos PMSP) e `@Tool calcularPrazoSla` (`America/Sao_Paulo`, `12h`/`24h`/`48h`/`72h`), acionadas apenas quando `ocorrenciaValida = true`.
 - [x] Injeção idiomática de `ChatClient.Builder` com `SimpleLoggerAdvisor`, `defaultTools`, prompt parametrizado (`{bairro}`) e Structured Output validado via `EntityParamSpec::validateSchema`.
 - [x] Validação de escopo urbano (`ocorrenciaValida`) recusando capturas de tela, memes, desenhos, selfies ou ambientes internos, e `TriagemIaResult.comLimitesOracle()` truncando título (`<= 100` bytes) e descrição (`<= 1000` bytes) em UTF-8.
@@ -809,7 +809,7 @@
 #### 🔹 [PBI-20] Triagem Assíncrona via DeferredResult (TriagemPendenteStore), Persistência Pós-IA (EM_ANALISE) e Recusa sem Gravação
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#194`
-* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio` (#192)
+* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `JavaAdvanced, DeferredResult, Triagem, Async, RabbitMQ`
@@ -845,7 +845,7 @@
 #### 🔹 [PBI-21] Expansão de Domínio 13 Tabelas (Prioridade e OrgaoGoverno), Filtros de Localização e Limpeza de Endpoints/DTOs/Segurança
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#195`
-* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio` (#192)
+* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `JavaAdvanced, DomainModel, Prioridade, OrgaoGoverno, Filtros, Security`
@@ -874,7 +874,7 @@
 #### 🔹 [PBI-22] Resiliência com @Retryable e RabbitMQ Requeue, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#196`
-* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, Azure AI Foundry Phi-4, Tool Calling Normativo e Refatoração de Domínio` (#192)
+* **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `JavaAdvanced, Resilience, Retryable, Cache, ExceptionHandler`
@@ -882,7 +882,7 @@
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de confiabilidade (SRE),  
-> **Eu quero** blindar as chamadas ao Azure AI Foundry com `@Retryable` (backoff exponencial + jitter), configurar retry controlado no RabbitMQ, isolar chaves de cache e tratar timeouts/desconexões assíncronas,  
+> **Eu quero** blindar as chamadas ao provedor de LLM Multimodal com `@Retryable` (backoff exponencial + jitter), configurar retry controlado no RabbitMQ, isolar chaves de cache e tratar timeouts/desconexões assíncronas,  
 > **Para que** falhas transitórias de rede, colisões de cache ou quedas prematuras de cliente não gerem falsos erros 500 nem loops infinitos de fila.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)

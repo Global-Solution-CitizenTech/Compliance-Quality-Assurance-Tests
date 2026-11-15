@@ -36,7 +36,7 @@
 ├── 🏆 [FEATURE 01] Arquitetura FastAPI, Base Normativa PMSP e Persistência Vetorial/SQLite [AB#59]
 │   ├── 🔹 [PBI-01] Estrutura Modular FastAPI, Schemas Pydantic v2, Health Checks e Deploy em Nuvem Render [AB#60] (3 pts)
 │   ├── 🔹 [PBI-02] Base Normativa PMSP (31 Chunks em 8 Módulos), ChromaDB HNSW e Persistência Multi-turno SQLite WAL [AB#61] (5 pts)
-│   └── 🔹 [PBI-03] Recuperação Híbrida (Embeddings embed-v-4-0 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões [AB#186] (3 pts)
+│   └── 🔹 [PBI-03] Recuperação Híbrida (Embeddings Vetoriais 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões [AB#186] (3 pts)
 │
 ├── 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry Multimodal, ZelaBot e Visão Computacional Urbana [AB#62]
 │   ├── 🔹 [PBI-04] Pipeline Generativo Dinâmico em Azure AI Foundry Único e sem Fallbacks [AB#63] (5 pts)
@@ -60,15 +60,15 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Feature 01** `[AB#59]` | **PBI-01** | Estrutura Modular FastAPI, Schemas Pydantic v2, Health Checks e Deploy em Nuvem Render | **#60** | 3 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-02** | Base Normativa PMSP (31 Chunks em 8 Módulos), ChromaDB HNSW e Persistência Multi-turno SQLite WAL | **#61** | 5 pts | 1 - Critical | 100 | 3 | Committed |
-| | **PBI-03** | Recuperação Híbrida (Embeddings `embed-v-4-0` 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões | **#186** | 3 pts | 1 - Critical | 100 | 1 | Committed |
+| | **PBI-03** | Recuperação Híbrida (Embeddings Vetoriais 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões | **#186** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | **Feature 02** `[AB#62]` | **PBI-04** | Pipeline Generativo Dinâmico em Azure AI Foundry Único e sem Fallbacks | **#63** | 5 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-05** | Chat Cidadão ZelaBot (`POST /ai/chat`) com JSON Estruturado, IoB e Guardrails LGPD | **#64** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-06** | Laudo Técnico de Triagem (`POST /ai/triagem`), Visão Computacional Multimodal e Insights por Bairro | **#187** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | **Feature 03** `[AB#65]` | **PBI-07** | Cliente Oracle `oracledb` Modo Thin (`SELECT` em `CHAMADOS`/`CATEGORIAS`/`APOIADORES`), BLOB e Segurança de Credenciais | **#66** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-08** | Tool Calling Nativo ReAct (`consultar_chamados_oracle` e `calcular_prazo_sla`) e Endpoints `/ai/chamados` | **#188** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | **Feature 04** `[AB#185]` | **PBI-09** | Suítes Automatizadas (`test_knowledge_coverage`, `test_zelafix_scenarios`) e Homologação E2E | **#189** | 5 pts | 2 - High | 80 | 6 | Committed |
-| | **PBI-10** | Especificação `AGENT.md`, Documentação `README.md` com Diagramas ASCII, URLs de Produção e Manifesto | **#190** | 3 pts | 2 - High | 80 | 6 | Committed |
-| **TOTAL CONSOLIDADO** | **4 Features** | **10 PBIs (15 Work Items no Azure Boards)** | **`#58`..`#66`, `#185`..`#190`** | **40 pts** | — | — | **35 commits** | **100% Sincronizado** |
+| | **PBI-10** | Especificação `AGENT.md`, Documentação `README.md` com Diagramas ASCII, URLs de Produção e Manifesto | **#190** | 3 pts | 2 - High | 80 | 7 | Committed |
+| **TOTAL CONSOLIDADO** | **4 Features** | **10 PBIs (15 Work Items no Azure Boards)** | **`#58`..`#66`, `#185`..`#190`** | **40 pts** | — | — | **36 commits** | **100% Sincronizado** |
 
 ---
 
@@ -119,7 +119,7 @@
 * **Acceptance Criteria:**
   - [x] Microsserviço estruturado em camadas (`routers`, `services`, `repositories`, `database`, `schemas`, `knowledge`, `utils`) com deploy ativo no Render Cloud.
   - [x] Base PMSP com 31 chunks estruturados e metadados de urgência, órgão competente e SLA preservados.
-  - [x] Busca vetorial ChromaDB (HNSW 1536D via `embed-v-4-0`) combinada com reranking lexical e persistência multi-turno em SQLite WAL.
+  - [x] Busca vetorial ChromaDB (HNSW 1536D via `AI_EMBEDDING_MODEL`) combinada com reranking lexical e persistência multi-turno em SQLite WAL.
 
 ---
 
@@ -188,12 +188,12 @@
 
 ---
 
-#### 🔹 [PBI-03] Recuperação Híbrida (Embeddings embed-v-4-0 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões
+#### 🔹 [PBI-03] Recuperação Híbrida (Embeddings Vetoriais 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#186`
 * **Parent Feature:** `[FEATURE 01] Arquitetura FastAPI, Base Normativa PMSP e Persistência Vetorial/SQLite` (`#59`)
-* **Title:** `[PBI-03] Recuperação Híbrida (Embeddings embed-v-4-0 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões`
+* **Title:** `[PBI-03] Recuperação Híbrida (Embeddings Vetoriais 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DisruptiveArchitectures`
@@ -507,3 +507,4 @@
 - [`efc0648`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/efc0648) — `docs(ai): padronizar README e remover secoes de edital` *(vinculado em AB#190)*
 - [`f3f9526`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/f3f9526) — `docs: update README and AGENT specs for Azure AI Foundry` *(vinculado em AB#190)*
 - [`7f6c1f8`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f6c1f8) — `docs: alinhar AGENT e README com modelo gpt-5-nano e especificacao de deploy` *(vinculado em AB#190)*
+- [`e931757`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e931757) — `docs(readme,config): generalizar embeddings 1536D e variaveis no .env.example` *(vinculado em AB#190)*
