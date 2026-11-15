@@ -9,7 +9,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Opção Distribuída Escolhida:** **Opção A — Mensageria Assíncrona com RabbitMQ** (2 microsserviços autônomos: `zelafix-api` e `zelafix-worker`)  
-> **Diretrizes Estratégicas:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Spring Framework 7), estruturada no padrão corporativo **Gradle Multi-Project** (`rootProject.name = 'zelafix-backend'`, `zelafix-api` e `zelafix-worker`), persistência relacional no Oracle Database 11g/19c/23c com Spring Data JPA em 3FN (`citizenTech.ddl`, 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento de schema com Flyway Migrations (V1, V2, V3 com imagens BLOB reais via `DBMS_LOB.WRITEAPPEND`), segurança stateless com Spring Security e par de chaves RSA Nimbus JWT, controle de acesso baseado em papéis (RBAC: CIDADAO, GESTOR e ADMIN), mensageria assíncrona gerenciada com RabbitMQ / CloudAMQP (Direct Exchange `zelafix.direct`), triagem multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **DeferredResult (`TriagemPendenteStore`)** com recusa de imagem fora de escopo sem persistência e resiliência `@Retryable`, agregador de votos com buffer thread-safe (`ConcurrentHashMap` - Padrão Paredão), containerização otimizada com Docker multi-stage build (Temurin 21 alpine com usuário não-root `appuser:appgroup`), esteira de CI/CD automatizada no Azure DevOps (`azure-pipelines.yml`) com espelhamento contínuo GitHub Actions e proteção estrita de branch na main (`TF402455`) com Pull Requests de homologação.
+> **Diretrizes Estratégicas:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Spring Framework 7), estruturada no padrão corporativo **Gradle Multi-Project** (`rootProject.name = 'zelafix-backend'`, `zelafix-api` e `zelafix-worker`), persistência relacional no Oracle Database 11g/19c/23c com Spring Data JPA em 3FN (`citizenTech.ddl`, 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento de schema com Flyway Migrations (V1, V2, V3 com imagens BLOB reais via `DBMS_LOB.WRITEAPPEND`), segurança stateless com Spring Security e par de chaves RSA Nimbus JWT, controle de acesso baseado em papéis (RBAC: CIDADAO, GESTOR e ADMIN), mensageria assíncrona gerenciada com RabbitMQ / CloudAMQP (Direct Exchange `zelafix.direct`), triagem multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **DeferredResult (`TriagemPendenteStore`)** com recusa de imagem fora de escopo sem persistência, estratégia **Fail-Fast** imediata e fallback gracioso de contingência `PENDENTE`, persistência com histórico duplo conectado via `saveAll`, agregador de votos com buffer thread-safe (`ConcurrentHashMap` - Padrão Paredão), containerização otimizada com Docker multi-stage build (Temurin 21 alpine com usuário não-root `appuser:appgroup`), esteira de CI/CD automatizada no Azure DevOps (`azure-pipelines.yml`) com espelhamento contínuo GitHub Actions e proteção estrita de branch na main (`TF402455`) com Pull Requests de homologação.
 
 ---
 
@@ -62,7 +62,7 @@
     ├── 📄 [PBI-19] Integração com LLM Multimodal via Spring AI, Tool Calling Normativo e Validação de Escopo/Limites UTF-8 (3 pts) [AB#193]
     ├── 📄 [PBI-20] Triagem Assíncrona via DeferredResult (TriagemPendenteStore), Persistência Pós-IA (EM_ANALISE) e Recusa sem Gravação (3 pts) [AB#194]
     ├── 📄 [PBI-21] Expansão de Domínio 13 Tabelas (Prioridade e OrgaoGoverno), Filtros de Localização e Limpeza de Endpoints/DTOs/Segurança (3 pts) [AB#195]
-    └── 📄 [PBI-22] Resiliência com @Retryable e RabbitMQ Requeue, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona (3 pts) [AB#196]
+    └── 📄 [PBI-22] Resiliência com Fail-Fast na IA, Fallback de Contingência, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona (3 pts) [AB#196]
 ```
 
 ---
@@ -92,7 +92,7 @@
 | **[FEATURE 06] Spring AI, DeferredResult & Resiliência** | **PBI-19** | Integração com LLM Multimodal via Spring AI, Tool Calling Normativo e Validação de Escopo/Limites UTF-8 | 3 pts | 1 - Critical | 7.5h | **#193** |
 | | **PBI-20** | Triagem Assíncrona via DeferredResult (TriagemPendenteStore), Persistência Pós-IA (EM_ANALISE) e Recusa sem Gravação | 3 pts | 1 - Critical | 8.0h | **#194** |
 | | **PBI-21** | Expansão de Domínio 13 Tabelas (Prioridade e OrgaoGoverno), Filtros de Localização e Limpeza de Endpoints/DTOs/Segurança | 3 pts | 1 - Critical | 7.0h | **#195** |
-| | **PBI-22** | Resiliência com @Retryable e RabbitMQ Requeue, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona | 3 pts | 1 - Critical | 6.5h | **#196** |
+| | **PBI-22** | Resiliência com Fail-Fast na IA, Fallback de Contingência, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona | 3 pts | 1 - Critical | 6.5h | **#196** |
 | **TOTAL CONSOLIDADO** | **6 Features** | **22 Product Backlog Items (PBIs)** | **66 pts** | — | **155.0h** | — |
 
 ---
@@ -112,7 +112,7 @@
 * **Effort (Story Points):** `66`
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Description:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Opção A da Global Solution), composta pela API REST Gateway (`zelafix-api`) e pelo Worker de processamento assíncrono (`zelafix-worker`) estruturados no padrão corporativo **Gradle Multi-Project**. Contempla banco de dados relacional Oracle 11g/19c/23c em Terceira Forma Normal (3FN — 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento com Flyway (V1, V2, V3 com imagens BLOB reais), autenticação via tokens JWT assinados por par de chaves RSA assimétricas, controle de acesso RBAC, mensageria com RabbitMQ / CloudAMQP (Exchange `zelafix.direct` e filas duráveis), triagem inteligente multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **`DeferredResult` (`TriagemPendenteStore`)** com validação de escopo e recusa sem persistência no Oracle, resiliência `@Retryable`, agregador de votos comunitários em buffer de memória thread-safe (Padrão Paredão), documentação OpenAPI 3.0 / Swagger UI, containerização multi-stage build com Docker (Temurin 21 alpine com usuário não-root) e esteira de CI/CD completa no Azure DevOps (`azure-pipelines.yml`) com espelhamento GitHub Actions e proteção de branch na main (`TF402455`).
+* **Description:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Opção A da Global Solution), composta pela API REST Gateway (`zelafix-api`) e pelo Worker de processamento assíncrono (`zelafix-worker`) estruturados no padrão corporativo **Gradle Multi-Project**. Contempla banco de dados relacional Oracle 11g/19c/23c em Terceira Forma Normal (3FN — 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento com Flyway (V1, V2, V3 com imagens BLOB reais), autenticação via tokens JWT assinados por par de chaves RSA assimétricas, controle de acesso RBAC, mensageria com RabbitMQ / CloudAMQP (Exchange `zelafix.direct` e filas duráveis), triagem inteligente multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **`DeferredResult` (`TriagemPendenteStore`)** com validação de escopo e recusa sem persistência no Oracle, estratégia **Fail-Fast** imediata e fallback gracioso de contingência `PENDENTE`, persistência com histórico duplo conectado via `saveAll`, agregador de votos comunitários em buffer de memória thread-safe (Padrão Paredão), documentação OpenAPI 3.0 / Swagger UI, containerização multi-stage build com Docker (Temurin 21 alpine com usuário não-root) e esteira de CI/CD completa no Azure DevOps (`azure-pipelines.yml`) com espelhamento GitHub Actions e proteção de branch na main (`TF402455`).
 
 ---
 
@@ -766,12 +766,12 @@
 * **Effort (Story Points):** `12`
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: integração do Spring AI com provedor de LLM Multimodal (OpenAI API Standard), otimização de imagens para redução de tokens (`<= 768px` JPEG), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE`), recusa sem gravação e propagação de falhas de triagem (`TriagemIndisponivelException`), expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e resiliência com `@Retryable` (`AbortOnClientErrorPredicate` para 4xx/429), isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
+* **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: integração do Spring AI com provedor de LLM Multimodal (OpenAI API Standard), otimização de imagens para redução de tokens (`<= 768px` JPEG), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE` com histórico duplo conectado via `saveAll`), recusa sem gravação e propagação de falhas de triagem (`TriagemIndisponivelException`), expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e estratégia Fail-Fast na IA com fallback de contingência (`PENDENTE`), isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
 * **Acceptance Criteria:**
   - [x] Worker IA integrado a provedor de LLM Multimodal via Spring AI (`temperature=0.1`), com `ImageMimeTypeDetector.redimensionarParaIa()` (`<= 768px` JPEG), `TriagemNormativaTools` (`@Tool consultarNormaMunicipal` e `calcularPrazoSla`), validação de schema e truncamento UTF-8 para Oracle.
-  - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 60s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE`), retornando `400 Bad Request` quando recusado pela IA e propagando falhas críticas do worker via `TriagemIndisponivelException` (`503`).
+  - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 60s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE` com histórico duplo conectado via `saveAll`: `PENDENTE` de criação e `EM_ANALISE` triado), retornando `400 Bad Request` quando recusado pela IA e propagando falhas críticas do worker via `TriagemIndisponivelException` (`503`).
   - [x] Domínio expandido para 13 tabelas com `Prioridade` e `OrgaoGoverno`, filtros dinâmicos de localização (`cidade`, `bairro`, `estado`, `busca`, `apenasMeus`) e remoção de controllers/DTOs redundantes (`CategoriaController`, `StatusController`, `LoginRequest`, `LoginResponse`, `ChamadoCreateRequest`, `RecusaIaResponse`).
-  - [x] Resiliência garantida com `@Retryable` (backoff exponencial + jitter e `AbortOnClientErrorPredicate` abortando retries em erros 4xx/429), retry controlado no RabbitMQ, chaves `@Cacheable` isoladas e tratamento de `AsyncRequestNotUsableException`, `AsyncRequestTimeoutException` e `TriagemIndisponivelException`.
+  - [x] Resiliência e baixa latência garantidas com estratégia Fail-Fast imediata no LLM (eliminando retries lentos e acionando contingência `PENDENTE` instantaneamente), retry controlado no RabbitMQ, chaves `@Cacheable` isoladas e tratamento de `AsyncRequestNotUsableException`, `AsyncRequestTimeoutException` e `TriagemIndisponivelException`.
 
 #### 🔹 [PBI-19] Integração com LLM Multimodal via Spring AI, Tool Calling Normativo e Validação de Escopo/Limites UTF-8
 * **Work Item Type:** `Product Backlog Item`
@@ -823,7 +823,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `TriagemPendenteStore` gerenciando `ConcurrentHashMap<String, DeferredResult<ChamadoResponse>>` com `correlationId` UUID e timeout de `60_000ms` (`concluir` / `rejeitar`).
 - [x] `POST /chamados` recebendo `multipart/form-data` (`EnderecoRequest` + `foto`), validando magic bytes com `ImageMimeTypeDetector.isImagemSuportada()` e aguardando `ChamadoTriagemFeedbackConsumer`.
-- [x] Quando aprovado pela IA, `ChamadoService.aplicarTriagemIa()` grava chamado, voto automático inicial do autor e histórico inicial com status `EM_ANALISE` (removendo `ABERTO` do enum e migrations); em caso de contingência da IA, grava em `PENDENTE`.
+- [x] Quando aprovado pela IA, `ChamadoService.aplicarTriagemIa()` grava chamado, voto automático inicial do autor e histórico duplo conectado via `saveAll`: `PENDENTE` inicial (abertura pelo cidadão via aplicativo) e `EM_ANALISE` (triagem automática da IA concluída); em caso de contingência da IA, grava com status `PENDENTE`.
 - [x] Quando recusado pela IA (`recusado = true`), `TriagemPendenteStore.rejeitar()` dispara `IllegalArgumentException` (HTTP `400 Bad Request`) sem inserir registros no Oracle.
 - [x] Quando o worker reporta falha explícita (`TriagemFeedbackMessage.erro()`), `ChamadoTriagemFeedbackConsumer` aciona `TriagemPendenteStore.falhar()` propagando `TriagemIndisponivelException` ao `DeferredResult` sem persistência parcial.
 
@@ -871,22 +871,22 @@
 
 ---
 
-#### 🔹 [PBI-22] Resiliência com @Retryable e RabbitMQ Requeue, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona
+#### 🔹 [PBI-22] Resiliência com Fail-Fast na IA, Fallback de Contingência, Cache Isolado e Tratamento de Timeout/Desconexão Assíncrona
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#196`
 * **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Resilience, Retryable, Cache, ExceptionHandler`
+* **Tags:** `JavaAdvanced, Resilience, FailFast, Cache, ExceptionHandler`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de confiabilidade (SRE),  
-> **Eu quero** blindar as chamadas ao provedor de LLM Multimodal com `@Retryable` (backoff exponencial + jitter), configurar retry controlado no RabbitMQ, isolar chaves de cache e tratar timeouts/desconexões assíncronas,  
-> **Para que** falhas transitórias de rede, colisões de cache ou quedas prematuras de cliente não gerem falsos erros 500 nem loops infinitos de fila.
+> **Eu quero** blindar as chamadas ao provedor de LLM Multimodal com arquitetura Fail-Fast (sem retries no LLM síncrono para garantir tempos de resposta de 3s a 5s no app mobile e acionar contingência graciosa PENDENTE instantaneamente em caso de falha), configurar retry controlado no RabbitMQ, isolar chaves de cache e tratar timeouts/desconexões assíncronas,  
+> **Para que** falhas transitórias de rede, indisponibilidade de LLM ou quedas prematuras de cliente não gerem falsos erros 500, timeouts para o munícipe nem loops infinitos de fila.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `@EnableResilientMethods` em `ZelaFixWorkerApplication` e `@Retryable(maxRetries = 2, delay = 500, jitter = 150, multiplier = 2, maxDelay = 2_000, predicate = AbortOnClientErrorPredicate.class)` em `ZelaFixAiService.analisarChamado()` com `spring.ai.retry.max-attempts=1`, abortando retries imediatamente em erros `4xx`/`429` (`NonTransientAiException` / `HttpClientErrorException`) e aplicando contingência `PENDENTE` imediata no `ChamadoAiConsumer`.
+- [x] Estratégia Fail-Fast imediata em `ZelaFixAiService.analisarChamado()` com `spring.ai.retry.max-attempts=1` (eliminando `@Retryable` e `@EnableResilientMethods` para evitar latências humanas abusivas no app mobile) e aplicando contingência `PENDENTE` imediata no `ChamadoAiConsumer`.
 - [x] Listeners RabbitMQ configurados com `retry.enabled=true`, `retry.multiplier=2.0`, `default-requeue-rejected=false`, ajuste de timeouts (`read-timeout=40s`) e limpeza de propriedades/secrets redundantes em `application.properties`, `.env.example` e `azure-pipelines.yml`.
 - [x] Isolamento de chaves `@Cacheable` em `CategoriaService` e `StatusService` (`findAll` vs `findByNome`) evitando `ClassCastException`.
 - [x] `GlobalExceptionHandler` ignorando desconexão prematura de cliente (`AsyncRequestNotUsableException` / `ClientAbortException`), retornando HTTP `504 Gateway Timeout` em `AsyncRequestTimeoutException` e HTTP `503 Service Unavailable` em `TriagemIndisponivelException`.
