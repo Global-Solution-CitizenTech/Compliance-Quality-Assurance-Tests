@@ -22,9 +22,9 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 ## 2. Ambientes, Perfis Seeded e Enums Oficiais
 
 ### 2.1 Endpoints de Referência
-- **API Java (`zelafix-api`):** Local `http://localhost:8080` | Cloud (Render) `https://zelafix-api.onrender.com`
-- **ZelaBot AI (`deploy_zelafixai_render`):** Local `http://localhost:8000` | Cloud (Render) `https://zelafix-ai.onrender.com`
-- **Worker Spring AI (`zelafix-worker`):** Assíncrono via RabbitMQ (`zelafix.chamados.triagem.queue` -> `zelafix.chamados.feedback.queue`), utilizando `ZelaFixAiService` + `TriagemNormativaTools`
+- **API Java (`zelafix-api`):** Local `http://localhost:8080` | Cloud (Azure App Service) `https://app-zelafix.azurewebsites.net`
+- **ZelaBot AI (`deploy_zelafixai_render`):** Local `http://localhost:8000` | Cloud (Render) `https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`
+- **Worker Spring AI (`zelafix-worker`):** Assíncrono via RabbitMQ (`chamado.triagem.queue` -> `chamado.triagem-feedback.queue`, além de `chamado.voto.queue` -> `chamado.prioridade-escalada.queue`), utilizando `ZelaFixAiService` + `TriagemNormativaTools`
 
 ### 2.2 Contas Semeadas para QA (Flyway `V2__admin_inicial.sql` e `V3__dados_iniciais_zelafix.sql`)
 - **ADMIN:** `admin@zelafix.com.br` (perfil administrativo global)
@@ -33,10 +33,10 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 
 ### 2.3 Contrato de Enums (Oracle DDL / Flyway / Java / MongoDB)
 - **`CargoUsuario`:** `CIDADAO`, `GESTOR`, `ADMIN`
-- **`CategoriaEnum`:** `BURACO`, `ILUMINACAO`, `LIXO`, `ALAGAMENTO`, `SEMAFORO`, `CALCADA`, `ARVORE`, `OUTROS`
-- **`StatusChamadoEnum`:** `EM_ANALISE`, `EM_EXECUCAO`, `RESOLVIDO`, `REJEITADO`, `PENDENTE` *(sem estado `ABERTO`)*
+- **`CategoriaEnum`:** `ILUMINACAO_PUBLICA`, `VIAS_E_PAVIMENTACAO`, `DRENAGEM_E_ESGOTO`, `LIMPEZA_URBANA`, `ARVORES_E_PARQUES`, `SINALIZACAO_E_TRANSITO`
+- **`StatusChamadoEnum`:** `PENDENTE`, `EM_ANALISE`, `EM_EXECUCAO`, `CONCLUIDO`, `REJEITADO` *(sem estado `ABERTO`)*
 - **`PrioridadeEnum`:** `BAIXA`, `MEDIA`, `ALTA`, `URGENTE`
-- **`OrgaoGovernoEnum`:** `CET`, `SABESP`, `ENEL`, `SPTRANS`, `SUBPREFEITURA`, `BOMBEIROS`, `DEFESA_CIVIL`, `VERDE_MEIO_AMBIENTE`, `ILUME`, `LIMPEZA_URBANA`
+- **`OrgaoGovernoEnum`:** `SECRETARIA_OBRAS`, `CET_TRANSITO`, `ILUMINACAO_PUBLICA`, `DEFESA_CIVIL`, `SUBPREFEITURA`, `SANEAMENTO_BASICO`
 
 ---
 
@@ -60,7 +60,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 | **TC-02** | `#137` | `api-auth-rbac` | P1 | Negativo | `POST /login` | 02. Autenticação & RBAC (02.4–02.5) |
 | **TC-03** | `#139` | `api-auth-rbac` | P1 | Negativo | `GET /usuarios, POST /enderecos, POST /chamados, PATCH /chamados/{id}/status` | 02. Autenticação & RBAC (02.6) |
 | **TC-04** | `#140` | `api-auth-rbac` | P1 | Negativo | `GET /usuarios/me, GET /chamados` | 02. Autenticação & RBAC (02.7) |
-| **TC-05** | `#141` | `api-auth-rbac` | P1 | Negativo | `GET /actuator/metrics, GET /usuarios, PATCH /usuarios/{id}/cargo, POST /enderecos, POST /chamados/ia/feedback` | 02. Autenticação & RBAC / 03. Usuários / 04. Endereços (02.8, 03.7, 03.12, 04.1) |
+| **TC-05** | `#141` | `api-auth-rbac` | P1 | Negativo | `GET /actuator/metrics, GET /usuarios, PATCH /usuarios/{id}/cargo, POST /enderecos` | 02. Autenticação & RBAC / 03. Usuários / 04. Endereços (02.8, 03.7, 03.12, 04.1) |
 | **TC-06** | `#142` | `api-auth-rbac` | P1 | Negativo | `PATCH /chamados/{id}/status, DELETE /chamados/{id}` | 05. Chamados / 06. Teardown & Limpeza (05.11, 06.1) |
 | **TC-07** | `#145` | `api-usuarios-enderecos` | P1 | Positivo | `POST /usuarios, POST /login, PUT /usuarios/me` | 03. Usuários (/usuarios) (03.1, 03.4–03.6) |
 | **TC-08** | `#147` | `api-usuarios-enderecos` | P1 | Negativo | `POST /usuarios` | 03. Usuários (/usuarios) (03.2–03.3) |
@@ -74,7 +74,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 | **TC-16** | `#161` | `api-chamados` | P1 | Positivo | `GET /chamados, GET /chamados/{id}, GET /chamados/estatisticas` | 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.5–05.7, 05.16) |
 | **TC-17** | `#163` | `api-chamados` | P1 | Positivo | `PUT /chamados/{id}, POST /chamados/{id}/apoiar, PATCH /chamados/{id}/status` | 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.10, 05.12–05.15) |
 | **TC-18** | `#166` | `api-chamados` | P1 | Positivo | `DELETE /chamados/{id}, GET /chamados/{id}, DELETE /usuarios/me` | 06. Teardown & Limpeza (06.2–06.4) |
-| **TC-19** | `#124` | `ai-service` | P1 | Positivo | `POST /chamados, RabbitMQ zelafix.chamados.triagem.queue -> zelafix.chamados.feedback.queue` | 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) |
+| **TC-19** | `#124` | `ai-service` | P1 | Positivo | `POST /chamados, RabbitMQ chamado.triagem.queue -> chamado.triagem-feedback.queue` | 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) |
 | **TC-20** | `#126` | `ai-service` | P1 | Negativo | `POST /chamados, TriagemPendenteStore, GET /chamados/estatisticas` | 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.4) |
 | **TC-21** | `#127` | `ai-service` | P1 | Positivo | `POST /ai/chat, POST /ai/chat/public` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
 | **TC-22** | `#128` | `ai-service` | P1 | Positivo | `POST /ai/chat` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
@@ -158,7 +158,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 
 - **Azure Test Case ID:** `#141` | **Plan/Suite:** `#132` / `#133` (`api-auth-rbac`) | **Tipo:** `Negativo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `RBAC`, `Negative`
-- **Cobertura / Endpoints:** 02. Autenticação & RBAC / 03. Usuários / 04. Endereços (02.8, 03.7, 03.12, 04.1) (`GET /actuator/metrics, GET /usuarios, PATCH /usuarios/{id}/cargo, POST /enderecos, POST /chamados/ia/feedback`)
+- **Cobertura / Endpoints:** 02. Autenticação & RBAC / 03. Usuários / 04. Endereços (02.8, 03.7, 03.12, 04.1) (`GET /actuator/metrics, GET /usuarios, PATCH /usuarios/{id}/cargo, POST /enderecos`)
 - **Objetivo:** Validar restrições @PreAuthorize('hasRole("ADMIN")') e SecurityConfig para rotas administrativas.
 - **Pré-condições:** Token JWT válido do perfil CIDADAO.
 - **Dados de Entrada / Payload:** Requisições autenticadas como CIDADAO para GET /enderecos, GET /usuarios, PATCH /usuarios/2/cargo e GET /actuator/metrics.
@@ -397,7 +397,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 
 - **Azure Test Case ID:** `#124` | **Plan/Suite:** `#122` / `#123` (`ai-service`) | **Tipo:** `Positivo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `WorkerAI`, `RabbitMQ`
-- **Cobertura / Endpoints:** 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) (`POST /chamados, RabbitMQ zelafix.chamados.triagem.queue -> zelafix.chamados.feedback.queue`)
+- **Cobertura / Endpoints:** 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) (`POST /chamados, RabbitMQ chamado.triagem.queue -> chamado.triagem-feedback.queue`)
 - **Objetivo:** Validar o pipeline reativo zelafix-api -> RabbitMQ (chamado.triagem.queue) -> zelafix-worker (ZelaFixAiService + TriagemNormativaTools @Tool com Fail-Fast) -> chamado.triagem-concluida.queue com classificação nos enums oficiais, proteção de limites UTF-8 do Oracle e persistência com histórico duplo.
 - **Pré-condições:** zelafix-api, RabbitMQ e zelafix-worker conectados com Provedor de LLM Multimodal ativo; foto válida de ocorrência urbana.
 - **Dados de Entrada / Payload:** POST /chamados multipart com foto real de buraco/lixo/poste/alagamento em via pública.
