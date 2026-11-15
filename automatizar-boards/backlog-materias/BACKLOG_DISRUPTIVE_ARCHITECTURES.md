@@ -12,7 +12,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI ➔ Task)  
-> **Diretrizes Estratégicas:** Microsserviço em Python (FastAPI) publicado no Render Cloud integrando **Azure AI Foundry** (`phi-4-multimodal` e `embed-v-4-0`), **RAG Normativo PMSP** no **ChromaDB** (31 chunks em 8 módulos), histórico multi-turno em **SQLite WAL**, leitura em tempo real no **Oracle FIAP** (modo Thin somente `SELECT`) via **Tool Calling ReAct nativo**, análise visual computacional Base64 e priorização por engajamento comunitário **IoB (+1)** com guardrails LGPD.
+> **Diretrizes Estratégicas:** Microsserviço em Python (FastAPI) publicado no Render Cloud integrando **Azure AI Foundry** (`gpt-5-nano` e `embed-v-4-0`), **RAG Normativo PMSP** no **ChromaDB** (31 chunks em 8 módulos), histórico multi-turno em **SQLite WAL**, leitura em tempo real no **Oracle FIAP** (modo Thin somente `SELECT`) via **Tool Calling ReAct nativo**, análise visual computacional Base64 e priorização por engajamento comunitário **IoB (+1)** com guardrails LGPD.
 
 ---
 
@@ -38,8 +38,8 @@
 │   ├── 🔹 [PBI-02] Base Normativa PMSP (31 Chunks em 8 Módulos), ChromaDB HNSW e Persistência Multi-turno SQLite WAL [AB#61] (5 pts)
 │   └── 🔹 [PBI-03] Recuperação Híbrida (Embeddings embed-v-4-0 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões [AB#186] (3 pts)
 │
-├── 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry (phi-4-multimodal), ZelaBot e Visão Computacional Urbana [AB#62]
-│   ├── 🔹 [PBI-04] Pipeline Generativo em Azure AI Foundry Único (phi-4-multimodal e embed-v-4-0) sem Fallbacks [AB#63] (5 pts)
+├── 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry (gpt-5-nano), ZelaBot e Visão Computacional Urbana [AB#62]
+│   ├── 🔹 [PBI-04] Pipeline Generativo em Azure AI Foundry Único (gpt-5-nano e embed-v-4-0) sem Fallbacks [AB#63] (5 pts)
 │   ├── 🔹 [PBI-05] Chat Cidadão ZelaBot (POST /ai/chat) com JSON Estruturado, IoB e Guardrails LGPD [AB#64] (5 pts)
 │   └── 🔹 [PBI-06] Laudo Técnico de Triagem (POST /ai/triagem), Visão Computacional Multimodal e Insights por Bairro [AB#187] (3 pts)
 │
@@ -61,14 +61,14 @@
 | **Feature 01** `[AB#59]` | **PBI-01** | Estrutura Modular FastAPI, Schemas Pydantic v2, Health Checks e Deploy em Nuvem Render | **#60** | 3 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-02** | Base Normativa PMSP (31 Chunks em 8 Módulos), ChromaDB HNSW e Persistência Multi-turno SQLite WAL | **#61** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-03** | Recuperação Híbrida (Embeddings `embed-v-4-0` 1536D + Reranking Lexical) e Endpoints RAG/Histórico/Sessões | **#186** | 3 pts | 1 - Critical | 100 | 1 | Committed |
-| **Feature 02** `[AB#62]` | **PBI-04** | Pipeline Generativo em Azure AI Foundry Único (`phi-4-multimodal` e `embed-v-4-0`) sem Fallbacks | **#63** | 5 pts | 1 - Critical | 100 | 4 | Committed |
+| **Feature 02** `[AB#62]` | **PBI-04** | Pipeline Generativo em Azure AI Foundry Único (`gpt-5-nano` e `embed-v-4-0`) sem Fallbacks | **#63** | 5 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-05** | Chat Cidadão ZelaBot (`POST /ai/chat`) com JSON Estruturado, IoB e Guardrails LGPD | **#64** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-06** | Laudo Técnico de Triagem (`POST /ai/triagem`), Visão Computacional Multimodal e Insights por Bairro | **#187** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | **Feature 03** `[AB#65]` | **PBI-07** | Cliente Oracle `oracledb` Modo Thin (`SELECT` em `CHAMADOS`/`CATEGORIAS`/`APOIADORES`), BLOB e Segurança de Credenciais | **#66** | 5 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-08** | Tool Calling Nativo ReAct (`consultar_chamados_oracle` e `calcular_prazo_sla`) e Endpoints `/ai/chamados` | **#188** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | **Feature 04** `[AB#185]` | **PBI-09** | Suítes Automatizadas (`test_knowledge_coverage`, `test_zelafix_scenarios`, `stress_test_zelafix`) e Demo `run_qa_demo.py` | **#189** | 5 pts | 2 - High | 80 | 5 | Committed |
-| | **PBI-10** | Especificação `AGENT.md`, Documentação `README.md` com Diagramas ASCII, URLs de Produção e Manifesto | **#190** | 3 pts | 2 - High | 80 | 5 | Committed |
-| **TOTAL CONSOLIDADO** | **4 Features** | **10 PBIs (15 Work Items no Azure Boards)** | **`#58`..`#66`, `#185`..`#190`** | **40 pts** | — | — | **32 commits** | **100% Sincronizado** |
+| | **PBI-10** | Especificação `AGENT.md`, Documentação `README.md` com Diagramas ASCII, URLs de Produção e Manifesto | **#190** | 3 pts | 2 - High | 80 | 6 | Committed |
+| **TOTAL CONSOLIDADO** | **4 Features** | **10 PBIs (15 Work Items no Azure Boards)** | **`#58`..`#66`, `#185`..`#190`** | **40 pts** | — | — | **34 commits** | **100% Sincronizado** |
 
 ---
 
@@ -90,11 +90,11 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `40`
 * **Business Value:** `100`
-* **Description:** Desenvolvimento e refatoração do microsserviço inteligente **ZelaFix AI** (Python + FastAPI) integrado ao ecossistema CitizenTech, combinando **Azure AI Foundry** (`phi-4-multimodal` para chat estruturado/visão computacional e `embed-v-4-0` para embeddings semânticos 1536D), banco vetorial **ChromaDB** com 31 chunks normativos municipais PMSP em 8 módulos, histórico multi-turno em **SQLite WAL**, consulta somente leitura ao **Oracle FIAP** via Tool Calling ReAct nativo e engajamento comunitário **IoB (+1)**, publicado em produção no Render Cloud.
+* **Description:** Desenvolvimento e refatoração do microsserviço inteligente **ZelaFix AI** (Python + FastAPI) integrado ao ecossistema CitizenTech, combinando **Azure AI Foundry** (`gpt-5-nano` para chat estruturado/visão computacional e `embed-v-4-0` para embeddings semânticos 1536D), banco vetorial **ChromaDB** com 31 chunks normativos municipais PMSP em 8 módulos, histórico multi-turno em **SQLite WAL**, consulta somente leitura ao **Oracle FIAP** via Tool Calling ReAct nativo e engajamento comunitário **IoB (+1)**, publicado em produção no Render Cloud.
 * **Acceptance Criteria:**
   - [x] Microsserviço FastAPI modular em `deploy_zelafixai_render/` com entrypoint `main.py` e deploy em produção ativo no Render.
   - [x] Base normativa municipal PMSP indexada no ChromaDB (HNSW cosseno 1536D) com `embed-v-4-0` e reranking híbrido lexical.
-  - [x] Motor cognitivo único em Azure AI Foundry (`phi-4-multimodal`) sem modelos fallback legados, cobrindo `/ai/chat`, `/ai/triagem` (com visão Base64) e `/ai/insights`.
+  - [x] Motor cognitivo único em Azure AI Foundry (`gpt-5-nano`) sem modelos fallback legados, cobrindo `/ai/chat`, `/ai/triagem` (com visão Base64) e `/ai/insights`.
   - [x] Cliente Oracle FIAP em modo Thin (somente `SELECT`) com Tool Calling nativo ReAct e sanitização LGPD.
   - [x] Suíte automatizada de 82 verificações (RAG, cenários E2E e stress adversarial) aprovada com 100% de cobertura.
 
@@ -145,7 +145,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Entrypoint dual (`deploy_zelafixai_render/main.py` e `api.py`) compatível com `uvicorn main:app` no Render Cloud.
 - [x] Routers desacoplados em `src/routers/health.py` e `src/routers/ai.py` com schemas validados em `src/schemas/`.
-- [x] Endpoints `/`, `/health` e `/health/ready` informando modelo ativo (`phi-4-multimodal`), embeddings (`embed-v-4-0`) e status do ChromaDB.
+- [x] Endpoints `/`, `/health` e `/health/ready` informando modelo ativo (`gpt-5-nano`), embeddings (`embed-v-4-0`) e status do ChromaDB.
 - [x] Remoção de estruturas legadas de hardware Wokwi/MQTT e endurecimento de `.gitignore` para conformidade.
 
 ##### Commits vinculados (GitHub Repository):
@@ -217,12 +217,12 @@
 
 ---
 
-### 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry (phi-4-multimodal), ZelaBot e Visão Computacional Urbana
+### 🏆 [FEATURE 02] Motor Cognitivo Azure AI Foundry (gpt-5-nano), ZelaBot e Visão Computacional Urbana
 
 * **Work Item Type:** `Feature`
 * **Azure Boards ID:** `#62`
 * **Parent:** `[EPIC] Disruptive Architectures: Microsserviço ZelaFix AI (Azure AI Foundry, RAG Semântico, Tool Calling Oracle & Visão Computacional)` (`#58`)
-* **Title:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (phi-4-multimodal), ZelaBot e Visão Computacional Urbana`
+* **Title:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (gpt-5-nano), ZelaBot e Visão Computacional Urbana`
 * **State:** `In Progress`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DisruptiveArchitectures`
@@ -232,20 +232,20 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `13`
 * **Business Value:** `100`
-* **Description:** Orquestração de IA generativa exclusivamente no Azure AI Foundry utilizando `phi-4-multimodal` para chat cidadão estruturado (`/ai/chat`), laudo técnico de triagem com visão computacional Base64 (`/ai/triagem`), diagnósticos preventivos por bairro (`/ai/insights`), sinais IoB (+1) e guardrails LGPD.
+* **Description:** Orquestração de IA generativa exclusivamente no Azure AI Foundry utilizando `gpt-5-nano` para chat cidadão estruturado (`/ai/chat`), laudo técnico de triagem com visão computacional Base64 (`/ai/triagem`), diagnósticos preventivos por bairro (`/ai/insights`), sinais IoB (+1) e guardrails LGPD.
 * **Acceptance Criteria:**
-  - [x] Integração direta ao Azure AI Foundry (`FoundryService`) utilizando apenas `phi-4-multimodal` e `embed-v-4-0`, sem fallback de provedores legados.
+  - [x] Integração direta ao Azure AI Foundry (`FoundryService`) utilizando apenas `gpt-5-nano` e `embed-v-4-0`, sem fallback de provedores legados.
   - [x] Chat ZelaBot em JSON estruturado com `resposta`, `categoria`, `urgencia` e `acoes_recomendadas` contextuais.
   - [x] Triagem multimodal de ocorrências com enquadramento legal PMSP, SLA, checklist operacional e validação visual de evidências em Base64.
 
 ---
 
-#### 🔹 [PBI-04] Pipeline Generativo em Azure AI Foundry Único (phi-4-multimodal e embed-v-4-0) sem Fallbacks
+#### 🔹 [PBI-04] Pipeline Generativo em Azure AI Foundry Único (gpt-5-nano e embed-v-4-0) sem Fallbacks
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#63`
-* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (phi-4-multimodal), ZelaBot e Visão Computacional Urbana` (`#62`)
-* **Title:** `[PBI-04] Pipeline Generativo em Azure AI Foundry Único (phi-4-multimodal e embed-v-4-0) sem Fallbacks`
+* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (gpt-5-nano), ZelaBot e Visão Computacional Urbana` (`#62`)
+* **Title:** `[PBI-04] Pipeline Generativo em Azure AI Foundry Único (gpt-5-nano e embed-v-4-0) sem Fallbacks`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
 * **Tags:** `DisruptiveArchitectures`
@@ -256,7 +256,7 @@
 
 ##### Descrição (História de Usuário)
 > **Como** engenheiro de IA,  
-> **Eu quero** centralizar toda inferência generativa e geração de embeddings exclusivamente no Azure AI Foundry via `FoundryService` usando apenas `phi-4-multimodal` e `embed-v-4-0`,  
+> **Eu quero** centralizar toda inferência generativa e geração de embeddings exclusivamente no Azure AI Foundry via `FoundryService` usando apenas `gpt-5-nano` e `embed-v-4-0`,  
 > **Para que** a plataforma opere com modelo único multimodal econômico, previsível e livre de complexidade de fallbacks legados.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
@@ -269,6 +269,7 @@
 - [`1c23ffd`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/1c23ffd) — `feat(api): implement multiprovider generative AI services (Groq/Gemini-3.5) and REST endpoints` *(vinculado em AB#63)*
 - [`ba95048`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/ba95048) — `feat(ai): migracao para Groq Multimodal Qwen 3.8 27B com visao computacional e remocao do Gemini` *(vinculado em AB#63)*
 - [`162c4a5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/162c4a5) — `refactor(foundry): replace Groq and local hash embeddings with Azure AI Foundry` *(vinculado em AB#63)*
+- [`e754b84`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e754b84) — `refactor(ai): atualizar modelo padrao para gpt-5-nano e aprimorar contingencia normativa` *(vinculado em AB#63)*
 
 ---
 
@@ -276,7 +277,7 @@
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#64`
-* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (phi-4-multimodal), ZelaBot e Visão Computacional Urbana` (`#62`)
+* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (gpt-5-nano), ZelaBot e Visão Computacional Urbana` (`#62`)
 * **Title:** `[PBI-05] Chat Cidadão ZelaBot (POST /ai/chat) com JSON Estruturado, IoB e Guardrails LGPD`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -308,7 +309,7 @@
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#187`
-* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (phi-4-multimodal), ZelaBot e Visão Computacional Urbana` (`#62`)
+* **Parent Feature:** `[FEATURE 02] Motor Cognitivo Azure AI Foundry (gpt-5-nano), ZelaBot e Visão Computacional Urbana` (`#62`)
 * **Title:** `[PBI-06] Laudo Técnico de Triagem (POST /ai/triagem), Visão Computacional Multimodal e Insights por Bairro`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`
@@ -325,7 +326,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `POST /ai/triagem` retornando categoria, urgência, órgão responsável, SLA normativo, checklist técnico de vistoria e parecer técnico sintético (`<= 150` caracteres).
-- [x] Análise visual multimodal nativa em `phi-4-multimodal` identificando coerência da foto Base64 com o relato urbano sem rebaixamentos artificiais.
+- [x] Análise visual multimodal nativa em `gpt-5-nano` identificando coerência da foto Base64 com o relato urbano sem rebaixamentos artificiais.
 - [x] `POST /ai/insights` consolidando diagnósticos e alertas preventivos comunitários por bairro via ODS 11.
 
 ##### Commits vinculados (GitHub Repository):
@@ -495,7 +496,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `README.md` padronizado no padrão CitizenTech com URL de produção no Render, Swagger `/docs` e links de saúde/telemetria.
-- [x] `AGENT.md` especificando arquitetura Foundry, modelos ativos (`phi-4-multimodal`, `embed-v-4-0`), regras operacionais e estrutura de diretórios.
+- [x] `AGENT.md` especificando arquitetura Foundry, modelos ativos (`gpt-5-nano`, `embed-v-4-0`), regras operacionais e estrutura de diretórios.
 - [x] Manifesto formal `ENTREGA_GS_2026_2.txt` atualizado em sincronia com a entrega final da Global Solution.
 
 ##### Commits vinculados (GitHub Repository):
@@ -504,3 +505,4 @@
 - [`c1735b5`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/c1735b5) — `docs(readme): add live Render production URL, Swagger and telemetry links` *(vinculado em AB#190)*
 - [`efc0648`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/efc0648) — `docs(ai): padronizar README e remover secoes de edital` *(vinculado em AB#190)*
 - [`f3f9526`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/f3f9526) — `docs: update README and AGENT specs for Azure AI Foundry` *(vinculado em AB#190)*
+- [`7f6c1f8`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/7f6c1f8) — `docs: alinhar AGENT e README com modelo gpt-5-nano e especificacao de deploy` *(vinculado em AB#190)*
