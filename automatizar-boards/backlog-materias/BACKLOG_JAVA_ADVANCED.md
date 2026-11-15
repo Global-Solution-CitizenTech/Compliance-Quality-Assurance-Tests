@@ -49,7 +49,7 @@
 ├── 🏆 [FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários [AB#25]
 │   ├── 📄 [PBI-11] Mensageria Assíncrona com RabbitMQ (Direct Exchange, Filas e Produtores de Eventos na API) (3 pts) [AB#116]
 │   ├── 📄 [PBI-12] Microsserviço Worker com Triagem Multimodal via Spring AI / LLM (Urgência e Parecer) (3 pts) [AB#117]
-│   ├── 📄 [PBI-13] Agregador de Votos em Memória com ConcurrentHashMap (Padrão Paredão) e Flush Periódico (3 pts) [AB#118]
+│   ├── 📄 [PBI-13] Agregador de Votos com Buffer Concorrente (Padrão Paredão) e Escalonamento Comunitário de Prioridade (3 pts) [AB#118]
 │   └── 📄 [PBI-14] Suíte de Testes Unitários Automatizados com JUnit 5/Mockito e Documentação Swagger OpenAPI 3.0 (3 pts) [AB#26]
 │
 ├── 🏆 [FEATURE 05] Arquitetura Gradle Multi-Project, Containerização Docker e Esteira CI/CD em Nuvem [AB#170]
@@ -83,7 +83,7 @@
 | | **PBI-10** | Endpoints REST Diretos, Paginação (Pageable), Integração ViaCEP e ProblemDetail RFC 7807 | 3 pts | 1 - Critical | 7.0h | **#24** |
 | **[FEATURE 04] Distribuído & AI** | **PBI-11** | Mensageria Assíncrona com RabbitMQ (Direct Exchange, Filas e Produtores de Eventos na API) | 3 pts | 1 - Critical | 8.0h | **#116** |
 | | **PBI-12** | Microsserviço Worker com Triagem Multimodal via Spring AI / LLM (Urgência e Parecer) | 3 pts | 1 - Critical | 8.5h | **#117** |
-| | **PBI-13** | Agregador de Votos em Memória com ConcurrentHashMap (Padrão Paredão) e Flush Periódico | 3 pts | 1 - Critical | 7.0h | **#118** |
+| | **PBI-13** | Agregador de Votos com Buffer Concorrente (Padrão Paredão) e Escalonamento Comunitário de Prioridade | 3 pts | 1 - Critical | 7.0h | **#118** |
 | | **PBI-14** | Suíte de Testes Unitários Automatizados com JUnit 5/Mockito e Documentação Swagger OpenAPI 3.0 | 3 pts | 1 - Critical | 7.5h | **#26** |
 | **[FEATURE 05] Gradle, Docker & CI/CD** | **PBI-15** | Modularização em Gradle Multi-Project e Alinhamento Java 21 LTS | 3 pts | 1 - Critical | 6.5h | **#171** |
 | | **PBI-16** | Containerização Multi-Stage com Docker, Imagem Alpine e Usuário Não-Root | 3 pts | 1 - Critical | 7.0h | **#172** |
@@ -537,25 +537,27 @@
 
 ---
 
-#### 🔹 [PBI-13] Agregador de Votos em Memória com ConcurrentHashMap (Padrão Paredão) e Flush Periódico
+#### 🔹 [PBI-13] Agregador de Votos com Buffer Concorrente (Padrão Paredão) e Escalonamento Comunitário de Prioridade
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#118`
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários` (#25)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Worker, VotoConsumer, Buffer, Paredao`
+* **Tags:** `JavaAdvanced, Worker, VotoConsumer, Buffer, Escalonamento`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
 > **Como** arquiteto de alta disponibilidade,  
-> **Eu quero** um buffer thread-safe em memória que acumule os votos comunitários e descarregue os totais periodicamente,  
-> **Para que** o sistema suporte milhares de munícipes votando simultaneamente sem gerar contenção de locks ou gargalo no banco.
+> **Eu quero** um buffer thread-safe em memória no worker que agregue votos comunitários em alta vazão e avalie limiares de mobilização popular,  
+> **Para que** ocorrências com alta adesão popular tenham sua prioridade escalada automaticamente no Oracle via mensageria sem gerar contenção de locks ou gargalos no banco.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Consumidor `VotoConsumer.java` escutando a fila `chamado.voto.queue`.
-- [x] Buffer de votos implementado com `ConcurrentHashMap<Long, Integer>` para garantir concorrência thread-safe.
-- [x] Método de descarga periódico anotado com `@Scheduled(fixedDelay = 3000)` consolidando lotes em log e liberando memória.
-- [x] Tratamento gracioso de shutdown para gravação residual de votos pendentes.
+- [x] Consumidor `VotoConsumer.java` escutando a fila `chamado.voto.queue` e rastreando volume acumulado.
+- [x] Buffer de votos implementado com `ConcurrentHashMap<Long, Integer>` para absorção de rajadas com concorrência thread-safe.
+- [x] Método de descarga periódico anotado com `@Scheduled(fixedDelay = 3000)` avaliando limiares comunitários ($\ge 3$ apoios $\rightarrow$ `ALTA`, $\ge 5$ apoios $\rightarrow$ `URGENTE`).
+- [x] Publicação de evento de retorno `PrioridadeEscaladaMessage` na fila `chamado.prioridade-escalada.queue` via exchange `zelafix.direct`.
+- [x] Consumo assíncrono na API (`ChamadoPrioridadeEscaladaConsumer`) com escalonamento estritamente ascendente no Oracle e auditoria histórica em `HistChamado`.
+- [x] Preservação do desacoplamento do worker (100% stateless, sem conexões de banco de dados).
 
 ##### Commits vinculados (Development no Azure Repos):
 - `d13aa34` feat(rabbitmq): estruturar produtores e consumidores assincronos com tipagem AMQP e buffer concorrente
