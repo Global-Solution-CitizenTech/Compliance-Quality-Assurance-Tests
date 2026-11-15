@@ -34,20 +34,23 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Exemplos de Uso:
-  python run_sync.py --all                    # Importa os backlogs das 7 disciplinas
-  python run_sync.py --discipline mobile      # Importa somente uma disciplina
+  python run_sync.py --update                 # Atualiza os 7 backlogs sem duplicar (Smart Upsert)
+  python run_sync.py --update -d java         # Atualiza somente Java sem duplicar
+  python run_sync.py --all                    # Importa/cria do zero os backlogs das 7 disciplinas
+  python run_sync.py --discipline mobile      # Importa/cria somente uma disciplina
   python run_sync.py --commits                # Varre os 7 repositórios locais e vincula commits
   python run_sync.py --govern                 # Aplica atribuição de responsáveis e estados
   python run_sync.py --status                 # Exibe o painel de saúde e métricas do projeto
   python run_sync.py --validate               # Valida todos os backlogs contra o contrato mínimo
   python run_sync.py --hooks                  # Instala post-commit hooks nos 7 repositórios
   python run_sync.py --full                   # Executa carga, commits e governança completa
-  python run_sync.py --dry-run --all          # Simula a importação sem alterar o Azure
+  python run_sync.py --dry-run --update       # Simula a atualização sem alterar a nuvem
         """
     )
 
+    parser.add_argument("--update", "-u", action="store_true", help="Atualizar Work Items existentes e criar novos sem duplicar (Smart Upsert)")
     parser.add_argument("--all", "-a", action="store_true", help="Importar backlogs das 7 disciplinas")
-    parser.add_argument("--discipline", "-d", type=str, choices=list(DISCIPLINES.keys()), help="Importar disciplina específica")
+    parser.add_argument("--discipline", "-d", type=str, choices=list(DISCIPLINES.keys()), help="Importar/atualizar disciplina específica")
     parser.add_argument("--commits", "-c", action="store_true", help="Escanear os 7 repositórios e vincular commits")
     parser.add_argument("--govern", "-g", action="store_true", help="Aplicar governança de responsáveis e estados (In Progress/Committed)")
     parser.add_argument("--hooks", action="store_true", help="Instalar post-commit hooks nos 7 repositórios locais")
@@ -60,7 +63,7 @@ Exemplos de Uso:
 
     args = parser.parse_args()
 
-    if not any([args.all, args.discipline, args.commits, args.govern, args.hooks, args.status, args.validate, args.clean, args.check_auth, args.full]):
+    if not any([args.update, args.all, args.discipline, args.commits, args.govern, args.hooks, args.status, args.validate, args.clean, args.check_auth, args.full]):
         print_banner()
         engine = SyncEngine()
         engine.get_project_status()
@@ -69,6 +72,13 @@ Exemplos de Uso:
 
     print_banner()
     engine = SyncEngine()
+
+    if args.update:
+        if args.discipline:
+            engine.update_discipline(args.discipline, dry_run=args.dry_run)
+        else:
+            engine.update_all_disciplines(dry_run=args.dry_run)
+        return
 
     if args.check_auth:
         ok, msg = engine.client.check_connection()

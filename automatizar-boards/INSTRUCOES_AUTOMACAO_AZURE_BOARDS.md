@@ -50,52 +50,45 @@ GITHUB_ORG=Global-Solution-CitizenTech
 
 ---
 
-## 🚀 4. Comandos e Operações do CLI
+## 🚀 4. Comandos e Operações do CLI Unificado (`run_sync.py`)
 
-### 4.1. Orquestrador Geral (`run_sync.py`)
+### 4.1. Validação de Contrato e Status
 ```bash
-# Validação de credenciais e acesso:
+# Validar contrato obrigatório dos 7 backlogs locais:
+python run_sync.py --validate
+
+# Testar conectividade com o Azure DevOps:
 python run_sync.py --check-auth
 
-# Simulação da carga completa (Dry-Run):
-python run_sync.py --all --dry-run
-
-# Importação de todas as 7 disciplinas para a nuvem:
-python run_sync.py --all
-
-# Importação de arquivo individual:
-python run_sync.py --file BACKLOG_MOBILE.md
+# Exibir painel de controle e distribuição de Work Items:
+python run_sync.py --status
 ```
 
-### 4.2. Casos de Testes Caixa-Preta (`sync_test_cases.py`)
+### 4.2. Smart Upsert (Atualização Inteligente sem Duplicar)
 ```bash
-# Exportar matriz Markdown e simular criação:
-python sync_test_cases.py --export-all --dry-run
+# Simulação da atualização de todos os 7 backlogs (Dry-Run):
+python run_sync.py --update --dry-run
 
-# Criar os 20 Casos de Teste reais com passos XML no Azure Boards:
-python sync_test_cases.py --sync-azure
+# Atualizar todos os 7 backlogs na nuvem (aplica diffs em itens existentes e cria novos):
+python run_sync.py --update
+
+# Atualizar apenas uma disciplina específica:
+python run_sync.py --update --discipline java
+python run_sync.py --update --discipline mobile
+python run_sync.py --update --discipline database
 ```
 
-### 4.3. Rastreamento e Vínculo de Commits Git (`link_commits.py`)
+### 4.3. Rastreabilidade de Commits e Governança Scrum
 ```bash
-# Escanear os 7 repositórios locais e verificar commits:
-python link_commits.py --dry-run
+# Escanear os 7 repositórios e vincular commits recentes aos Work Items:
+python run_sync.py --commits
 
-# Vincular commits reais aos Work Items via API REST:
-python link_commits.py --scan-all
+# Aplicar atribuição de responsáveis por tag e estados Scrum (In Progress / Committed):
+python run_sync.py --govern
 
-# Exibir manual de sintaxe de commits automáticos:
-python link_commits.py --guide
-```
+# Instalar post-commit hooks nos 7 repositórios locais para auto-vínculo com tag AB#<ID>:
+python run_sync.py --hooks
 
-### 4.4. Gestão e Execução no Azure Test Plans (`scripts/azure_qa_cli.py`)
-```bash
-# Resumo consolidado de execuções e métricas:
-python ../scripts/azure_qa_cli.py summary
-
-# Listagem de casos e status:
-python ../scripts/azure_qa_cli.py list
-
-# Executar suíte completa simulando Approved com falhas controladas para evidência de bug:
-python ../scripts/azure_qa_cli.py run-all --fail-ids 2002 2004
+# Pipeline completo (Carga/Sync + Commits + Governança):
+python run_sync.py --full
 ```

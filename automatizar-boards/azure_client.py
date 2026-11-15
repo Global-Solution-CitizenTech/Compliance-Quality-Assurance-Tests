@@ -213,6 +213,21 @@ class AzureClient:
         }]
         return self.update_work_item(work_item_id, patch)
 
+    def link_artifact(self, work_item_id: int, artifact_uri: str, comment: str, name: str = "Fixed in Commit", dry_run: bool = False) -> bool:
+        """Vincula um artefato Azure Repos (ex: commit Git) via ArtifactLink."""
+        if dry_run:
+            return True
+        patch = [{
+            "op": "add",
+            "path": "/relations/-",
+            "value": {
+                "rel": "ArtifactLink",
+                "url": artifact_uri,
+                "attributes": {"name": name, "comment": comment}
+            }
+        }]
+        return self.update_work_item(work_item_id, patch)
+
     def get_team_members(self) -> List[Dict[str, Any]]:
         """Retorna os integrantes do time do projeto."""
         t_url = f"{self.org_url}/_apis/projects/{self.project}/teams?api-version=7.0"

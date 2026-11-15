@@ -7,8 +7,9 @@ Orquestra as operações de Backlogs, Rastreamento de Commits Git e Governança 
 import sys
 import os
 import re
+import html
 import subprocess
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 
 if sys.stdout.encoding != 'utf-8':
     try:
@@ -177,6 +178,361 @@ class SyncEngine:
         print(f"👑 Epics    : {totals['epics']}")
         print(f"🏆 Features : {totals['features']}")
         print(f"📄 PBIs     : {totals['pbis']}")
+        print("========================================================\n")
+        return totals
+
+    # =========================================================================
+    # 1.1 ATUALIZAÇÃO INTELIGENTE DE BACKLOGS (SMART UPSERT)
+    # =========================================================================
+    def _normalize_html(self, text: Optional[str]) -> str:
+        if not text:
+            return ""
+        # Decodifica entidades HTML para evitar falsos positivos (&quot;, &#x27;, etc.)
+        s = html.unescape(text)
+        # Normaliza tags self-closing do Azure DevOps (ex: <br/> vs <br>)
+        s = re.sub(r"<br\s*/?>", "<br>", s, flags=re.IGNORECASE)
+        # Remove espaços supérfluos adjacentes a tags
+        s = re.sub(r"\s+<", "<", s)
+        s = re.sub(r">\s+", ">", s)
+        # Normaliza espaços múltiplos
+        return re.sub(r"\s+", " ", s).strip()
+
+    def _build_upsert_patch(
+        self,
+        current_wi: Dict[str, Any],
+        title: str,
+        description: str,
+        acceptance_criteria: str,
+        effort: Optional[float],
+        priority: int,
+        business_value: int,
+        start_date: Optional[str],
+        target_date: Optional[str],
+        tags: List[str],
+        iteration_path: str,
+        assigned_to: str,
+        state: Optional[str] = None
+    ) -> List[Dict[str, Any]]:
+        fields = current_wi.get("fields", {})
+        patch = []
+
+        # 1. Título
+        curr_title = clean_title(fields.get("System.Title", ""))
+        target_title = clean_title(title)
+        if target_title and target_title != curr_title:
+            patch.append({"op": "add", "path": "/fields/System.Title", "value": target_title})
+
+        # 2. Descrição (User Story)
+        if self._normalize_html(description) != self._normalize_html(fields.get("System.Description", "")):
+            patch.append({"op": "add", "path": "/fields/System.Description", "value": description})
+
+        # 3. Critérios de Aceite
+        if self._normalize_html(acceptance_criteria) != self._normalize_html(fields.get("Microsoft.VSTS.Common.AcceptanceCriteria", "")):
+            patch.append({"op": "add", "path": "/fields/Microsoft.VSTS.Common.AcceptanceCriteria", "value": acceptance_criteria})
+
+        # 4. Esforço / Story Points
+        if effort is not None and effort > 0:
+            curr_effort = float(fields.get("Microsoft.VSTS.Scheduling.Effort", 0) or 0)
+            if round(curr_effort, 2) != round(float(effort), 2):
+                patch.append({"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.Effort", "value": float(effort)})
+
+        # 5. Prioridade
+        curr_prio = int(fields.get("Microsoft.VSTS.Common.Priority", 0) or 0)
+        if curr_prio != int(priority):
+            patch.append({"op": "add", "path": "/fields/Microsoft.VSTS.Common.Priority", "value": int(priority)})
+
+        # 6. Business Value
+        curr_bv = int(fields.get("Microsoft.VSTS.Common.BusinessValue", 0) or 0)
+        if curr_bv != int(business_value):
+            patch.append({"op": "add", "path": "/fields/Microsoft.VSTS.Common.BusinessValue", "value": int(business_value)})
+
+        # 7. Datas
+        if start_date:
+            curr_sd = (fields.get("Microsoft.VSTS.Scheduling.StartDate", "") or "")[:10]
+            if curr_sd != start_date:
+                patch.append({"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.StartDate", "value": f"{start_date}T00:00:00Z"})
+        if target_date:
+            curr_td = (fields.get("Microsoft.VSTS.Scheduling.TargetDate", "") or "")[:10]
+            if curr_td != target_date:
+                patch.append({"op": "add", "path": "/fields/Microsoft.VSTS.Scheduling.TargetDate", "value": f"{target_date}T00:00:00Z"})
+
+        # 8. Iteração
+        curr_iter = fields.get("System.IterationPath", "")
+        if curr_iter != iteration_path:
+            patch.append({"op": "add", "path": "/fields/System.IterationPath", "value": iteration_path})
+
+        # 9. Atribuição
+        curr_assigned = fields.get("System.AssignedTo")
+        assigned_val = curr_assigned.get("uniqueName") or curr_assigned.get("displayName") if isinstance(curr_assigned, dict) else str(curr_assigned or "")
+        if assigned_to and assigned_val != assigned_to:
+            patch.append({"op": "add", "path": "/fields/System.AssignedTo", "value": assigned_to})
+
+        # 10. Tags
+        curr_tags = [t.strip() for t in (fields.get("System.Tags", "") or "").split(";") if t.strip()]
+        needed_tags = set(curr_tags)
+        for t in tags:
+            if t not in needed_tags:
+                needed_tags.add(t)
+        if set(curr_tags) != needed_tags:
+            patch.append({"op": "add", "path": "/fields/System.Tags", "value": "; ".join(sorted(needed_tags))})
+
+        # 11. Estado
+        if state and fields.get("System.State") != state:
+            patch.append({"op": "add", "path": "/fields/System.State", "value": state})
+
+        return patch
+
+    def _ensure_parent_link(self, child_wi: Dict[str, Any], parent_id: int) -> Optional[Dict[str, Any]]:
+        relations = child_wi.get("relations") or []
+        for r in relations:
+            if r.get("rel") == "System.LinkTypes.Hierarchy-Reverse" and str(parent_id) in r.get("url", ""):
+                return None
+        return {
+            "op": "add",
+            "path": "/relations/-",
+            "value": {
+                "rel": "System.LinkTypes.Hierarchy-Reverse",
+                "url": f"{self.client.base_url}/_apis/wit/workitems/{parent_id}",
+                "attributes": {"comment": f"Vinculado ao pai #{parent_id}"}
+            }
+        }
+
+    def _build_commit_link_ops(self, wi: Dict[str, Any], commits: List[Tuple[str, str]], repo_name: str) -> List[Dict[str, Any]]:
+        if not commits:
+            return []
+        relations = wi.get("relations") or []
+        existing_urls = {r.get("url", "").lower() for r in relations}
+        patch = []
+        for sha, msg in commits:
+            sha_clean = sha.strip()
+            already_linked = any(sha_clean.lower() in u for u in existing_urls)
+            if already_linked:
+                continue
+
+            if repo_name == "Java-Advanced":
+                proj_id = "8ab7cd90-8fe0-4879-8e32-8d20a047dfb5"
+                repo_id = "fa53ca63-cd58-4070-9aba-7b307a38f670"
+                art_url = f"vstfs:///Git/Commit/{proj_id}%2F{repo_id}%2F{sha_clean}"
+                patch.append({
+                    "op": "add",
+                    "path": "/relations/-",
+                    "value": {
+                        "rel": "ArtifactLink",
+                        "url": art_url,
+                        "attributes": {"name": "Fixed in Commit", "comment": f"Commit {sha_clean[:7]}: {msg}"}
+                    }
+                })
+            else:
+                commit_url = f"https://github.com/{GITHUB_ORG}/{repo_name}/commit/{sha_clean}"
+                patch.append({
+                    "op": "add",
+                    "path": "/relations/-",
+                    "value": {
+                        "rel": "Hyperlink",
+                        "url": commit_url,
+                        "attributes": {"comment": f"Commit {sha_clean[:7]}: {msg}"}
+                    }
+                })
+        return patch
+
+    def update_discipline(self, discipline_key: str, dry_run: bool = False) -> Dict[str, int]:
+        """Sincroniza e atualiza com inteligência (Upsert) os itens de uma disciplina específica."""
+        d_info = DISCIPLINES.get(discipline_key.lower())
+        if not d_info:
+            raise ValueError(f"Disciplina '{discipline_key}' não encontrada. Opções: {list(DISCIPLINES.keys())}")
+
+        file_path = os.path.join(self.backlogs_dir, d_info["file"])
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Arquivo de backlog não encontrado: {file_path}")
+
+        exact_tag_only = discipline_key.lower() in ("iot", "mobile")
+        doc = parse_backlog_markdown(
+            file_path,
+            strict=True,
+            required_tag=d_info["tag"],
+            exact_tag_only=exact_tag_only,
+        )
+
+        prefix = "[DRY-RUN] " if dry_run else ""
+        print(f"\n========================================================")
+        print(f"🔄 {prefix}Smart Upsert (Atualização Inteligente): {d_info['name']}")
+        print(f"🏷️ Tag: [{d_info['tag']}] | 📅 Iteração: [{AZURE_PROJECT}\\{d_info['iteration']}]")
+        print(f"👤 Responsável: {d_info['owner_name']} ({d_info['owner_email']})")
+        print(f"========================================================")
+
+        iteration_path = f"{AZURE_PROJECT}\\{d_info['iteration']}"
+        item_tags = [d_info["tag"]]
+        owner_email = d_info["owner_email"]
+        repo_name = d_info["repo"]
+
+        stats = {"updated": 0, "created": 0, "unchanged": 0, "commits_linked": 0}
+
+        # 1. Trata o Epic
+        epic = doc.epic
+        epic_title = clean_title(epic.title)
+        epic_id = epic.azure_id
+        curr_epic = self.client.get_work_item(epic_id) if epic_id else None
+
+        if curr_epic:
+            patch = self._build_upsert_patch(
+                curr_epic, epic_title, epic.description, epic.acceptance_criteria,
+                epic.effort, epic.priority, epic.business_value, epic.start_date,
+                epic.target_date, item_tags, iteration_path, owner_email, state="In Progress"
+            )
+            if patch:
+                self.client.update_work_item(epic_id, patch, dry_run=dry_run)
+                stats["updated"] += 1
+                print(f"👑 Epic #{epic_id}: 🔄 Atualizado ({len(patch)} alterações)")
+            else:
+                stats["unchanged"] += 1
+                print(f"👑 Epic #{epic_id}: ⏺️ Inalterado (já sincronizado)")
+        else:
+            print(f"👑 Epic: 🆕 Criando novo item '{epic_title}'...")
+            epic_res = self.client.create_work_item(
+                work_item_type="Epic",
+                title=epic_title,
+                description=epic.description,
+                acceptance_criteria=epic.acceptance_criteria,
+                priority=epic.priority,
+                effort=epic.effort,
+                business_value=epic.business_value,
+                start_date=epic.start_date,
+                target_date=epic.target_date,
+                tags=item_tags,
+                iteration_path=iteration_path,
+                assigned_to=owner_email,
+                state="In Progress",
+                dry_run=dry_run
+            )
+            epic_id = epic_res.get("id", 1000)
+            stats["created"] += 1
+            print(f"   └── ✅ Epic #{epic_id} criado com sucesso!")
+
+        # 2. Trata as Features
+        for feat in epic.features:
+            feat_title = clean_title(feat.title)
+            feat_id = feat.azure_id
+            curr_feat = self.client.get_work_item(feat_id) if feat_id else None
+
+            if curr_feat:
+                patch = self._build_upsert_patch(
+                    curr_feat, feat_title, feat.description, feat.acceptance_criteria,
+                    feat.effort, feat.priority, feat.business_value, feat.start_date,
+                    feat.target_date, item_tags, iteration_path, owner_email, state="In Progress"
+                )
+                parent_op = self._ensure_parent_link(curr_feat, epic_id)
+                if parent_op:
+                    patch.append(parent_op)
+
+                if patch:
+                    self.client.update_work_item(feat_id, patch, dry_run=dry_run)
+                    stats["updated"] += 1
+                    print(f"   🏆 Feature #{feat_id}: 🔄 Atualizada ({len(patch)} alterações)")
+                else:
+                    stats["unchanged"] += 1
+                    print(f"   🏆 Feature #{feat_id}: ⏺️ Inalterada")
+            else:
+                print(f"   🏆 Feature: 🆕 Criando '{feat_title}' vinculada ao Epic #{epic_id}...")
+                feat_relations = [{
+                    "rel": "System.LinkTypes.Hierarchy-Reverse",
+                    "url": f"{self.client.base_url}/_apis/wit/workitems/{epic_id}",
+                    "attributes": {"comment": f"Vinculado ao Epic #{epic_id}"}
+                }]
+                feat_res = self.client.create_work_item(
+                    work_item_type="Feature",
+                    title=feat_title,
+                    description=feat.description,
+                    acceptance_criteria=feat.acceptance_criteria,
+                    priority=feat.priority,
+                    effort=feat.effort,
+                    business_value=feat.business_value,
+                    start_date=feat.start_date,
+                    target_date=feat.target_date,
+                    tags=item_tags,
+                    iteration_path=iteration_path,
+                    assigned_to=owner_email,
+                    state="In Progress",
+                    relations=feat_relations,
+                    dry_run=dry_run
+                )
+                feat_id = feat_res.get("id", 2000)
+                stats["created"] += 1
+                print(f"       └── ✅ Feature #{feat_id} criada!")
+
+            # 3. Trata os PBIs vinculados à Feature
+            for pbi in feat.pbis:
+                pbi_title = clean_title(pbi.title)
+                pbi_id = pbi.azure_id
+                curr_pbi = self.client.get_work_item(pbi_id) if pbi_id else None
+
+                if curr_pbi:
+                    patch = self._build_upsert_patch(
+                        curr_pbi, pbi_title, pbi.description, pbi.acceptance_criteria,
+                        pbi.story_points, pbi.priority, pbi.business_value, None,
+                        None, item_tags, iteration_path, owner_email, state="Committed"
+                    )
+                    parent_op = self._ensure_parent_link(curr_pbi, feat_id)
+                    if parent_op:
+                        patch.append(parent_op)
+
+                    commit_ops = self._build_commit_link_ops(curr_pbi, pbi.linked_commits, repo_name)
+                    if commit_ops:
+                        patch.extend(commit_ops)
+                        stats["commits_linked"] += len(commit_ops)
+
+                    if patch:
+                        self.client.update_work_item(pbi_id, patch, dry_run=dry_run)
+                        stats["updated"] += 1
+                        print(f"       ├── 📄 PBI #{pbi_id}: 🔄 Atualizado ({len(patch)} alterações)")
+                    else:
+                        stats["unchanged"] += 1
+                        print(f"       ├── 📄 PBI #{pbi_id}: ⏺️ Inalterado")
+                else:
+                    print(f"       ├── 📄 PBI: 🆕 Criando '{pbi_title}' vinculado à Feature #{feat_id}...")
+                    pbi_relations = [{
+                        "rel": "System.LinkTypes.Hierarchy-Reverse",
+                        "url": f"{self.client.base_url}/_apis/wit/workitems/{feat_id}",
+                        "attributes": {"comment": f"Vinculado à Feature #{feat_id}"}
+                    }]
+                    pbi_res = self.client.create_work_item(
+                        work_item_type="Product Backlog Item",
+                        title=pbi_title,
+                        description=pbi.description,
+                        acceptance_criteria=pbi.acceptance_criteria,
+                        priority=pbi.priority,
+                        effort=pbi.story_points,
+                        business_value=pbi.business_value,
+                        tags=item_tags,
+                        iteration_path=iteration_path,
+                        assigned_to=owner_email,
+                        state="Committed",
+                        relations=pbi_relations,
+                        dry_run=dry_run
+                    )
+                    pbi_id = pbi_res.get("id", 3000)
+                    stats["created"] += 1
+                    print(f"           └── ✅ PBI #{pbi_id} criado!")
+
+        print(f"\n✨ {prefix}Disciplina {d_info['name']} sincronizada: "
+              f"{stats['updated']} atualizados | {stats['created']} criados | "
+              f"{stats['unchanged']} inalterados | {stats['commits_linked']} commits vinculados.")
+        return stats
+
+    def update_all_disciplines(self, dry_run: bool = False) -> Dict[str, int]:
+        """Sincroniza e atualiza com inteligência (Upsert) todas as 7 disciplinas."""
+        totals = {"updated": 0, "created": 0, "unchanged": 0, "commits_linked": 0}
+        for key in DISCIPLINES.keys():
+            res = self.update_discipline(key, dry_run=dry_run)
+            for k in totals:
+                totals[k] += res.get(k, 0)
+
+        prefix = "[DRY-RUN] " if dry_run else ""
+        print("\n========================================================")
+        print(f"🎉 {prefix}SMART UPSERT TOTAL CONCLUÍDO (7 DISCIPLINAS)!")
+        print(f"🔄 Itens Atualizados : {totals['updated']}")
+        print(f"🆕 Itens Criados     : {totals['created']}")
+        print(f"⏺️ Itens Inalterados : {totals['unchanged']}")
+        print(f"🔗 Commits Vinculados: {totals['commits_linked']}")
         print("========================================================\n")
         return totals
 

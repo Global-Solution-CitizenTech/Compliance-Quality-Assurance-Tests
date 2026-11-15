@@ -33,10 +33,10 @@ COMMIT_MSG=$(git log -1 --pretty=%B)
 # Verifica se contem tag AB#
 if echo "$COMMIT_MSG" | grep -qE "AB#[0-9]+"; then
     echo "[ZelaFix QA Hook] Detectada tag AB# no commit $COMMIT_HASH ($REPO_NAME). Vinculando ao Azure Boards..."
-    # Localiza o script link_commits.py
-    SCRIPT_PATH="$(git rev-parse --show-toplevel)/../Compliance-Quality-Assurance-Tests/automatizar-boards/link_commits.py"
+    # Localiza o orquestrador unificado run_sync.py
+    SCRIPT_PATH="$(git rev-parse --show-toplevel)/../Compliance-Quality-Assurance-Tests/automatizar-boards/run_sync.py"
     if [ -f "$SCRIPT_PATH" ]; then
-        python "$SCRIPT_PATH" --scan-all > /dev/null 2>&1 &
+        python "$SCRIPT_PATH" --commits > /dev/null 2>&1 &
     fi
 fi
 """

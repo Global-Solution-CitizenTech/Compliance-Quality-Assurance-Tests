@@ -91,15 +91,12 @@ Compliance-Quality-Assurance-Tests/
 │   │   ├── BACKLOG_DOT_NET.md
 │   │   ├── BACKLOG_DEVOPS.md
 │   │   └── BACKLOG_DISRUPTIVE_ARCHITECTURES.md
-│   ├── run_sync.py                            # CLI principal (--validate, --all, --discipline, --commits, --govern, --hooks, --status, --full)
-│   ├── sync_engine.py                         # Motor central SyncEngine (carga Scrum, rastreamento de commits, governança e validação)
-│   ├── parser_backlog.py                      # Parser Markdown + validação estrita de contrato obrigatório (BacklogValidationError)
-│   ├── azure_client.py                        # Cliente HTTP REST oficial para Azure DevOps (WIQL, CRUD, vínculos)
+│   ├── run_sync.py                            # CLI unificada (--update, --validate, --all, --discipline, --commits, --govern, --hooks, --status, --full)
+│   ├── sync_engine.py                         # Motor central SyncEngine (Smart Upsert, rastreamento de commits, governança e validação)
+│   ├── parser_backlog.py                      # Parser Markdown + extração de IDs Azure + validação estrita de contrato (BacklogValidationError)
+│   ├── azure_client.py                        # Cliente HTTP REST oficial para Azure DevOps (WIQL, CRUD, vínculos, ArtifactLink)
 │   ├── config.py                              # Configurações ZelaFixGS/ZelaFix, integrantes, tags e Iteration Paths
-│   ├── link_commits.py                        # CLI de vínculo de commits Git e guia de tags AB#<ID>
 │   ├── install_git_hooks.py                   # Instalador de hooks post-commit nos 7 repositórios locais
-│   ├── azure_boards_sync.py                   # Wrapper de compatibilidade de sincronização
-│   ├── clean_azure_boards.py                  # Utilitário de limpeza segura do Board
 │   ├── INSTRUCOES_AUTOMACAO_AZURE_BOARDS.md   # Guia arquitetural da automação
 │   ├── requirements.txt                       # Dependências Python
 │   └── .env.example                           # Modelo de configuração de PAT e organização
@@ -161,19 +158,20 @@ python run_sync.py --check-auth
 # Exibir painel consolidado de saúde dos Work Items no Azure Boards:
 python run_sync.py --status
 
-# Simular sincronização das 7 disciplinas sem alterar o Azure (Dry-Run):
-python run_sync.py --all --dry-run
+# 🔄 Smart Upsert: Atualizar Backlog(s) sem duplicar itens existentes:
+python run_sync.py --update --dry-run             # Simula a atualização de todas as disciplinas
+python run_sync.py --update                       # Atualiza todos os 7 backlogs no Azure Boards
+python run_sync.py --update --discipline java     # Atualiza somente Java
+python run_sync.py --update --discipline mobile   # Atualiza somente Mobile
+python run_sync.py --update --discipline database # Atualiza somente Database
 
-# Sincronizar todas as 7 disciplinas ou uma específica:
+# Carga inicial do zero (apenas para novas implantações):
+python run_sync.py --all --dry-run
 python run_sync.py --all
-python run_sync.py --discipline mobile
-python run_sync.py --discipline java
-python run_sync.py --discipline database
-python run_sync.py --discipline devops
+python run_sync.py --discipline <materia>
 
 # Escanear os 7 repositórios e vincular commits aos Work Items:
 python run_sync.py --commits
-python link_commits.py --guide
 
 # Aplicar governança de responsáveis e estados (In Progress / Committed):
 python run_sync.py --govern

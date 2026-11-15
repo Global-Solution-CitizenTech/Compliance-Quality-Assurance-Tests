@@ -3,7 +3,7 @@ import os
 import re
 import html
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any, Tuple
 
 # Garante suporte a UTF-8 no terminal Windows
 if sys.stdout.encoding != 'utf-8':
@@ -25,6 +25,7 @@ def clean_title(text: str) -> str:
     cleaned = re.sub(r"[\u2600-\u27BF\u2300-\u23FF\u2B50-\u2B55\u200d\uFE0F\u00A9\u00AE]", "", cleaned)  # Símbolos, dingbats
     cleaned = cleaned.replace("`", "").replace("'", "").replace('"', "").replace("**", "").replace("*", "")
     cleaned = cleaned.replace("GS 2026/2 - ", "").replace("GS 2026/2 -", "")
+    cleaned = re.sub(r"\s*\[AB#\d+\]", "", cleaned, flags=re.IGNORECASE)
     cleaned = re.sub(r"^\s*-\s*", "", cleaned)
     cleaned = re.sub(r"\s+", " ", cleaned).strip()
     return cleaned
@@ -43,6 +44,7 @@ class TaskItem:
 @dataclass
 class PBIItem:
     title: str
+    azure_id: Optional[int] = None
     description: str = ""
     acceptance_criteria: str = ""
     story_points: float = 0.0
@@ -52,12 +54,14 @@ class PBIItem:
     work_item_type: str = "Product Backlog Item"
     parent_feature_ref: str = ""
     tasks: List[TaskItem] = field(default_factory=list)
+    linked_commits: List[Tuple[str, str]] = field(default_factory=list)
 
 
 @dataclass
 class FeatureItem:
     title: str
     code: str = ""
+    azure_id: Optional[int] = None
     description: str = ""
     acceptance_criteria: str = ""
     start_date: Optional[str] = None
@@ -73,6 +77,7 @@ class FeatureItem:
 @dataclass
 class EpicItem:
     title: str
+    azure_id: Optional[int] = None
     description: str = ""
     acceptance_criteria: str = ""
     start_date: Optional[str] = None
@@ -611,6 +616,9 @@ def parse_backlog_markdown(
             
             clean_feat_title = clean_title(title)
             current_feature = get_or_create_feature(clean_feat_title)
+            feat_ab = re.search(r"\[AB#(\d+)\]", line, re.IGNORECASE)
+            if feat_ab and current_feature:
+                current_feature.azure_id = int(feat_ab.group(1))
             current_section = None
             i += 1
             continue
@@ -626,12 +634,21 @@ def parse_backlog_markdown(
                 pbi_code = f"[{pbi_code}]"
             full_pbi_title = clean_title(f"{pbi_code} {pbi_title}")
             current_pbi = PBIItem(title=full_pbi_title)
+            pbi_ab = re.search(r"\[AB#(\d+)\]", line, re.IGNORECASE)
+            if pbi_ab:
+                current_pbi.azure_id = int(pbi_ab.group(1))
             current_section = None
             i += 1
             continue
 
         # Se estamos dentro de um PBI
         if current_pbi is not None:
+            azure_id_match = re.search(r"^\*?\s*\*\*(?:Azure Boards ID|Work Item ID|AB):?\*\*:?\s*[`#\s]*(\d+)", stripped, re.IGNORECASE)
+            if azure_id_match:
+                current_pbi.azure_id = int(azure_id_match.group(1))
+                i += 1
+                continue
+
             prio_match = re.search(r"^\*?\s*\*\*Priorit[yáe][^\*]*:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
             if prio_match:
                 current_pbi.priority = _parse_priority(prio_match.group(1))
@@ -669,6 +686,10 @@ def parse_backlog_markdown(
                 current_section = 'tasks'
                 i += 1
                 continue
+            elif re.search(r"^#{4,5}\s+.*(?:Commits vinculados|Commits|Pull Requests)", stripped, re.IGNORECASE):
+                current_section = 'commits'
+                i += 1
+                continue
 
             # Acumula linhas de acordo com a seção atual
             if current_section == 'desc':
@@ -680,9 +701,19 @@ def parse_backlog_markdown(
             elif current_section == 'tasks':
                 if stripped.startswith("- [ ]") or stripped.startswith("* [ ]") or stripped.startswith("- ") or stripped.startswith("* **Task") or stripped.startswith("* **[TASK") or stripped.startswith("* *Descri") or "descrição:" in stripped.lower() or "descricao:" in stripped.lower():
                     task_buffer.append(stripped)
+            elif current_section == 'commits':
+                commit_match = re.search(r"^[-*]\s*`([0-9a-fA-F]{7,40})`\s*(.+)", stripped)
+                if commit_match:
+                    current_pbi.linked_commits.append((commit_match.group(1).strip(), commit_match.group(2).strip()))
 
         # Se estamos dentro de uma Feature
         elif current_feature is not None:
+            azure_id_match = re.search(r"^\*?\s*\*\*(?:Azure Boards ID|Work Item ID|AB):?\*\*:?\s*[`#\s]*(\d+)", stripped, re.IGNORECASE)
+            if azure_id_match:
+                current_feature.azure_id = int(azure_id_match.group(1))
+                i += 1
+                continue
+
             start_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Start Date|Data de In[íi]cio)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
             if start_date_match:
                 current_feature.start_date = _parse_date(start_date_match.group(1))
@@ -709,6 +740,12 @@ def parse_backlog_markdown(
 
         # Se estamos no cabeçalho do Epic (antes da primeira feature)
         elif current_feature is None and current_pbi is None:
+            azure_id_match = re.search(r"^\*?\s*\*\*(?:Azure Boards ID|Work Item ID|AB):?\*\*:?\s*[`#\s]*(\d+)", stripped, re.IGNORECASE)
+            if azure_id_match:
+                epic_item.azure_id = int(azure_id_match.group(1))
+                i += 1
+                continue
+
             start_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Start Date|Data de In[íi]cio)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
             if start_date_match:
                 epic_item.start_date = _parse_date(start_date_match.group(1))
