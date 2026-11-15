@@ -3,7 +3,7 @@
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Mobile Application Development (FIAP — 2TDSPG)  
 > **Repositório GitHub:** [Global-Solution-CitizenTech/Mobile-Application-Development](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development)  
-> **APK Android Standalone (EAS Build `718280c9` / `versionCode 6`):** [zelafix.apk](https://expo.dev/artifacts/eas/uxHWQSXdY-Man695Jcin1-LypU211GDfS9qtDiAbrBs.apk)  
+> **APK Android Standalone (EAS Build `ba71cba6` / `versionCode 8`):** [zelafix.apk](https://expo.dev/artifacts/eas/6DB4UpvE0Rp09oPwM8OGEs9x2_zxgeZTBHPiYGT26LI.apk)  
 > **Organização / Projeto Azure DevOps:** `ZelaFixGS` / `ZelaFix`  
 > **Epic Principal:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa` (**AB#1**)  
 > **Responsável / Owner:** Luna de Carvalho Guimarães (`RM562290@fiap.com.br`)  
@@ -12,7 +12,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Tags:** `Mobile` — todos os Work Items da disciplina utilizam exclusivamente esta tag.  
-> **Diretrizes Estratégicas:** Aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler e TypeScript estrito), contemplando autenticação JWT com sessão persistente no `expo-secure-store`, 12 telas (11 fluxos funcionais + Sobre o App), integração HTTP via Axios com a API Java Spring Boot (`https://app-zelafix.azurewebsites.net`) e com o microsserviço ZelaBot IA (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`), cache reativo com TanStack Query v5 (`AppState` + `expo-network`), paginação infinita no Radar do Bairro, formulários validados com Zod v4, GPS via `expo-location`, upload fotográfico `multipart/form-data` com triagem direta por IA (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), RBAC Cidadão/Gestor Público, suíte de testes unitários Node e build Android EAS `versionCode 6`.
+> **Diretrizes Estratégicas:** Aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler e TypeScript estrito), contemplando autenticação JWT com sessão persistente no `expo-secure-store`, 12 telas (11 fluxos funcionais + Sobre o App), integração HTTP via Axios com a API Java Spring Boot (`https://app-zelafix.azurewebsites.net`) e com o microsserviço ZelaBot IA (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`), cache reativo com TanStack Query v5 (`AppState` + `expo-network`), paginação infinita no Radar do Bairro, formulários validados com Zod v4, GPS via `expo-location`, upload fotográfico `multipart/form-data` com triagem direta por IA (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), RBAC Cidadão/Gestor Público, suíte de 66 testes unitários Node e build Android EAS `versionCode 8`.
 
 ---
 
@@ -54,7 +54,7 @@
 ├── 🏆 [FEATURE 04] Engajamento Cidadão, Votação Otimista, Lifecycle Nativo e Entrega [AB#11]
 │   ├── 📄 [PBI-13] Detalhes do Chamado, Timeline 5 Estados, Triagem IA, Feedback de Recusa e Apoio Otimista (3 pts) [AB#12]
 │   ├── 📄 [PBI-14] Lifecycle Nativo TanStack Query (AppState/expo-network), Testes Unitários e Builds EAS (2 pts) [AB#112]
-│   └── 📄 [PBI-15] Documentação Técnica Completa (README.md), Submissão APK (versionCode 6) e Vídeo Demonstrativo (2 pts) [AB#13]
+│   └── 📄 [PBI-15] Documentação Técnica Completa (README.md), Submissão APK (versionCode 8) e Vídeo Demonstrativo (2 pts) [AB#13]
 │
 └── 🏆 [FEATURE 05] Assistente Conversacional ZelaBot IA, RAG Normativo e Insights por Bairro [AB#180]
     ├── 📄 [PBI-16] Camada de Serviço FastAPI (aiService.ts), Tipos de IA e Aquecimento Render (3 pts) [AB#181]
@@ -69,24 +69,24 @@
 | Feature Pai | ID do PBI | Título do Item de Backlog (PBI) | ID Azure Boards | Story Points | Prioridade | Business Value | Commits | Status |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Feature 01** `[AB#2]` | **PBI-01** | Setup Inicial do Projeto Expo com TypeScript, ESLint v9 e Configuração EAS | **#3** | 3 pts | 1 - Critical | 100 | 5 | Committed |
-| | **PBI-02** | Design System CitizenTech, Temas Claro/Escuro, Enums Canônicos e Tipagens Alinhadas à API Java | **#4** | 2 pts | 1 - Critical | 100 | 4 | Committed |
+| | **PBI-02** | Design System CitizenTech, Temas Claro/Escuro, Enums Canônicos e Tipagens Alinhadas à API Java | **#4** | 2 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-03** | Biblioteca de Componentes Reutilizáveis de UI, FeedbackProvider Global e Modais Acessíveis | **#106** | 3 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-04** | Estrutura de Navegação Nativa com React Navigation, Tab Central IA e Rotas Tipadas | **#107** | 2 pts | 1 - Critical | 100 | 2 | Committed |
-| | **PBI-05** | Telas Principais do Cidadão (Welcome, Home, Radar do Bairro e Sobre o App) | **#108** | 3 pts | 1 - Critical | 100 | 2 | Committed |
+| | **PBI-05** | Telas Principais do Cidadão (Welcome, Home, Radar do Bairro e Sobre o App) | **#108** | 3 pts | 1 - Critical | 100 | 5 | Committed |
 | | **PBI-06** | Tela de Perfil do Cidadão, Edição Cadastral Alinhada ao Java e SafeAreaView | **#109** | 2 pts | 1 - Critical | 100 | 2 | Committed |
-| **Feature 02** `[AB#5]` | **PBI-07** | Cliente HTTP Axios, Interceptor JWT, Warmup Azure e Normalização RFC 7807 | **#6** | 3 pts | 1 - Critical | 100 | 2 | Committed |
+| **Feature 02** `[AB#5]` | **PBI-07** | Cliente HTTP Axios, Interceptor JWT, Warmup Azure e Normalização RFC 7807 | **#6** | 3 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-08** | Camada de Autenticação, AuthContext Unificado e Persistência no SecureStore | **#7** | 3 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-09** | Telas Welcome, Login e Cadastro com useZodForm e Proteção de Rotas Privadas | **#110** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | **Feature 03** `[AB#8]` | **PBI-10** | Formulário de Ocorrência (`useChamadoForm`) com GPS, Reverse Geocoding e Triagem Direta via `DeferredResult` | **#9** | 3 pts | 1 - Critical | 100 | 3 | Committed |
 | | **PBI-11** | Anexo de Evidências Fotográficas (Multipart/Form-Data) e Otimização de Imagens | **#10** | 3 pts | 1 - Critical | 100 | 3 | Committed |
-| | **PBI-12** | Feed com Paginação Infinita no Radar, Filtros Server-Side e Gestão CRUD com TanStack Query v5 | **#111** | 3 pts | 1 - Critical | 100 | 5 | Committed |
+| | **PBI-12** | Feed com Paginação Infinita no Radar, Filtros Server-Side e Gestão CRUD com TanStack Query v5 | **#111** | 3 pts | 1 - Critical | 100 | 6 | Committed |
 | **Feature 04** `[AB#11]` | **PBI-13** | Detalhes do Chamado, Timeline 5 Estados, Triagem IA, Feedback de Recusa e Apoio Otimista | **#12** | 3 pts | 1 - Critical | 100 | 5 | Committed |
-| | **PBI-14** | Lifecycle Nativo TanStack Query (`AppState`/`expo-network`), Testes Unitários e Builds EAS | **#112** | 2 pts | 2 - High | 80 | 8 | Committed |
-| | **PBI-15** | Documentação Técnica Completa (`README.md`), Submissão APK (`versionCode 6`) e Vídeo Demonstrativo | **#13** | 2 pts | 1 - Critical | 100 | 10 | Committed |
+| | **PBI-14** | Lifecycle Nativo TanStack Query (`AppState`/`expo-network`), Testes Unitários e Builds EAS | **#112** | 2 pts | 2 - High | 80 | 10 | Committed |
+| | **PBI-15** | Documentação Técnica Completa (`README.md`), Submissão APK (`versionCode 8`) e Vídeo Demonstrativo | **#13** | 2 pts | 1 - Critical | 100 | 12 | Committed |
 | **Feature 05** `[AB#180]` | **PBI-16** | Camada de Serviço FastAPI (`aiService.ts`), Tipos de IA e Aquecimento Render | **#181** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | | **PBI-17** | Hook `useZelaBot` com Histórico de Sessões, Insights por Bairro e Deleção Otimista | **#182** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | | **PBI-18** | Interface Conversacional `ZelaBotScreen` Integrada à Home, Perfil e Detalhes do Chamado | **#183** | 3 pts | 1 - Critical | 100 | 1 | Committed |
-| **TOTAL CONSOLIDADO** | **5 Features** | **18 PBIs (24 Work Items no Azure Boards)** | **`#1..#13`, `#106..#112`, `#180..#183`** | **49 pts** | — | — | **39 commits únicos** | **100% Sincronizado** |
+| **TOTAL CONSOLIDADO** | **5 Features** | **18 PBIs (24 Work Items no Azure Boards)** | **`#1..#13`, `#106..#112`, `#180..#183`** | **49 pts** | — | — | **47 commits únicos** | **100% Sincronizado** |
 
 > **Observação:** o esforço é controlado por Story Points no Azure Boards. A coluna de horas estimadas foi substituída pela rastreabilidade direta dos IDs reais dos Work Items, evitando divergência entre o documento e o board.
 
@@ -110,12 +110,12 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `49`
 * **Business Value:** `100`
-* **Description:** Desenvolvimento do aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler) e TypeScript estrito, alinhado à ODS 11, integrado 100% aos contratos da API RESTful Java Spring Boot em Azure (`https://app-zelafix.azurewebsites.net`) e ao microsserviço FastAPI ZelaBot IA no Render (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`). Contempla autenticação JWT segura com `expo-secure-store`, formulários reativos tipados com Zod v4, cache reativo via TanStack Query v5 com paginação infinita no Radar e lifecycle nativo (`AppState` + `expo-network`), geolocalização GPS com geocodificação reversa (`expo-location`), envio fotográfico `multipart/form-data` com triagem automática direta pela Spring AI (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), controle RBAC (Cidadão/Gestor Público), suíte de testes unitários Node, auditoria automática de commit Git em tempo de build, assistente conversacional ZelaBot IA com RAG normativo e APK standalone publicado via EAS Build (`versionCode 6`).
+* **Description:** Desenvolvimento do aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler) e TypeScript estrito, alinhado à ODS 11, integrado 100% aos contratos da API RESTful Java Spring Boot em Azure (`https://app-zelafix.azurewebsites.net`) e ao microsserviço FastAPI ZelaBot IA no Render (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`). Contempla autenticação JWT segura com `expo-secure-store`, formulários reativos tipados com Zod v4, cache reativo via TanStack Query v5 com paginação infinita no Radar e lifecycle nativo (`AppState` + `expo-network`), geolocalização GPS com geocodificação reversa (`expo-location`), envio fotográfico `multipart/form-data` com triagem automática direta pela Spring AI (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), controle RBAC (Cidadão/Gestor Público), suíte de 66 testes unitários Node, auditoria automática de commit Git em tempo de build, assistente conversacional ZelaBot IA com RAG normativo e APK standalone publicado via EAS Build (`versionCode 8`).
 * **Acceptance Criteria:**
-  - [x] Aplicativo em React Native + Expo SDK 58 + React Compiler + TypeScript estrito (zero `any`, ESLint v9, `type-check` e testes unitários passando).
+  - [x] Aplicativo em React Native + Expo SDK 58 + React Compiler + TypeScript estrito (zero `any`, ESLint v9, `type-check` e 66 testes unitários passando).
   - [x] 12 telas (11 fluxos funcionais + Sobre o App) organizadas por stacks/tabs com Dark Mode e Light Mode adaptativos via `AppTheme`.
   - [x] Integração 100% alinhada aos DTOs e rotas da API Java em Azure (`multipart/form-data` + `DeferredResult` + `Page<T>`) e ZelaBot IA no Render.
-  - [x] Build Android compilado e publicado via EAS Build (`versionCode 6`, build `718280c9`) com link direto de download do APK.
+  - [x] Build Android compilado e publicado via EAS Build (`versionCode 8`, build `ba71cba6`) com link direto de download do APK.
 
 ---
 
@@ -205,6 +205,7 @@
 - [`c5b9095`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/c5b9095) — `refactor(core): alinha contratos DTO, validacoes Zod, permissoes e servicos HTTP com API Java` *(vinculado em AB#4)*
 - [`6a2e085`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/6a2e085) — `feat: Dando um retoque em Mobile!! Agora sim está organizado!!` *(vinculado em AB#4)*
 - [`aadd028`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/aadd028) — `feat(brand): renovar identidade visual, icones e splash` *(vinculado em AB#4)*
+- [`4bb6c31`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/4bb6c31) — `feat(mobile): centralizar tipos sem barrels, alinhar timeouts e boundary multipart com backend Java` *(vinculado em AB#4)*
 
 ---
 
@@ -301,6 +302,7 @@
 - [`edd60a4`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/edd60a4) — `feat(ui): reformula dashboard na home e centraliza demandas e prioridades no radar` *(vinculado em AB#108)*
 - [`ba5b3b8`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/ba5b3b8) — `feat: dando uma refatorada em mobile` *(vinculado em AB#108)*
 - [`b34bdfc`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/b34bdfc) — `refactor(screens): integra hooks React Query e refatora telas com paridade total de contratos` *(vinculado em AB#108)*
+- [`13a7dca`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/13a7dca) — `refactor(mobile): modernize UI design, streamline screens and fix transition white flash` *(vinculado em AB#108)*
 
 ---
 
@@ -384,6 +386,7 @@
 ##### Commits vinculados (GitHub Repository):
 - [`18b5fdb`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/18b5fdb) — `feat: configura cliente Axios, servicos de API e contexto de autenticacao` *(vinculado em AB#6)*
 - [`c5b9095`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/c5b9095) — `refactor(core): alinha contratos DTO, validacoes Zod, permissoes e servicos HTTP com API Java` *(vinculado em AB#6)*
+- [`fcc09ac`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/fcc09ac) — `refactor: atualizar endpoints para app-zelafix` *(vinculado em AB#6)*
 
 ---
 
@@ -563,6 +566,7 @@
 - [`b1bbc50`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/b1bbc50) — `feat(radar): exibir todas as cidades por padrao e atualizar README` *(vinculado em AB#111)*
 - [`e923201`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/e923201) — `feat: paginacao infinita no radar, ajustes na navbar/home, fix loop de navegacao e enum de categorias` *(vinculado em AB#111)*
 - [`ce4ec9f`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/ce4ec9f) — `refactor(chamados): remover polling de recusa-recente e aguardar retorno direto de POST /chamados` *(vinculado em AB#111)*
+- [`2b8dc3c`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/2b8dc3c) — `feat: só um pequeno ajuste na página dos meus chamados` *(vinculado em AB#111)*
 
 ---
 
@@ -581,12 +585,12 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `7`
 * **Business Value:** `100`
-* **Description:** Acompanhamento completo de ocorrências com timeline de 5 estados, exibição da classificação gerada pela triagem IA (prioridade e órgão competente), feedback visual em recusas da IA, botão de apoio comunitário com atualização otimista em cache (`chamadoCache.ts` para listas simples e infinitas), lifecycle nativo React Native no TanStack Query (`AppState` + `expo-network`), suíte de testes unitários Node, builds EAS (`versionCode` 2, 3, 5 e 6) e entrega documentada FIAP.
+* **Description:** Acompanhamento completo de ocorrências com timeline de 5 estados, exibição da classificação gerada pela triagem IA (prioridade e órgão competente), feedback visual em recusas da IA, botão de apoio comunitário com atualização otimista em cache (`chamadoCache.ts` para listas simples e infinitas), lifecycle nativo React Native no TanStack Query (`AppState` + `expo-network`), suíte de 66 testes unitários Node, builds EAS (`versionCode` 2, 3, 5, 6, 7 e 8) e entrega documentada FIAP.
 * **Acceptance Criteria:**
   - [x] `ChamadoDetailsScreen` exibindo foto, localização, timeline de 5 estados, prioridade e órgão responsável gerados pela triagem IA.
   - [x] Apoio comunitário otimista em `useChamadoMutations` + `chamadoCache.ts` via `POST /chamados/{id}/apoiar` com rollback em erro.
   - [x] Integração de `AppState` + `expo-network` no `QueryClient` para refetch e pausas conscientes de bateria.
-  - [x] Rastreabilidade de versão/commit dinâmico, suíte de testes unitários Node e APK EAS `versionCode 6` publicado.
+  - [x] Rastreabilidade de versão/commit dinâmico, suíte de 66 testes unitários Node e APK EAS `versionCode 8` publicado.
 
 #### 🔹 [PBI-13] Detalhes do Chamado, Timeline 5 Estados, Triagem IA, Feedback de Recusa e Apoio Otimista
 
@@ -644,8 +648,8 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `bindReactNativeQueryLifecycle` em `lib/queryClient.ts` conectando `AppState` (`focusManager`) e `expo-network` (`onlineManager`).
 - [x] `app.config.js` + `config/version.ts` injetando hash completo/curto do commit Git e branch via `expo-constants` em tempo de build, com React Compiler (`reactCompiler: true`) em `app.json`.
-- [x] Suíte de testes unitários com Node test runner (`node --experimental-strip-types --test`) cobrindo `tests/apiError.test.ts`, `tests/chamadoCache.test.ts` e `tests/coreUtils.test.ts`.
-- [x] Evolução de releases EAS Build Android APK (`versionCode` 2 ➔ 3 ➔ 5 ➔ 6) sem referências legadas ao Firebase e URLs centrais de produção Azure (`apiUrl`) e Render (`aiUrl`) em `src/config/env.ts`.
+- [x] Suíte de testes unitários com Node test runner (`node --experimental-strip-types --test`) com 66 testes unitários passando em 7 arquivos (`tests/apiError.test.ts`, `tests/chamadoCache.test.ts`, `tests/chamadoMappers.test.ts`, `tests/coreUtils.test.ts`, `tests/formatters.test.ts`, `tests/permissions.test.ts` e `tests/schemas.test.ts`).
+- [x] Evolução de releases EAS Build Android APK (`versionCode` 2 ➔ 3 ➔ 5 ➔ 6 ➔ 7 ➔ 8) sem referências legadas ao Firebase e URLs centrais de produção Azure (`apiUrl`) e Render (`aiUrl`) em `src/config/env.ts`.
 
 ##### Commits vinculados (GitHub Repository):
 - [`56a15ef`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/56a15ef) — `chore(config): configura ambiente Azure/Render, EAS Build, ESLint e dependencias` *(vinculado em AB#112)*
@@ -656,15 +660,17 @@
 - [`e5bc448`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/e5bc448) — `chore(build): incrementar versionCode para 5` *(vinculado em AB#112)*
 - [`ce4ec9f`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/ce4ec9f) — `refactor(chamados): remover polling de recusa-recente e aguardar retorno direto de POST /chamados` *(vinculado em AB#112)*
 - [`58a2cfd`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/58a2cfd) — `chore(release): preparar versionCode 6 e atualizar contratos no README` *(vinculado em AB#112)*
+- [`7f731d1`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/7f731d1) — `feat(mobile): expandir suite de testes unitarios, unificar imports e suportar tipos do node` *(vinculado em AB#112)*
+- [`44a19ff`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/44a19ff) — `chore(release): bump versionCode to 8 para novo APK com endpoint atualizado` *(vinculado em AB#112)*
 
 ---
 
-#### 🔹 [PBI-15] Documentação Técnica Completa (README.md), Submissão APK (versionCode 6) e Vídeo Demonstrativo
+#### 🔹 [PBI-15] Documentação Técnica Completa (README.md), Submissão APK (versionCode 8) e Vídeo Demonstrativo
 
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#13`
 * **Parent Feature:** `[FEATURE 04] Engajamento Cidadão, Votação Otimista, Lifecycle Nativo e Entrega` (`#11`)
-* **Title:** `[PBI-15] Documentação Técnica Completa (README.md), Submissão APK (versionCode 6) e Vídeo Demonstrativo`
+* **Title:** `[PBI-15] Documentação Técnica Completa (README.md), Submissão APK (versionCode 8) e Vídeo Demonstrativo`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 * **Tags:** `Mobile`
@@ -675,12 +681,12 @@
 
 ##### Descrição (História de Usuário)
 > **Como** banca examinadora e professores da FIAP,  
-> **Eu quero** consultar documentação técnica detalhada, links oficiais de download do APK standalone (`versionCode 6`) e roteiro oficial de entrega,  
+> **Eu quero** consultar documentação técnica detalhada, links oficiais de download do APK standalone (`versionCode 8`) e roteiro oficial de entrega,  
 > **Para que** seja comprovado o atendimento rigoroso a todos os critérios da Global Solution 2026/2.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `README.md` e `ENTREGA_GS_2026_2.txt` documentando stack, 12 telas, contratos REST atualizados (`POST /chamados` `multipart/form-data` + `DeferredResult`), `expo-network`, instruções de execução e instalação standalone.
-- [x] Publicação oficial do APK `versionCode 6` via EAS Build (`718280c9`, commit `58a2cfd`) com link direto de artefato e painel Expo.
+- [x] Publicação oficial do APK `versionCode 8` via EAS Build (`ba71cba6`, commit `44a19ff`) com link direto de artefato (`6DB4UpvE0Rp09oPwM8OGEs9x2_zxgeZTBHPiYGT26LI.apk`) e painel Expo.
 - [x] Tela `SobreAppScreen` exibindo versão, commit hash dinâmico e equipe em ordem alfabética estrita.
 - [x] Estrutura preparada para link do vídeo demonstrativo cobrindo autenticação, telas principais, sensores GPS/câmera, CRUD, RBAC e ZelaBot IA.
 
@@ -695,6 +701,8 @@
 - [`6aae45e`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/6aae45e) — `docs(mobile): atualizar arquitetura e endpoints da triagem assincrona no README` *(vinculado em AB#13)*
 - [`dda6a69`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/dda6a69) — `docs(mobile): atualizar links oficiais do APK versionCode 5 no README` *(vinculado em AB#13)*
 - [`34bbf4c`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/34bbf4c) — `docs: atualizar link do APK versionCode 6 (EAS Build 718280c9)` *(vinculado em AB#13)*
+- [`9b97e97`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/9b97e97) — `docs: atualizar link do APK versionCode 7 (EAS Build e9e4c709)` *(vinculado em AB#13)*
+- [`9b22136`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/9b22136) — `docs: atualizar link do APK versionCode 8 (EAS Build ba71cba6)` *(vinculado em AB#13)*
 
 ---
 

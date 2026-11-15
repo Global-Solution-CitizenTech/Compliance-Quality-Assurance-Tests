@@ -393,8 +393,9 @@
 - [x] Registro atômico em `HistChamado` a cada mudança de status do chamado (`PENDENTE`, `EM_ANALISE`, `EM_EXECUCAO`, `CONCLUIDO`, `REJEITADO`).
 - [x] Disparo de eventos de domínio desacoplados via `@TransactionalEventListener`.
 
-##### Pull Request no Azure Repos:
-- PR #2
+##### Pull Requests no Azure Repos:
+- PR #2 (`refactor(service): refatorar ChamadoService com enriquecimento em lote e validacoes isoladas`)
+- PR #22 (`feat: implementar historico de chamados, tipar enums de triagem e simplificar worker`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `8dbf652` refactor(service): refatorar ChamadoService com enriquecimento em lote e validacoes isoladas (padrao Clyvo 4)
@@ -851,6 +852,7 @@
 - PR #8 (`feat(triagem): validar CEP no ViaCEP e expor pre-analise sincrona com Spring AI`)
 - PR #14 (`refactor(chamado): consolidar triagem assincrona, prioridade, orgao e DTOs`)
 - PR #18 (`fix(chamado): concluir triagem de IA com status EM_ANALISE`)
+- PR #21 (`feat: triagem assincrona, Spring AI multimodal, fail-fast e 13 tabelas`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `156e3d9` feat(triagem): validar CEP no ViaCEP e expor pre-analise sincrona com Spring AI
