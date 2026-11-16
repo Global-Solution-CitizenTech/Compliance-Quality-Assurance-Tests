@@ -11,7 +11,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Tags:** `DotNet`  
-> **Diretrizes Estratégicas:** Desenvolvimento de Web API RESTful corporativa de alta performance em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e DDD, persistência relacional estrita com Entity Framework Core 10 sobre Oracle Database (14 tabelas relacionais em 3FN, sem dependência de PL/SQL), resolução resiliente de endereços com ViaCEP, gestão transacional de evidências fotográficas em Base64/BLOB, mecanismo cívico de apoio popular (`VOTO_CHAMADO`) com escalonamento dinâmico de prioridade, trilha de auditoria imutável (`HIST_CHAMADO`), autenticação segura JWT Bearer HS256 com senhas protegidas por BCrypt e RBAC granular (`CIDADAO` / `GESTOR`), garantia de idempotência via cabeçalho `Idempotency-Key`, rate limiting nativo Fixed Window, observabilidade com Health Checks customizados e logs estruturados via Serilog (`X-Correlation-ID`), integração total com o aplicativo mobile React Native (Expo) com suporte a miniaturas (`incluirFoto`) e suíte de 80 testes automatizados (unitários e integração com WebApplicationFactory) no padrão AAA.
+> **Diretrizes Estratégicas:** Desenvolvimento de Web API RESTful corporativa de alta performance em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e DDD, publicada em nuvem no Render (`https://advanced-business-development-with-dot.onrender.com/`), persistência relacional estrita com Entity Framework Core 10 sobre Oracle Database 19c (`DatabaseVersion19`, 14 tabelas relacionais em 3FN e `DbInitializer` para migração e seed automáticos), resolução resiliente de endereços com ViaCEP, gestão transacional de evidências fotográficas em Base64/BLOB, mecanismo cívico de apoio popular (`VOTO_CHAMADO`) com escalonamento dinâmico de prioridade, trilha de auditoria imutável (`HIST_CHAMADO`), autenticação segura JWT Bearer HS256 com senhas protegidas por BCrypt e RBAC granular (`CIDADAO` / `GESTOR`), garantia de idempotência via cabeçalho `Idempotency-Key`, rate limiting nativo Fixed Window, observabilidade com Health Checks customizados e logs estruturados via Serilog (`X-Correlation-ID`), Swagger OpenAPI 3.0 completo com 23 paths, integração total com o aplicativo mobile React Native (Expo) com suporte a miniaturas (`incluirFoto`) e suíte de **105 testes automatizados** (53 unitários + 52 de integração com WebApplicationFactory, >91% de cobertura em todas as camadas) no padrão AAA.
 
 ---
 
@@ -50,7 +50,7 @@
 ├── 🏆 [FEATURE 04] Observabilidade Corporativa e Integração com Ecossistema Mobile [AB#204]
 │   ├── 📄 [PBI-10] Observabilidade com Health Checks Integrados ao Oracle e Logging Estruturado Serilog (3 pts) [AB#205]
 │   ├── 📄 [PBI-11] Integração Full-Stack com App Mobile React Native e Compatibilização de Rotas (3 pts) [AB#206]
-│   └── 📄 [PBI-12] Dashboard Municipal e Agrupamento Estatístico de Ocorrências por Bairro (3 pts) [AB#207]
+│   └── 📄 [PBI-12] Estatísticas Consolidadas de Chamados e Filtros Territoriais no Radar (3 pts) [AB#207]
 │
 └── 🏆 [FEATURE 05] Qualidade de Software, Testes Automatizados e Governança [AB#208]
     ├── 📄 [PBI-13] Suíte de Testes Unitários de Domínio e Aplicação com xUnit no Padrão AAA e Moq (3 pts) [AB#209]
@@ -66,20 +66,20 @@
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Feature 01** `[AB#28]` | **PBI-01** | Setup da Solução .NET 10, Clean Architecture e Injeção de Dependências | **#29** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | | **PBI-02** | Modelagem de Entidades Relacionais 3FN e Mapeamentos Fluent API no EF Core | **#30** | 3 pts | 1 - Critical | 100 | 2 | Committed |
-| | **PBI-03** | Repositórios Especializados, Unit of Work e Persistência de Fotos em BLOB | **#200** | 3 pts | 1 - Critical | 100 | 1 | Committed |
+| | **PBI-03** | Repositórios Especializados, Unit of Work e Persistência de Fotos em BLOB | **#200** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | **Feature 02** `[AB#31]` | **PBI-04** | Resolução Resiliente de Endereços Urbanos via HttpClient e API Externa ViaCEP | **#32** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | | **PBI-05** | Mobilização Popular, Votação Comunitária e Escalonamento Automático de Prioridade | **#33** | 3 pts | 1 - Critical | 100 | 2 | Committed |
-| | **PBI-06** | Trilha de Auditoria Histórica (HIST_CHAMADO) e Transição de Status Operacional | **#201** | 3 pts | 1 - Critical | 100 | 2 | Committed |
+| | **PBI-06** | Trilha de Auditoria Histórica (HIST_CHAMADO) e Transição de Status Operacional | **#201** | 3 pts | 1 - Critical | 100 | 3 | Committed |
 | **Feature 03** `[AB#34]` | **PBI-07** | Autenticação JWT Bearer HS256, Criptografia BCrypt e Controle de Acesso RBAC | **#35** | 3 pts | 1 - Critical | 100 | 1 | Committed |
 | | **PBI-08** | Endpoints de Ocorrências com Filtros Dinâmicos, Paginação e Miniaturas (incluirFoto) | **#202** | 3 pts | 1 - Critical | 100 | 2 | Committed |
 | | **PBI-09** | Idempotência de Requisições com Header Idempotency-Key e Rate Limiting Nativo | **#203** | 3 pts | 1 - Critical | 100 | 1 | Committed |
-| **Feature 04** `[AB#204]` | **PBI-10** | Observabilidade com Health Checks Integrados ao Oracle e Logging Estruturado Serilog | **#205** | 3 pts | 1 - Critical | 100 | 2 | Committed |
-| | **PBI-11** | Integração Full-Stack com App Mobile React Native e Compatibilização de Rotas | **#206** | 3 pts | 1 - Critical | 100 | 2 | Committed |
-| | **PBI-12** | Dashboard Municipal e Agrupamento Estatístico de Ocorrências por Bairro | **#207** | 3 pts | 1 - Critical | 100 | 1 | Committed |
-| **Feature 05** `[AB#208]` | **PBI-13** | Suíte de Testes Unitários de Domínio e Aplicação com xUnit no Padrão AAA e Moq | **#209** | 3 pts | 1 - Critical | 100 | 2 | Committed |
-| | **PBI-14** | Testes de Integração com WebApplicationFactory, Banco em Memória e Contratos HTTP | **#210** | 3 pts | 1 - Critical | 100 | 1 | Committed |
-| | **PBI-15** | Documentação OpenAPI/Swagger 3.0, Diagramas de Arquitetura e README Técnico | **#211** | 3 pts | 1 - Critical | 100 | 2 | Committed |
-| **TOTAL CONSOLIDADO** | **5 Features** | **15 PBIs de Backlog** | — | **45 pts** | — | — | **8 Commits** | **100% Concluído** |
+| **Feature 04** `[AB#204]` | **PBI-10** | Observabilidade com Health Checks Integrados ao Oracle e Logging Estruturado Serilog | **#205** | 3 pts | 1 - Critical | 100 | 3 | Committed |
+| | **PBI-11** | Integração Full-Stack com App Mobile React Native e Compatibilização de Rotas | **#206** | 3 pts | 1 - Critical | 100 | 3 | Committed |
+| | **PBI-12** | Estatísticas Consolidadas de Chamados e Filtros Territoriais no Radar | **#207** | 3 pts | 1 - Critical | 100 | 2 | Committed |
+| **Feature 05** `[AB#208]` | **PBI-13** | Suíte de Testes Unitários de Domínio e Aplicação com xUnit no Padrão AAA e Moq | **#209** | 3 pts | 1 - Critical | 100 | 3 | Committed |
+| | **PBI-14** | Testes de Integração com WebApplicationFactory, Banco em Memória e Contratos HTTP | **#210** | 3 pts | 1 - Critical | 100 | 2 | Committed |
+| | **PBI-15** | Documentação OpenAPI/Swagger 3.0, Diagramas de Arquitetura e README Técnico | **#211** | 3 pts | 1 - Critical | 100 | 4 | Committed |
+| **TOTAL CONSOLIDADO** | **5 Features** | **15 PBIs de Backlog** | — | **45 pts** | — | — | **10+ Commits** | **100% Concluído** |
 
 ---
 
@@ -201,10 +201,11 @@
 - [x] `IUnitOfWork` gerenciando transações atômicas e persistência com `CommitAsync()`.
 - [x] `IChamadoRepository`, `IUsuarioRepository` e `ICategoriaRepository` com consultas especializadas e paginação otimizada.
 - [x] Persistência da foto em coluna `BLOB` (`byte[]`) mapeada com sanitização e conversão segura a partir de Base64.
-- [x] Zero acoplamento com procedures proprietárias de banco, garantindo portabilidade total no C#.
+- [x] Compatibilidade estrita com Oracle 19c (`DatabaseVersion19`) e `DbInitializer` para migração e seed automáticos de domínio.
 
 ##### Commits vinculados (GitHub Repository):
 - [`39a4f79`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/39a4f79) — `feat(infra): configurar persistencia EF Core para Oracle Database, repositorios e UnitOfWork` *(vinculado em AB#28)*
+- [`f5a8305`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f5a8305) — `fix(api,infra,swagger): expor todos os endpoints no Swagger, compatibilizar EF Core com Oracle 19c, auto-migrar/semear banco e corrigir StatusAnterior` *(vinculado em AB#200)*
 
 ---
 
@@ -497,11 +498,11 @@
 
 ---
 
-#### 🔹 [PBI-12] Dashboard Municipal e Agrupamento Estatístico de Ocorrências por Bairro
+#### 🔹 [PBI-12] Estatísticas Consolidadas de Chamados e Filtros Territoriais no Radar
 * **Work Item Type:** `Product Backlog Item`
 * **Azure Boards ID:** `#207`
 * **Parent Feature:** `[FEATURE 04] Observabilidade Corporativa e Integração com Ecossistema Mobile` (#204)
-* **Title:** `[PBI-12] Dashboard Municipal e Agrupamento Estatístico de Ocorrências por Bairro`
+* **Title:** `[PBI-12] Estatísticas Consolidadas de Chamados e Filtros Territoriais no Radar`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
 * **Tags:** `DotNet`
@@ -512,17 +513,18 @@
 
 ##### Descrição (História de Usuário)
 > **Como** gestor da subprefeitura ou cidadão acompanhando indicadores urbanos,  
-> **Eu quero** consultar métricas consolidadas de zeladoria e distribuição quantitativa de chamados por bairro,  
-> **Para que** o poder público possa priorizar equipes de manutenção nas regiões com maior incidência de problemas.
+> **Eu quero** consultar métricas consolidadas de zeladoria e filtrar ocorrências por bairro, categoria e ordenação por apoios,  
+> **Para que** o poder público e os moradores identifiquem demandas prioritárias rapidamente.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Endpoint `GET /api/v1/dashboard/estatisticas` retornando totais de chamados abertos, em execução, concluídos, rejeitados e votos de apoio.
-- [x] Endpoint `GET /api/v1/dashboard/bairros` consolidando quantitativos de ocorrências agrupadas por bairro para mapa de calor.
-- [x] Consultas agregadas via LINQ no EF Core com projeção direta em records de resposta para alta velocidade de execução.
+- [x] Endpoint `GET /api/v1/chamados/estatisticas` (e `/chamados/estatisticas`) retornando totais de chamados abertos, em andamento, resolvidos, rejeitados e total de apoios.
+- [x] Filtros dinâmicos no repositório EF Core por `BairroId`, `CategoriaId`, `Status`, `Busca` e ordenação (`Recentes` / `MaisApoiados`).
+- [x] Consultas agregadas via LINQ no EF Core com projeção direta para alta velocidade de execução.
 - [x] Tratamento de exceções e retorno padronizado RFC 7807 em caso de parâmetros inválidos.
 
 ##### Commits vinculados (GitHub Repository):
 - [`894b532`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/894b532) — `feat(api): implementar Minimal APIs RESTful, JWT Bearer, HATEOAS, Idempotency e Rate Limiting`
+- [`f5a8305`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f5a8305) — `fix(api,infra,swagger): expor todos os endpoints no Swagger, compatibilizar EF Core com Oracle 19c, auto-migrar/semear banco e corrigir StatusAnterior`
 
 ---
 
@@ -537,12 +539,12 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `9`
 * **Business Value:** `100`
-* **Description:** Implementação de rigorosa suíte de testes automatizados com xUnit cobrindo cenários unitários e de integração no padrão Arrange-Act-Assert (AAA), documentação interativa Swagger OpenAPI 3.0 e estruturação do repositório no GitHub para governança acadêmica e entrega final.
+* **Description:** Implementação de rigorosa suíte de testes automatizados com xUnit cobrindo cenários unitários e de integração no padrão Arrange-Act-Assert (AAA) com cobertura superior a 91% em todas as camadas, documentação interativa Swagger OpenAPI 3.0 com 23 paths expostos e governança no Render/GitHub.
 * **Acceptance Criteria:**
-  - [x] 43 testes unitários cobrindo entidades de domínio, criptografia BCrypt, serviços de aplicação e validações de imagem.
-  - [x] 37 testes de integração HTTP utilizando `WebApplicationFactory` e banco de dados em memória.
-  - [x] 100% dos testes executados com sucesso no `dotnet test` (0 falhas).
-  - [x] Swagger OpenAPI documentando todos os endpoints, esquemas de DTOs e segurança JWT.
+  - [x] 53 testes unitários cobrindo domínio (`98.11%`) e aplicação (`94.20%`) com `ViaCepService`, `FotoImagem` e `RegisterRequest`.
+  - [x] 52 testes de integração HTTP utilizando `WebApplicationFactory`, cobrindo `Api` (`95.28%`) e `Infrastructure` (`91.73%`).
+  - [x] 105 testes executados com sucesso no `dotnet test` (0 falhas).
+  - [x] Swagger OpenAPI expondo todos os 23 paths em 7 grupos incluindo Health Checks e rotas diretas Mobile.
 
 #### 🔹 [PBI-13] Suíte de Testes Unitários de Domínio e Aplicação com xUnit no Padrão AAA e Moq
 * **Work Item Type:** `Product Backlog Item`
@@ -563,14 +565,15 @@
 > **Para que** regras críticas de zeladoria, hashing de senhas e validação de invariantes não sofram regressões.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Projeto `ZelaFix.Tests.Unit` com testes de domínio: `EnderecoTests`, `StatusTests` e `UsuarioTests`.
-- [x] Testes de serviços de aplicação: `AuthServiceTests`, `CategoriaServiceTests`, `ChamadoServiceTests`, `FotoImagemTests` e `TokenServiceTests`.
+- [x] Projeto `ZelaFix.Tests.Unit` com 53 testes cobrindo domínio (`EnderecoTests`, `StatusTests`, `UsuarioTests`, `DomainEntitiesTests`).
+- [x] Testes de aplicação (`AuthServiceTests`, `CategoriaServiceTests`, `ChamadoServiceTests`, `FotoImagemTests`, `TokenServiceTests`, `ViaCepAndRegisterTests`).
 - [x] Estrutura estrita do padrão Arrange-Act-Assert em cada caso de teste.
-- [x] Validação de casos felizes (sucesso) e casos de borda (dados inválidos, violação de regras semânticas e senhas incorretas).
+- [x] Cobertura de linhas de `98.11%` no Domínio e `94.20%` na Aplicação.
 
 ##### Commits vinculados (GitHub Repository):
 - [`e5f9a26`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/e5f9a26) — `test(unit): implementar testes unitarios com xUnit no padrao AAA`
 - [`49be863`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/49be863) — `test: atualiza testes unitarios e de integracao validando ciclo de vida, apoio e status`
+- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
 
 ---
 
@@ -593,13 +596,14 @@
 > **Para que** a comunicação entre pipeline ASP.NET Core, filtros, autenticação JWT, banco de dados e respostas REST seja validada integralmente.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Projeto `ZelaFix.Tests.Integration` configurado com `CustomWebApplicationFactory` substituindo o Oracle por InMemory Database e injetando mock do ViaCEP.
-- [x] Testes ponta a ponta dos fluxos de autenticação (`/register`, `/login`, `/me`).
-- [x] Testes de chamados com abertura, paginação, filtros e verificação do cabeçalho `Idempotent-Replayed: true`.
-- [x] Testes de observabilidade validando propagação de `X-Correlation-ID`, health checks e formato RFC 7807.
+- [x] Projeto `ZelaFix.Tests.Integration` com 52 testes usando `CustomWebApplicationFactory` e `RepositoriesAndInfrastructureTests`.
+- [x] Testes ponta a ponta de autenticação, categorias, chamados, idempotência (`Idempotent-Replayed: true`), observabilidade e `GlobalExceptionHandler`.
+- [x] Cobertura de `95.28%` na API e `91.73%` na Infraestrutura (excluindo migrations DDL geradas).
+- [x] Validação end-to-end contra Oracle 19c com as 6 imagens reais da pasta `situacoes-imagens`.
 
 ##### Commits vinculados (GitHub Repository):
 - [`53dd111`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/53dd111) — `test(integration): implementar testes de integracao com WebApplicationFactory`
+- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
 
 ---
 
@@ -618,15 +622,17 @@
 
 ##### Descrição (História de Usuário)
 > **Como** avaliador acadêmico, gestor ou novo desenvolvedor ingressando no projeto,  
-> **Eu quero** documentação técnica completa contendo guia de execução via Docker, diagramas arquiteturais e documentação OpenAPI Swagger,  
+> **Eu quero** documentação técnica completa contendo guia de execução via Docker/Render, prints do Oracle SQL Developer, Swagger completo e diagramas arquiteturais,  
 > **Para que** a API possa ser compreendida, executada e integrada rapidamente sem atritos de configuração.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Interface Swagger UI ativa na raiz (`/`) com esquemas completos de requisição/resposta e suporte ao botão Authorize (Bearer Token).
-- [x] Diagramas de arquitetura física e lógica documentados em formato de texto e imagem.
-- [x] Guia completo de inicialização local com Docker Oracle Free e variáveis de ambiente documentadas em `README.md`.
-- [x] Referência explícita e documentação da integração com o app móvel `Mobile-Application-Development-Dot-Net`.
+- [x] Interface Swagger UI ativa na raiz (`/`) expondo todos os 23 paths em 7 grupos (incluindo Health Checks e rotas Mobile).
+- [x] Evidências visuais das tabelas populadas no Oracle Database 19c, Swagger UI e Health Checks em `docs/`.
+- [x] Guia de inicialização local com Docker Oracle Free e link de produção no Render documentados em `README.md`.
+- [x] Referência explícita e verificação de alinhamento com o app móvel `Mobile-Application-Development-Dot-Net`.
 
 ##### Commits vinculados (GitHub Repository):
 - [`ee3696b`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/ee3696b) — `docs(readme): atualizar documentacao tecnica, diagramas logico e relacional e integracao mobile`
 - [`cd487c4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/cd487c4) — `docs: documenta arquitetura, rubrica GS2, endpoints, healthchecks e execucao local com Docker`
+- [`f5a8305`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f5a8305) — `fix(api,infra,swagger): expor todos os endpoints no Swagger, compatibilizar EF Core com Oracle 19c, auto-migrar/semear banco e corrigir StatusAnterior`
+- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
