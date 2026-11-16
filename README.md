@@ -77,6 +77,44 @@ Todos os backlogs das 7 disciplinas estão centralizados em [`automatizar-boards
 
 ---
 
+## 🖼️ Evidências Visuais dos Boards
+
+As capturas de tela oficiais dos Boards no Azure DevOps (`ZelaFixGS/ZelaFix`) estão versionadas no diretório [`docs/`](./docs/), comprovando a hierarquia **Epic → Feature → PBI**, os estados de execução, os responsáveis, as Iteration Paths (`Semana 1` / `Semana 2`), as tags por disciplina e o esforço em Story Points.
+
+### 📊 Visão Consolidada — 7 Épicos
+
+![Visão consolidada dos 7 Épicos no Azure Boards, com estados, responsáveis, Iteration Paths, tags e Story Points](./docs/Todos-Epics.png)
+
+### 📱 Mobile Application Development
+
+![Backlog do Board Mobile Application Development: Epic, 5 Features e 18 PBIs com rastreabilidade e Story Points](./docs/Mobile.png)
+
+### ☕ Java Advanced
+
+![Backlog do Board Java Advanced: Epic, 6 Features e 22 PBIs de microsserviços Spring Boot, RabbitMQ e triagem assíncrona](./docs/Java.png)
+
+### 🗄️ Database Advanced
+
+![Backlog do Board Database Advanced: Epic, 4 Features e 10 PBIs de modelagem Oracle 3FN, PL/SQL, triggers de auditoria e MongoDB](./docs/Database.png)
+
+### 🔷 Advanced Business Development with .NET
+
+![Backlog do Board .NET: Epic, 3 Features e 5 PBIs de Clean Architecture, Minimal APIs, observabilidade e testes xUnit](./docs/Dot%20Net.png)
+
+### 🚀 DevOps Tools & Cloud Computing
+
+![Backlog do Board DevOps & Cloud: Epic, 3 Features e 7 PBIs de Dockerfiles multi-stage, IaC, DDL Oracle e pipelines CI/CD](./docs/DevOps.png)
+
+### 🤖 Disruptive Architectures (IoT, IoB & IA)
+
+![Backlog do Board Disruptive Architectures: Epic, 4 Features e 10 PBIs do ZelaBot AI, RAG normativo, LLM multimodal e Tool Calling](./docs/DisruptiveArch.png)
+
+### 🛡️ Compliance, Quality Assurance & Tests
+
+![Backlog do Board Compliance & QA: Epic, 3 Features e 7 PBIs de governança Scrum, matriz de 25 casos de teste e rastreabilidade multi-repo](./docs/Compliance.png)
+
+---
+
 ## 📂 Estrutura de Diretórios de Compliance & QA
 
 ```text
@@ -233,18 +271,3 @@ Os **25 casos de teste** ativos (`15` Positivos e `10` Negativos, estado `Ready`
 | **TC-25** | `#197` | Validar observabilidade, sessões SQLite e leitura Oracle no ZelaBot AI | `ai-service` | Positivo |
 
 Consulte a [matriz completa de casos de teste](./docs/MATRIZ_CASOS_DE_TESTE_AZURE.md) para pré-condições, payloads, códigos HTTP e passos XML (`Microsoft.VSTS.TCM.Steps`) cadastrados no Azure DevOps.
-
----
-
-## 🖼️ Evidências Visuais dos Boards (`docs/*.png`)
-
-As capturas de tela oficiais dos Boards permanecem preservadas no diretório [`docs/`](./docs/) para atualização final antes da submissão:
-
-- [Visão Consolidada de Todos os Épicos](./docs/Todos-Epics.png)
-- [Board — Mobile Application Development](./docs/Mobile.png)
-- [Board — Java Advanced](./docs/Java.png)
-- [Board — Database Advanced](./docs/Database.png)
-- [Board — Advanced Business Development with .NET](./docs/Dot%20Net.png)
-- [Board — DevOps Tools & Cloud Computing](./docs/DevOps.png)
-- [Board — Disruptive Architectures (IoT, IoB & IA)](./docs/DisruptiveArch.png)
-- [Board — Compliance, Quality Assurance & Tests](./docs/Compliance.png)
