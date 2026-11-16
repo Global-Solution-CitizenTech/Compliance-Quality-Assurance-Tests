@@ -141,12 +141,25 @@ class AzureClient:
         if res.status_code in (200, 201):
             return res.json()
         
-        # Fallback se a iteração der 400
-        if iteration_path and res.status_code == 400 and "IterationPath" in res.text:
-            patch_doc = [p for p in patch_doc if p.get("path") != "/fields/System.IterationPath"]
-            retry_res = self.session.post(url, json=patch_doc, headers=headers, timeout=25)
+        # Fallback se State ou IterationPath der 400 na criação
+        if res.status_code == 400 and any(k in res.text for k in ("State", "IterationPath")):
+            fields_to_strip = []
+            if "State" in res.text:
+                fields_to_strip.append("/fields/System.State")
+            if "IterationPath" in res.text:
+                fields_to_strip.append("/fields/System.IterationPath")
+            
+            clean_patch = [p for p in patch_doc if p.get("path") not in fields_to_strip]
+            retry_res = self.session.post(url, json=clean_patch, headers=headers, timeout=25)
             if retry_res.status_code in (200, 201):
-                return retry_res.json()
+                created = retry_res.json()
+                # Se tinha state solicitado, tenta aplicar via PATCH após a criação bem-sucedida
+                if state and "/fields/System.State" in fields_to_strip:
+                    try:
+                        self.update_work_item(created["id"], [{"op": "add", "path": "/fields/System.State", "value": state}])
+                    except Exception:
+                        pass
+                return created
 
         raise RuntimeError(f"Erro ao criar {work_item_type} '{title}': HTTP {res.status_code} - {res.text[:200]}")
 
