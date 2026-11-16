@@ -182,12 +182,15 @@
 - [x] `@EntityGraph(attributePaths = {"usuario", "categoria", "status", "endereco"})` configurado nas consultas de `ChamadoRepository`.
 - [x] Consultas agregadas em lote para contagem de votos e verificação de apoio comunitário.
 - [x] Repositórios desacoplados e expurgo de consultas lentas ou buscas iterativas em loop.
+- [x] Lazy loading de `BLOB` com Hibernate bytecode enhancement e query direta de foto em `ChamadoRepository` (`findFotoById`) evitando carregar a entidade inteira.
 
 ##### Commits vinculados (Development no Azure Repos):
 - `6d0d05b` refactor(data): otimizar repositorios e expurgar enums legados nao mapeados
 - `9237241` refactor(core): otimizar consultas com entitygraph, remover cascade indevido e configurar cors
 - `ceb5f50` perf(persistence): adicionar entity graphs e consultas agregadas em lote para eliminar N+1
 - `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
+- `6e661cc` perf(api): lazy loading de BLOB com Hibernate bytecode enhancement e keepalive Hikari
+- `bc0e663` perf(api): query direta de foto, cache HTTP 24h, prefetch LOB Oracle e compactacao de upload >200KB
 
 ---
 
@@ -920,6 +923,7 @@
 - [x] Estratégia Fail-Fast imediata em `ZelaFixAiService.analisarChamado()` com `spring.ai.retry.max-attempts=1` (eliminando `@Retryable` e `@EnableResilientMethods` para evitar latências humanas abusivas no app mobile) e aplicando contingência `PENDENTE` imediata no `ChamadoAiConsumer`.
 - [x] Listeners RabbitMQ configurados com `retry.enabled=true`, `retry.multiplier=2.0`, `default-requeue-rejected=false`, ajuste de timeouts (`read-timeout=40s`) e limpeza de propriedades/secrets redundantes em `application.properties`, `.env.example` e `azure-pipelines.yml`.
 - [x] Otimização de concorrência e prefetch RabbitMQ no worker (`prefetch=1`, `concurrency=2`, `max-concurrency=4`) e pool Hikari dinâmico (`${HIKARI_MAX_POOL_SIZE:5}`, `minimum-idle=1`) para alta eficiência de conexões no Oracle Cloud.
+- [x] Tuning de performance em produção: keepalive no Hikari, prefetch LOB Oracle, cache HTTP público de 24h em `/chamados/{id}/foto` e compactação automática de uploads >200KB.
 - [x] Isolamento de chaves `@Cacheable` em `CategoriaService` e `StatusService` (`findAll` vs `findByNome`) evitando `ClassCastException`.
 - [x] `GlobalExceptionHandler` ignorando desconexão prematura de cliente (`AsyncRequestNotUsableException` / `ClientAbortException`), retornando HTTP `504 Gateway Timeout` em `AsyncRequestTimeoutException` e HTTP `503 Service Unavailable` em `TriagemIndisponivelException`.
 
@@ -930,6 +934,8 @@
 - PR #17 (`fix(exception): ignorar desconexao prematura de cliente (AsyncRequestNotUsableException)`)
 - PR #33 (`fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste`)
 - PR #35 (`fix: pool Hikari, concorrencia VotoConsumer e prefetch RabbitMQ`)
+- PR #36 (`perf(api): lazy loading de BLOB com Hibernate bytecode enhancement e keepalive Hikari`)
+- PR #37 (`perf(api): query direta de foto, cache HTTP 24h, prefetch LOB Oracle e compactacao de upload >200KB`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `cb79f7b` fix: ajusta timeout do worker, truncamento de observacoes e requeue do RabbitMQ
@@ -945,3 +951,5 @@
 - `5e2d3d1` feat(worker): contingencia imediata de triagem no consumidor quando AI_API_KEY estiver vazia
 - `8803ca0` fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste
 - `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
+- `6e661cc` perf(api): lazy loading de BLOB com Hibernate bytecode enhancement e keepalive Hikari
+- `bc0e663` perf(api): query direta de foto, cache HTTP 24h, prefetch LOB Oracle e compactacao de upload >200KB

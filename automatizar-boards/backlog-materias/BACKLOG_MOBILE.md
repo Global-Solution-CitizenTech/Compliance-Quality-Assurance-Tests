@@ -3,7 +3,7 @@
 > **Projeto Integrado:** ZelaFix — Zeladoria Urbana Colaborativa (FIAP Global Solution 2026/2)  
 > **Disciplina:** Mobile Application Development (FIAP — 2TDSPG)  
 > **Repositório GitHub:** [Global-Solution-CitizenTech/Mobile-Application-Development](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development)  
-> **APK Android Standalone (EAS Build `ba71cba6` / `versionCode 8`):** [zelafix.apk](https://expo.dev/artifacts/eas/6DB4UpvE0Rp09oPwM8OGEs9x2_zxgeZTBHPiYGT26LI.apk)  
+> **APK Android Standalone (EAS Build `d6f6ece9` / `versionCode 10`):** [zelafix.apk](https://expo.dev/artifacts/eas/vWLNbhoGwg25BxcN6-QG1RHUOnJ2X9d9KAu2L3WP1JE.apk)  
 > **Organização / Projeto Azure DevOps:** `ZelaFixGS` / `ZelaFix`  
 > **Epic Principal:** `[EPIC] Mobile Application Development: Aplicativo ZelaFix para Engajamento Cidadão e Zeladoria Urbana Colaborativa` (**AB#1**)  
 > **Responsável / Owner:** Luna de Carvalho Guimarães (`RM562290@fiap.com.br`)  
@@ -12,7 +12,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Tags:** `Mobile` — todos os Work Items da disciplina utilizam exclusivamente esta tag.  
-> **Diretrizes Estratégicas:** Aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler e TypeScript estrito), contemplando autenticação JWT com sessão persistente no `expo-secure-store`, 12 telas (11 fluxos funcionais + Sobre o App), integração HTTP via Axios com a API Java Spring Boot (`https://app-zelafix.azurewebsites.net`) e com o microsserviço ZelaBot IA (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`), cache reativo com TanStack Query v5 (`AppState` + `expo-network`), paginação infinita no Radar do Bairro, formulários validados com Zod v4, GPS via `expo-location`, upload fotográfico `multipart/form-data` com triagem direta por IA (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), RBAC Cidadão/Gestor Público, suíte de 66 testes unitários Node e build Android EAS `versionCode 8`.
+> **Diretrizes Estratégicas:** Aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler e TypeScript estrito), contemplando autenticação JWT com sessão persistente no `expo-secure-store`, 12 telas (11 fluxos funcionais + Sobre o App), integração HTTP via Axios com a API Java Spring Boot (`https://app-zelafix.azurewebsites.net`) e com o microsserviço ZelaBot IA (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`), cache reativo com TanStack Query v5 (`AppState` + `expo-network`), paginação infinita no Radar do Bairro, formulários validados com Zod v4, GPS via `expo-location`, upload fotográfico `multipart/form-data` com triagem direta por IA (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), RBAC Cidadão/Gestor Público, suíte de 66 testes unitários Node e build Android EAS `versionCode 10`.
 
 ---
 
@@ -649,7 +649,7 @@
 - [x] `bindReactNativeQueryLifecycle` em `lib/queryClient.ts` conectando `AppState` (`focusManager`) e `expo-network` (`onlineManager`).
 - [x] `app.config.js` + `config/version.ts` injetando hash completo/curto do commit Git e branch via `expo-constants` em tempo de build, com React Compiler (`reactCompiler: true`) em `app.json`.
 - [x] Suíte de testes unitários com Node test runner (`node --experimental-strip-types --test`) com 66 testes unitários passando em 7 arquivos (`tests/apiError.test.ts`, `tests/chamadoCache.test.ts`, `tests/chamadoMappers.test.ts`, `tests/coreUtils.test.ts`, `tests/formatters.test.ts`, `tests/permissions.test.ts` e `tests/schemas.test.ts`).
-- [x] Evolução de releases EAS Build Android APK (`versionCode` 2 ➔ 3 ➔ 5 ➔ 6 ➔ 7 ➔ 8) sem referências legadas ao Firebase e URLs centrais de produção Azure (`apiUrl`) e Render (`aiUrl`) em `src/config/env.ts`.
+- [x] Evolução de releases EAS Build Android APK (`versionCode` 2 ➔ 3 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔ 9 ➔ 10) sem referências legadas ao Firebase, URLs centrais de produção Azure (`apiUrl`) e Render (`aiUrl`) em `src/config/env.ts`, desacoplamento de telas/tipos sem barrels, remoção de casts inseguros e migração de splash screen (`expo-splash-screen` + `expo-font`).
 
 ##### Commits vinculados (GitHub Repository):
 - [`56a15ef`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/56a15ef) — `chore(config): configura ambiente Azure/Render, EAS Build, ESLint e dependencias` *(vinculado em AB#112)*
@@ -662,6 +662,9 @@
 - [`58a2cfd`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/58a2cfd) — `chore(release): preparar versionCode 6 e atualizar contratos no README` *(vinculado em AB#112)*
 - [`7f731d1`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/7f731d1) — `feat(mobile): expandir suite de testes unitarios, unificar imports e suportar tipos do node` *(vinculado em AB#112)*
 - [`44a19ff`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/44a19ff) — `chore(release): bump versionCode to 8 para novo APK com endpoint atualizado` *(vinculado em AB#112)*
+- [`e070f89`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/e070f89) — `refactor(mobile): desacoplar telas, centralizar tipos sem barrels, eliminar casts inseguros e corrigir bugs de runtime (versionCode 9)` *(vinculado em AB#112)*
+- [`dae3f99`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/dae3f99) — `fix(expo): migrar splash screen para plugin expo-splash-screen e adicionar expo-font` *(vinculado em AB#112)*
+- [`0763f75`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/0763f75) — `chore(release): bump versionCode to 10 para APK com expo-splash-screen e expo-font` *(vinculado em AB#112)*
 
 ---
 
@@ -686,7 +689,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `README.md` e `ENTREGA_GS_2026_2.txt` documentando stack, 12 telas, contratos REST atualizados (`POST /chamados` `multipart/form-data` + `DeferredResult`), `expo-network`, instruções de execução e instalação standalone.
-- [x] Publicação oficial do APK `versionCode 8` via EAS Build (`ba71cba6`, commit `44a19ff`) com link direto de artefato (`6DB4UpvE0Rp09oPwM8OGEs9x2_zxgeZTBHPiYGT26LI.apk`) e painel Expo.
+- [x] Publicação oficial do APK `versionCode 10` via EAS Build (`d6f6ece9`, commit `0763f75`) com link direto de artefato (`vWLNbhoGwg25BxcN6-QG1RHUOnJ2X9d9KAu2L3WP1JE.apk`) e painel Expo.
 - [x] Tela `SobreAppScreen` exibindo versão, commit hash dinâmico e equipe em ordem alfabética estrita.
 - [x] Estrutura preparada para link do vídeo demonstrativo cobrindo autenticação, telas principais, sensores GPS/câmera, CRUD, RBAC e ZelaBot IA.
 
@@ -703,6 +706,8 @@
 - [`34bbf4c`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/34bbf4c) — `docs: atualizar link do APK versionCode 6 (EAS Build 718280c9)` *(vinculado em AB#13)*
 - [`9b97e97`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/9b97e97) — `docs: atualizar link do APK versionCode 7 (EAS Build e9e4c709)` *(vinculado em AB#13)*
 - [`9b22136`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/9b22136) — `docs: atualizar link do APK versionCode 8 (EAS Build ba71cba6)` *(vinculado em AB#13)*
+- [`1c4b160`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/1c4b160) — `docs: atualizar link do APK versionCode 9 (EAS Build 39a21c29)` *(vinculado em AB#13)*
+- [`2f300c8`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/2f300c8) — `docs: atualizar link do APK versionCode 10 (EAS Build d6f6ece9)` *(vinculado em AB#13)*
 
 ---
 

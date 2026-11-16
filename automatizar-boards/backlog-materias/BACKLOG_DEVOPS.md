@@ -207,7 +207,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `5`
 * **Business Value:** `100`
-* **Commits Vinculados:** `0e19e6a`, `4385ad2`, `4f8f830`, `ee58679`, `d802cfb`, `7c11343`
+* **Commits Vinculados:** `0e19e6a`, `4385ad2`, `4f8f830`, `ee58679`, `d802cfb`, `7c11343`, `23a134d`
 
 ##### Descrição (História de Usuário)
 > **Como** arquiteto de nuvem,  

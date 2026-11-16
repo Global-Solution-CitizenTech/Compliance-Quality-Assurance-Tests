@@ -512,3 +512,4 @@
 - [`451351b`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/451351b) — `docs(db): padronizar README com links diretos e remover secoes de edital` *(vinculado em AB#121)*
 - [`3a9ba3e`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/3a9ba3e) — `feat(db,nosql): alinhar modelagem 13 tabelas, prioridade/orgao_governo e scripts MongoDB` *(vinculado em AB#121)*
 - [`46a8d46`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/46a8d46) — `chore: align SQL comments, PL/SQL report width, MongoDB dataset and README with Java enums` *(vinculado em AB#121)*
+- [`6a6c157`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/6a6c157) — `feat: só uma pequena atualização no script de mongo` *(vinculado em AB#121)*

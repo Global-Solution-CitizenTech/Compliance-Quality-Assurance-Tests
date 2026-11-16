@@ -574,6 +574,7 @@
 - [`e5f9a26`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/e5f9a26) — `test(unit): implementar testes unitarios com xUnit no padrao AAA`
 - [`49be863`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/49be863) — `test: atualiza testes unitarios e de integracao validando ciclo de vida, apoio e status`
 - [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
+- [`090f676`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/090f676) — `feat: Só add imagens que estavam faltando no readme`
 
 ---
 
@@ -604,6 +605,7 @@
 ##### Commits vinculados (GitHub Repository):
 - [`53dd111`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/53dd111) — `test(integration): implementar testes de integracao com WebApplicationFactory`
 - [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
+- [`090f676`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/090f676) — `feat: Só add imagens que estavam faltando no readme`
 
 ---
 
@@ -636,3 +638,4 @@
 - [`cd487c4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/cd487c4) — `docs: documenta arquitetura, rubrica GS2, endpoints, healthchecks e execucao local com Docker`
 - [`f5a8305`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f5a8305) — `fix(api,infra,swagger): expor todos os endpoints no Swagger, compatibilizar EF Core com Oracle 19c, auto-migrar/semear banco e corrigir StatusAnterior`
 - [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
+- [`090f676`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/090f676) — `feat: Só add imagens que estavam faltando no readme`
