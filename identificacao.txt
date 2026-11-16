@@ -5,7 +5,7 @@ CITIZENTECH: TECNOLOGIA COM O CIDADÃO NO CENTRO DA INOVAÇÃO
 
 PROJETO / GRUPO: ZelaFix — Zeladoria Urbana Colaborativa
 DISCIPLINA: Compliance, Quality Assurance & Tests
-TURMA: 2TDSPG (2º Ano ADS - Turmas de Fevereiro)
+TURMA: 2TDSPG
 
 INTEGRANTES DO GRUPO:
 - RM: 561432 | Nome Completo: Enzo Okuizumi                    | Turma: 2TDSPG
