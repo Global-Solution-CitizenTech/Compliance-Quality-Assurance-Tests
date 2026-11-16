@@ -572,6 +572,8 @@
 - `0f24e96` feat(voto): implementar escalonamento comunitario via rabbitmq e documentar catalogo rest
 - `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
 - `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
+- `631a585` feat: alguns ajustes no readme e add identificação.txt
+- `c3109df` feat: Só um pequeno ajuste no identificação.txt
 
 ---
 
@@ -779,6 +781,8 @@
 - `9c32a77` fix(docs): corrigir rotas reais no readme, dockerfile com wrapper e remocao atomica no flush
 - `63cba54` docs: alinhar modelos de ia, terminologia orientada a eventos e isolamento docker
 - `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
+- `631a585` feat: alguns ajustes no readme e add identificação.txt
+- `c3109df` feat: Só um pequeno ajuste no identificação.txt
 
 ---
 
@@ -951,5 +955,7 @@
 - `5e2d3d1` feat(worker): contingencia imediata de triagem no consumidor quando AI_API_KEY estiver vazia
 - `8803ca0` fix(worker): remove verificacao de api key no consumidor para restaurar suites de teste
 - `afe5b7e` docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari
+- `631a585` feat: alguns ajustes no readme e add identificação.txt
+- `c3109df` feat: Só um pequeno ajuste no identificação.txt
 - `6e661cc` perf(api): lazy loading de BLOB com Hibernate bytecode enhancement e keepalive Hikari
 - `bc0e663` perf(api): query direta de foto, cache HTTP 24h, prefetch LOB Oracle e compactacao de upload >200KB
