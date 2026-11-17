@@ -123,7 +123,7 @@ class SyncEngine:
                 tags=item_tags,
                 iteration_path=iteration_path,
                 assigned_to=owner_email,
-                state="In Progress",
+                state="Done",
                 relations=relations,
                 dry_run=dry_run
             )
@@ -155,7 +155,7 @@ class SyncEngine:
                     tags=item_tags,
                     iteration_path=iteration_path,
                     assigned_to=owner_email,
-                    state="Committed",
+                    state="Done",
                     relations=pbi_relations,
                     dry_run=dry_run
                 )
@@ -416,7 +416,7 @@ class SyncEngine:
                 patch = self._build_upsert_patch(
                     curr_feat, feat_title, feat.description, feat.acceptance_criteria,
                     feat.effort, feat.priority, feat.business_value, feat.start_date,
-                    feat.target_date, item_tags, iteration_path, owner_email, state="In Progress"
+                    feat.target_date, item_tags, iteration_path, owner_email, state="Done"
                 )
                 parent_op = self._ensure_parent_link(curr_feat, epic_id)
                 if parent_op:
@@ -449,7 +449,7 @@ class SyncEngine:
                     tags=item_tags,
                     iteration_path=iteration_path,
                     assigned_to=owner_email,
-                    state="In Progress",
+                    state="Done",
                     relations=feat_relations,
                     dry_run=dry_run
                 )
@@ -467,7 +467,7 @@ class SyncEngine:
                     patch = self._build_upsert_patch(
                         curr_pbi, pbi_title, pbi.description, pbi.acceptance_criteria,
                         pbi.story_points, pbi.priority, pbi.business_value, None,
-                        None, item_tags, iteration_path, owner_email, state="Committed"
+                        None, item_tags, iteration_path, owner_email, state="Done"
                     )
                     parent_op = self._ensure_parent_link(curr_pbi, feat_id)
                     if parent_op:
@@ -503,7 +503,7 @@ class SyncEngine:
                         tags=item_tags,
                         iteration_path=iteration_path,
                         assigned_to=owner_email,
-                        state="Committed",
+                        state="Done",
                         relations=pbi_relations,
                         dry_run=dry_run
                     )
@@ -632,10 +632,10 @@ class SyncEngine:
                 patch.append({"op": "add", "path": "/fields/System.AssignedTo", "value": target_owner})
 
             # 2. State
-            if wtype in ["Epic", "Feature"] and state != "In Progress":
+            if wtype == "Epic" and state != "In Progress":
                 patch.append({"op": "add", "path": "/fields/System.State", "value": "In Progress"})
-            elif wtype == "Product Backlog Item" and state != "Committed":
-                patch.append({"op": "add", "path": "/fields/System.State", "value": "Committed"})
+            elif wtype in ["Feature", "Product Backlog Item"] and state != "Done":
+                patch.append({"op": "add", "path": "/fields/System.State", "value": "Done"})
 
             # 3. Remove GS 2026/2 de títulos se presente
             title = fields.get("System.Title", "")
