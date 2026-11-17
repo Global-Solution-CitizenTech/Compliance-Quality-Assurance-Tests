@@ -216,7 +216,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Criação idempotente de `rg-zelafix` (`eastus`), plano Linux `asp-zelafix` (`SKU F1`) e flag opcional `--clean` para reconstrução limpa.
-- [x] Provisionamento dos Web Apps `app-zelafix` (API porta `8080`) e `app-zelafix-worker` (Worker porta `8081`) com runtime `JAVA|21-java21`, startup commands customizados e `JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"`.
+- [x] Provisionamento dos Web Apps `app-zelafix` (API porta `8080`) e `app-zelafix-worker` (Worker porta `8081`) com runtime `JAVA|21-java21`, startup commands customizados e `JAVA_OPTS="-Xms128m -Xmx320m -XX:+UseG1GC -Djava.security.egd=file:/dev/./urandom"`.
 - [x] Provisionamento do serviço de IA (kind `AIServices`, SKU `S0`) e deployment do modelo multimodal configurados via Azure CLI idempotente, obtendo `AI_API_KEY` dinamicamente.
 
 ---
