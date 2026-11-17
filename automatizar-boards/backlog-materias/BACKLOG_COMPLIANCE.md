@@ -11,7 +11,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
-> **Diretrizes Estratégicas:** 100% de aderência à rubrica oficial da Global Solution 2 (5 critérios de 20% cada), governança ágil Scrum no Azure Boards para todas as 7 disciplinas (`7` Epics, `28` Features, `79` PBIs, `246` Story Points), validação estrita de contrato via Python (`parser_backlog.py` + `run_sync.py --validate`), iterações padronizadas (`Semana 1` e `Semana 2`), tag única por disciplina (sem tag redundante `ZelaFix`), rastreabilidade contínua de commits e PRs nos 7 repositórios (GitHub + Azure Repos), suíte automatizada Postman (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em **4 Azure Test Plans / 4 Suites / 25 Casos de Teste (`TC-01`..`TC-25`)** alinhados à arquitetura `DeferredResult` (`60s`), recusa de imagem IA sem persistência no Oracle e às `13` tabelas / `5` ENUMs oficiais.
+> **Diretrizes Estratégicas:** 100% de aderência à rubrica oficial da Global Solution 2 (5 critérios de 20% cada), governança ágil Scrum no Azure Boards para todas as 7 disciplinas (`7` Epics, `30` Features, `89` PBIs, `276` Story Points), validação estrita de contrato via Python (`parser_backlog.py` + `run_sync.py --validate`), iterações padronizadas (`Semana 1` e `Semana 2`), tag única por disciplina (sem tag redundante `ZelaFix`), rastreabilidade contínua de commits e PRs nos 7 repositórios (GitHub + Azure Repos), suíte automatizada Postman (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em **4 Azure Test Plans / 4 Suites / 25 Casos de Teste (`TC-01`..`TC-25` — 100% `Passed`)** alinhados à arquitetura `DeferredResult` (`60s`), recusa de imagem IA sem persistência no Oracle e às `13` tabelas / `5` ENUMs oficiais.
 
 ---
 
@@ -22,7 +22,7 @@
 | Integrante | RM | Turma | Papel no Projeto / Foco na Global Solution 2 |
 | :--- | :---: | :---: | :--- |
 | **Enzo Okuizumi Miranda de Souza** | **561432** | 2TDSPG | Governança Scrum, Java Advanced, Disruptive AI e Automação QA/Azure DevOps |
-| **Gustavo Keiji Okada** | **563428** | 2TDSPG | Arquitetura .NET 8, Testes Unitários AAA e Observabilidade OpenTelemetry |
+| **Gustavo Keiji Okada** | **563428** | 2TDSPG | Arquitetura .NET 10, Testes Unitários xUnit (105 testes) e Observabilidade OpenTelemetry |
 | **Lucas Barros Gouveia** | **566422** | 2TDSPG | Database Advanced (Oracle PL/SQL 13 Tabelas 3FN, Auditoria DML e MongoDB) |
 | **Luna de Carvalho Guimarães** | **562290** | 2TDSPG | Mobile Development (React Native Expo SDK 58, Rotas Protegidas e EAS Build) |
 | **Milton Jakson de Sousa Marcelino** | **564836** | 2TDSPG | DevOps Tools & Cloud Computing (Docker Multi-Stage, IaC Azure CLI e CI/CD) |
@@ -33,7 +33,7 @@
 
 | Item | Critério de Avaliação | Pontos | Escopo e Implementação Prática no Projeto ZelaFix | Evidência de Conformidade |
 | :---: | :--- | :---: | :--- | :--- |
-| **01** | **Estrutura de Projeto** | **20 pts** | Governança consolidada no Azure Boards (`ZelaFixGS/ZelaFix`) cobrindo 7 Epics, 28 Features e 79 PBIs (`246 SP`), sendo o Epic de Compliance `#67` composto por 3 Features e 7 PBIs (`21 SP`), organizados por iteração (`Semana 1` e `Semana 2`) e responsável por matéria. | Hierarquia pai-filho validada no Azure Boards, tag única por disciplina e `run_sync.py --validate` com `0` erros. |
+| **01** | **Estrutura de Projeto** | **20 pts** | Governança consolidada no Azure Boards (`ZelaFixGS/ZelaFix`) cobrindo 7 Epics, 30 Features e 89 PBIs (`276 SP`), sendo o Epic de Compliance `#67` composto por 3 Features e 7 PBIs (`21 SP`), organizados por iteração (`Semana 1` e `Semana 2`) e responsável por matéria. | Hierarquia pai-filho validada no Azure Boards, tag única por disciplina e `run_sync.py --validate` com `0` erros. |
 | **02** | **Critérios de Aceite por Feature** | **20 pts** | Features e PBIs padronizados no formato Scrum (`Como / Eu quero / Para que`) com `System.Description`, `Microsoft.VSTS.Common.AcceptanceCriteria`, datas, `Effort` e `Business Value` impostos pelo contrato `BacklogValidationError` (`parser_backlog.py`). | Campos nativos preenchidos em 100% dos Work Items via `SyncEngine` e validados em modo `strict=True`. |
 | **03** | **Lista de Test Cases Positivos e Negativos** | **20 pts** | Matriz oficial ampliada para **25 Casos de Teste** (`TC-01`..`TC-25`) com **15 cenários positivos (60%)** e **10 cenários negativos/borda (40%)**, espelhando **57 requests** Postman com `57` scripts `pm.test()` e **25 variáveis** de ambiente. | Cobertura completa de Auth/RBAC JWT, Usuários/Endereços ViaCEP, Chamados `DeferredResult` (`60s`), recusa IA sem Oracle e ZelaBot RAG. |
 | **04** | **Sumário dos Test Cases** | **20 pts** | Sumário estruturado por caso contendo: Azure Test Case ID, Plan/Suite, Prioridade (`P1`/`P2`), Objetivo, Pré-condições (Flyway `V1`–`V3`), Payloads controlados, Enums oficiais (`5` ENUMs) e HTTP Codes esperados. | Documentado em [`docs/MATRIZ_CASOS_DE_TESTE_AZURE.md`](../../docs/MATRIZ_CASOS_DE_TESTE_AZURE.md) e sincronizado 1:1 no Azure Test Plans. |
@@ -96,7 +96,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `21`
 * **Business Value:** `100`
-* **Description:** Governança ágil Scrum de ponta a ponta para o ecossistema ZelaFix no Microsoft Azure DevOps (`ZelaFixGS/ZelaFix`), contemplando a centralização e validação estrita dos backlogs das 7 disciplinas (`7` Epics, `28` Features, `79` PBIs e `246` Story Points) via `parser_backlog.py` (`BacklogValidationError` e `run_sync.py --validate`), organização em duas iterações (`Release 1 - Global Solution\Semana 1` e `Semana 2`), governança de tag única por disciplina e responsáveis, rastreabilidade automatizada de commits e Pull Requests (GitHub e Azure Repos ArtifactLinks), suíte Postman automatizada (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em 4 Azure Test Plans / 4 Test Suites / 25 Casos de Teste (`TC-01`..`TC-25`) cobrindo API Java (`DeferredResult` `60s`, recusa IA sem Oracle, 13 tabelas 3FN / 5 ENUMs) e ZelaBot AI.
+* **Description:** Governança ágil Scrum de ponta a ponta para o ecossistema ZelaFix no Microsoft Azure DevOps (`ZelaFixGS/ZelaFix`), contemplando a centralização e validação estrita dos backlogs das 7 disciplinas (`7` Epics, `30` Features, `89` PBIs e `276` Story Points) via `parser_backlog.py` (`BacklogValidationError` e `run_sync.py --validate`), organização em duas iterações (`Release 1 - Global Solution\Semana 1` e `Semana 2`), governança de tag única por disciplina e responsáveis, rastreabilidade automatizada de commits e Pull Requests (GitHub e Azure Repos ArtifactLinks), suíte Postman automatizada (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em 4 Azure Test Plans / 4 Test Suites / 25 Casos de Teste (`TC-01`..`TC-25`) cobrindo API Java (`DeferredResult` `60s`, recusa IA sem Oracle, 13 tabelas 3FN / 5 ENUMs) e ZelaBot AI.
 * **Acceptance Criteria:**
   - [x] Todos os 7 arquivos de backlog aprovados por `run_sync.py --validate` (`strict=True`) sem perda de datas, tags, esforço, valor de negócio, histórias ou critérios de aceite.
   - [x] Work Items padronizados com `IterationPath` (`Semana 1` e `Semana 2`), `AssignedTo` correto e tag exclusiva da disciplina (sem tag `ZelaFix`).
@@ -147,7 +147,7 @@
 ##### Descrição (História de Usuário)
 > **Como** QA Lead da equipe ZelaFix,  
 > **Eu quero** planejar, centralizar e estruturar os Épicos, Features e PBIs de todas as 7 disciplinas em `automatizar-boards/backlog-materias/`,  
-> **Para que** o time tenha visibilidade consolidada do escopo integrado (`7` Epics, `28` Features, `79` PBIs, `246 SP`) no Azure Boards.
+> **Para que** o time tenha visibilidade consolidada do escopo integrado (`7` Epics, `30` Features, `89` PBIs, `276 SP`) no Azure Boards.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Levantamento de escopo realizado junto a todos os 7 repositórios técnicos da Global Solution 2.
