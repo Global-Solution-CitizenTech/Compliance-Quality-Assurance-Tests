@@ -8,6 +8,7 @@
 > **Target Date:** `2026-11-19`  
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
+> **Tags:** `JavaAdvanced` — todos os Work Items da disciplina utilizam exclusivamente esta tag.  
 > **Opção Distribuída Escolhida:** **Opção A — Mensageria Assíncrona com RabbitMQ** (2 microsserviços autônomos: `zelafix-api` e `zelafix-worker`)  
 > **Diretrizes Estratégicas:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Spring Framework 7), estruturada no padrão corporativo **Gradle Multi-Project** (`rootProject.name = 'zelafix-backend'`, `zelafix-api` e `zelafix-worker`), persistência relacional no Oracle Database 11g/19c/23c com Spring Data JPA em 3FN (`citizenTech.ddl`, 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento de schema com Flyway Migrations (V1, V2, V3 com imagens BLOB reais via `DBMS_LOB.WRITEAPPEND`), segurança stateless com Spring Security e par de chaves RSA Nimbus JWT, controle de acesso baseado em papéis (RBAC: CIDADAO, GESTOR e ADMIN), mensageria assíncrona gerenciada com RabbitMQ / CloudAMQP (Direct Exchange `zelafix.direct`), triagem multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **DeferredResult (`TriagemPendenteStore`)** com recusa de imagem fora de escopo sem persistência, estratégia **Fail-Fast** imediata e fallback gracioso de contingência `PENDENTE`, persistência com histórico duplo conectado via `saveAll`, agregador de votos com buffer thread-safe (`ConcurrentHashMap` - Padrão Paredão), containerização otimizada com Docker multi-stage build (Temurin 21 alpine com usuário não-root `appuser:appgroup`), esteira de CI/CD automatizada no Azure DevOps (`azure-pipelines.yml`) com espelhamento contínuo GitHub Actions e proteção estrita de branch na main (`TF402455`) com Pull Requests de homologação.
 
@@ -105,7 +106,7 @@
 * **Work Item Type:** `Epic`
 * **Azure Boards ID:** `#14`
 * **Title:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core`
-* **Tags:** `JavaAdvanced, GlobalSolution2, SpringBoot, RabbitMQ, SpringAI, Oracle, JWT, Gradle, Docker, AzurePipelines`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`
@@ -121,7 +122,7 @@
 * **Azure Boards ID:** `#15`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
 * **Title:** `[FEATURE 01] Modelagem de Domínio JPA 3FN, Migrations Flyway e Otimizações Oracle`
-* **Tags:** `JavaAdvanced, JPA, Oracle, Flyway, Database`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-04`
 * **Target Date:** `2026-11-09`
 * **Priority:** `1 - Critical`
@@ -140,7 +141,7 @@
 * **Parent Feature:** `[FEATURE 01] Modelagem de Domínio JPA 3FN, Migrations Flyway e Otimizações Oracle` (#15)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Entities, JPA, Oracle3FN`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -170,7 +171,7 @@
 * **Parent Feature:** `[FEATURE 01] Modelagem de Domínio JPA 3FN, Migrations Flyway e Otimizações Oracle` (#15)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Repositories, EntityGraph, Performance`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -200,7 +201,7 @@
 * **Parent Feature:** `[FEATURE 01] Modelagem de Domínio JPA 3FN, Migrations Flyway e Otimizações Oracle` (#15)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Flyway, Migrations, DatabaseSeed`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -233,7 +234,7 @@
 * **Azure Boards ID:** `#18`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
 * **Title:** `[FEATURE 02] Segurança Stateless com Spring Security RSA Nimbus JWT e RBAC`
-* **Tags:** `JavaAdvanced, SpringSecurity, RSA, JWT, RBAC`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-07`
 * **Target Date:** `2026-11-12`
 * **Priority:** `1 - Critical`
@@ -253,7 +254,7 @@
 * **Parent Feature:** `[FEATURE 02] Segurança Stateless com Spring Security RSA Nimbus JWT e RBAC` (#18)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, SecurityConfig, RSA, NimbusJWT`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -279,7 +280,7 @@
 * **Parent Feature:** `[FEATURE 02] Segurança Stateless com Spring Security RSA Nimbus JWT e RBAC` (#18)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, AuthController, BCrypt, TokenService`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -305,7 +306,7 @@
 * **Parent Feature:** `[FEATURE 02] Segurança Stateless com Spring Security RSA Nimbus JWT e RBAC` (#18)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, RBAC, Roles, PreAuthorize`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -330,7 +331,7 @@
 * **Azure Boards ID:** `#21`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
 * **Title:** `[FEATURE 03] Regras de Negócio de Zeladoria Urbana, DTOs e Endpoints REST`
-* **Tags:** `JavaAdvanced, Services, DTO, RestAPI, RFC7807`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-10`
 * **Target Date:** `2026-11-16`
 * **Priority:** `1 - Critical`
@@ -350,7 +351,7 @@
 * **Parent Feature:** `[FEATURE 03] Regras de Negócio de Zeladoria Urbana, DTOs e Endpoints REST` (#21)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, DTO, BeanValidation, CleanCode`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -382,7 +383,7 @@
 * **Parent Feature:** `[FEATURE 03] Regras de Negócio de Zeladoria Urbana, DTOs e Endpoints REST` (#21)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, ChamadoService, SLA, HistChamado`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -414,7 +415,7 @@
 * **Parent Feature:** `[FEATURE 03] Regras de Negócio de Zeladoria Urbana, DTOs e Endpoints REST` (#21)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, ApoioComunitario, Votos, Chamados`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -439,7 +440,7 @@
 * **Parent Feature:** `[FEATURE 03] Regras de Negócio de Zeladoria Urbana, DTOs e Endpoints REST` (#21)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, REST, Pageable, ViaCEP, ProblemDetail`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -465,7 +466,7 @@
 * **Azure Boards ID:** `#25`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
 * **Title:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários`
-* **Tags:** `JavaAdvanced, RabbitMQ, SpringAI, Worker, JUnit5`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-12`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`
@@ -486,7 +487,7 @@
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários` (#25)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, RabbitMQ, DirectExchange, Producers`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -518,7 +519,7 @@
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários` (#25)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Worker, SpringAI, Multimodal, LLM, Triagem`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -549,7 +550,7 @@
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários` (#25)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Worker, VotoConsumer, Buffer, Escalonamento`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -583,7 +584,7 @@
 * **Parent Feature:** `[FEATURE 04] Arquitetura Distribuída com RabbitMQ, Triagem com Spring AI e Testes Unitários` (#25)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, JUnit5, Mockito, Swagger, OpenAPI, Concurrency`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -625,7 +626,7 @@
 * **Azure Boards ID:** `#170`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
 * **Title:** `[FEATURE 05] Arquitetura Gradle Multi-Project, Containerização Docker e Esteira CI/CD em Nuvem`
-* **Tags:** `JavaAdvanced, Gradle, Docker, AzurePipelines, CICD, DevOps`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-10`
 * **Target Date:** `2026-11-19`
 * **Priority:** `1 - Critical`
@@ -645,7 +646,7 @@
 * **Parent Feature:** `[FEATURE 05] Arquitetura Gradle Multi-Project, Containerização Docker e Esteira CI/CD em Nuvem` (#170)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Gradle, MultiProject, Java21, Build`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -672,7 +673,7 @@
 * **Parent Feature:** `[FEATURE 05] Arquitetura Gradle Multi-Project, Containerização Docker e Esteira CI/CD em Nuvem` (#170)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Docker, MultiStage, Security, Alpine`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -704,7 +705,7 @@
 * **Parent Feature:** `[FEATURE 05] Arquitetura Gradle Multi-Project, Containerização Docker e Esteira CI/CD em Nuvem` (#170)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, AzurePipelines, CICD, GitHubActions, BranchProtection`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -744,7 +745,7 @@
 * **Parent Feature:** `[FEATURE 05] Arquitetura Gradle Multi-Project, Containerização Docker e Esteira CI/CD em Nuvem` (#170)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Documentation, AGENT, Architecture, README`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -791,7 +792,7 @@
 * **Azure Boards ID:** `#192`
 * **Parent:** `[EPIC] Java Advanced: Microsserviços com RabbitMQ, Spring AI e API RESTful Spring Boot Core` (#14)
 * **Title:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio`
-* **Tags:** `JavaAdvanced, SpringAI, Multimodal, DeferredResult, ToolCalling, Resilience`
+* **Tags:** `JavaAdvanced`
 * **Start Date:** `2026-11-12`
 * **Target Date:** `2026-11-14`
 * **Priority:** `1 - Critical`
@@ -811,7 +812,7 @@
 * **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, SpringAI, Multimodal, ToolCalling`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -846,7 +847,7 @@
 * **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, DeferredResult, Triagem, Async, RabbitMQ`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -886,7 +887,7 @@
 * **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, DomainModel, Prioridade, OrgaoGoverno, Filtros, Security`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)
@@ -915,7 +916,7 @@
 * **Parent Feature:** `[FEATURE 06] Triagem Assíncrona DeferredResult, LLM Multimodal com Spring AI, Tool Calling Normativo e Refatoração de Domínio` (#192)
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
-* **Tags:** `JavaAdvanced, Resilience, FailFast, Cache, ExceptionHandler`
+* **Tags:** `JavaAdvanced`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 
 ##### Descrição (História de Usuário)

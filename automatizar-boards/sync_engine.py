@@ -52,7 +52,7 @@ class SyncEngine:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"Arquivo de backlog não encontrado: {file_path}")
 
-        exact_tag_only = discipline_key.lower() in ("iot", "mobile")
+        exact_tag_only = True
         doc = parse_backlog_markdown(
             file_path,
             strict=True,
@@ -268,13 +268,11 @@ class SyncEngine:
             patch.append({"op": "add", "path": "/fields/System.AssignedTo", "value": assigned_to})
 
         # 10. Tags
-        curr_tags = [t.strip() for t in (fields.get("System.Tags", "") or "").split(";") if t.strip()]
-        needed_tags = set(curr_tags)
-        for t in tags:
-            if t not in needed_tags:
-                needed_tags.add(t)
-        if set(curr_tags) != needed_tags:
-            patch.append({"op": "add", "path": "/fields/System.Tags", "value": "; ".join(sorted(needed_tags))})
+        curr_tags = sorted([t.strip() for t in (fields.get("System.Tags", "") or "").split(";") if t.strip()])
+        expected_tags = sorted([t.strip() for t in tags if t.strip()])
+        if curr_tags != expected_tags:
+            op = "replace" if fields.get("System.Tags") else "add"
+            patch.append({"op": op, "path": "/fields/System.Tags", "value": "; ".join(expected_tags)})
 
         # 11. Estado
         if state and fields.get("System.State") != state:
@@ -345,7 +343,7 @@ class SyncEngine:
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"Arquivo de backlog não encontrado: {file_path}")
 
-        exact_tag_only = discipline_key.lower() in ("iot", "mobile")
+        exact_tag_only = True
         doc = parse_backlog_markdown(
             file_path,
             strict=True,
@@ -709,7 +707,7 @@ class SyncEngine:
                 all_ok = False
                 continue
             doc = parse_backlog_markdown(file_path)
-            exact_tag_only = key.lower() in ("iot", "mobile")
+            exact_tag_only = True
             errors = validate_backlog_document(
                 doc,
                 required_tag=d_info["tag"],

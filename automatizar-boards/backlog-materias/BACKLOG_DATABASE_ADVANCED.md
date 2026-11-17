@@ -129,7 +129,7 @@
 * **Title:** `[PBI-01] Modelo Entidade-Relacionamento (MER), Diagramas Lógico e Relacional 3FN`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, MER, RelationalModel, 3FN`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -162,7 +162,7 @@
 * **Title:** `[PBI-02] Script DDL 3FN com Sequences, Constraints, Índices de Cobertura e BLOB`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, DDL, SQL, Oracle, Sequences, BLOB`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -198,7 +198,7 @@
 * **Title:** `[PBI-03] Blocos Anônimos PL/SQL com Cursores Explícitos, Estruturas de Decisão e Laços`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, AnonymousBlock, PLSQL, Cursor, Loop`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -251,7 +251,7 @@
 * **Title:** `[PBI-04] Package PKG_CHAMADO_GESTAO para Gestão de Ocorrências e Resolução em O(1)`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, Package, ChamadoGestao, PragmaUDF`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -285,7 +285,7 @@
 * **Title:** `[PBI-05] Package PKG_ENGAJAMENTO_CIDADAO para Apoios Comunitários e Ranking`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, Package, Engajamento, Votos, Ranking`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -340,7 +340,7 @@
 * **Title:** `[PBI-06] Trigger TRG_AUDIT_CHAMADO e Tabela de Auditoria DML (:OLD vs :NEW)`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, Triggers, DML, Auditoria`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -371,7 +371,7 @@
 * **Title:** `[PBI-07] Trigger TRG_VALIDA_VOTO_CHAMADO para Bloqueio de Autovoto e Unicidade`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, Triggers, ValidaVoto, Integridade`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -425,7 +425,7 @@
 * **Title:** `[PBI-08] Provisionamento NoSQL no MongoDB com jsonSchema e Datasets JSON`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, MongoDB, JsonSchema, Datasets`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -458,7 +458,7 @@
 * **Title:** `[PBI-09] Matriz de Mapeamento Relacional para Documental e 3 Relatórios Analíticos`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, MongoDB, Aggregation, Analytics, SQLvsNoSQL`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
@@ -489,7 +489,7 @@
 * **Title:** `[PBI-10] Documentação Técnica Completa (README.md), Dicionário de Dados e Cluster`
 * **State:** `Committed`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
-* **Tags:** `Database, Documentation, README, Cluster`
+* **Tags:** `Database`
 * **Assigned To:** `RM566422@fiap.com.br`
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `3`
