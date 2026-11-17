@@ -24,6 +24,7 @@
 | Recurso | Descrição | Link Oficial |
 | :--- | :--- | :--- |
 | 📋 **Azure Boards & Test Plans (QA)** | Backlogs Scrum, Rastreabilidade e 25 Casos de Teste (`ZelaFixGS/ZelaFix`) | https://dev.azure.com/ZelaFixGS/ZelaFix |
+| 📄 **Documentação Compliance (PDF)** | Relatório oficial consolidado com prints do Azure Boards, Test Plans, Test Cases e Progress Report | [Documentação Compliance GS 2 - ZelaFix.pdf](./docs/Documenta%C3%A7%C3%A3o%20Compliance%20GS%202%20-%20ZelaFix.pdf) |
 | 🐙 **Repositório Oficial (Compliance & QA)** | Governança, automação Python, matriz de testes e suíte Postman | https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests |
 | ☕ **Repositório Java (GitHub + Azure Repos)** | Microsserviços Spring Boot (`zelafix-api` e `zelafix-worker`), Flyway, Docker e CI/CD | https://github.com/Global-Solution-CitizenTech/Java-Advanced |
 
