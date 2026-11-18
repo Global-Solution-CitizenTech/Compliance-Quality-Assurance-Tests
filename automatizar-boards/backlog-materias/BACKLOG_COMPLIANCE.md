@@ -366,6 +366,7 @@
 - [`e4a0e5f`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e4a0e5f) — `docs(compliance): atualizar PDF final, totais consolidados (30 Features, 89 PBIs, 276 SP) e identificacao.txt` *(vinculado em AB#76)*
 - [`1504468`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/1504468) — `docs(boards,qa): sincronizar todos os commits recentes das 7 disciplinas, RBAC GESTOR/ADMIN no Postman/Matriz e APK versionCode 13` *(vinculado em AB#76)*
 - [`31468e6`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/31468e6) — `docs(compliance): atualizar versao final do PDF de documentacao da GS 2` *(vinculado em AB#76)*
+- [`2507a9f`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/2507a9f) — `chore(qa,boards): sincronizar backlogs GS2, testes Postman/RBAC e documentacao de compliance` *(vinculado em AB#76)*
 
 ---
 
@@ -385,13 +386,13 @@
 
 ##### Descrição (História de Usuário)
 > **Como** Engenheiro de Qualidade e Governança DevOps,  
-> **Eu quero** operar a suíte Python (`SyncEngine`, `AzureClient`, `link_commits.py` e `install_git_hooks.py`) para vincular commits GitHub (`Hyperlink`) e commits/PRs Azure Repos (`ArtifactLink`) aos PBIs de cada disciplina,  
+> **Eu quero** operar a suíte Python (`SyncEngine`, `AzureClient` e `install_git_hooks.py`) para vincular commits GitHub (`Hyperlink`) e commits/PRs Azure Repos (`ArtifactLink`) aos PBIs de cada disciplina,  
 > **Para que** todos os repositórios da Global Solution 2 possuam rastreabilidade verificável entre código-fonte e Azure Boards.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Arquitetura Python unificada em `automatizar-boards/` (`run_sync.py`, `sync_engine.py`, `azure_client.py`, `parser_backlog.py`, `config.py`, `install_git_hooks.py`) e documentação atualizada para `ZelaFixGS/ZelaFix`.
-- [x] Rastreabilidade aplicada aos repositórios integrados (Mobile `48` commits, Java `120+` commits Azure Repos + PRs, Database `25` commits, DevOps `35` commits, Disruptive AI `45` commits e Compliance `24+` commits).
-- [x] Documentação consolidada em `README.md` (com Declaração de Uso de IA), `identificacao.txt` e capturas de evidência preservadas em `docs/*.png`.
+- [x] Arquitetura Python unificada em `automatizar-boards/` (`run_sync.py`, `sync_engine.py`, `azure_client.py`, `parser_backlog.py`, `config.py`, `install_git_hooks.py`) com extração e validação de `Acceptance Criteria` para todos os `7` Epics e `30` Features.
+- [x] Rastreabilidade aplicada aos repositórios integrados (Mobile `62` commits, Java `120+` commits Azure Repos + PRs, Database `25` commits, DevOps `35` commits, Disruptive AI `45` commits e Compliance `26+` commits).
+- [x] Documentação consolidada em `README.md` (com Declaração de Uso de IA), `identificacao.txt`, PDF oficial de 17 páginas e capturas de evidência atualizadas em `docs/*.png`.
 
 ##### Commits vinculados (GitHub Repository):
 - [`015c6dd`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/015c6dd) — `refactor(compliance): unifica arquitetura de automacao no AzureClient, SyncEngine e config centralizada, eliminando codigo legado e redundante` *(vinculado em AB#77)*
@@ -419,5 +420,6 @@
 - [`c358710`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/c358710) — `feat: add imagens no readme de compliance!` *(vinculado em AB#77)*
 - [`b808f8c`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/b808f8c) — `feat: só um pequeno ajuste em identificação.txt` *(vinculado em AB#77)*
 - [`e16a3cc`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e16a3cc) — `refactor(boards): impor tag unica por disciplina em Java, Database e no SyncEngine` *(vinculado em AB#77)*
+- [`8af6282`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/8af6282) — `fix(boards): parsear e validar Acceptance Criteria de Epics e Features no parser` *(vinculado em AB#77)*
 - [`48476a7`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/48476a7) — `feat(boards): definir estado Done para todas as Features e PBIs mantendo Epics In Progress` *(vinculado em AB#77)*
 - [`f9e4b47`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/f9e4b47) — `feat: só um pequeno ajuste backlog devops` *(vinculado em AB#77)*
