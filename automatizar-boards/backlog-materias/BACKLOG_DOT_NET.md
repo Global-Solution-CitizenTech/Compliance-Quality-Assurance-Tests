@@ -11,7 +11,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Tags:** `DotNet`  
-> **Diretrizes Estratégicas:** Desenvolvimento de Web API RESTful corporativa de alta performance em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e DDD, publicada em nuvem no Render (`https://advanced-business-development-with-dot.onrender.com/`), persistência relacional estrita com Entity Framework Core 10 sobre Oracle Database 19c (`DatabaseVersion19`, 14 tabelas relacionais em 3FN e `DbInitializer` para migração e seed automáticos), resolução resiliente de endereços com ViaCEP, gestão transacional de evidências fotográficas em Base64/BLOB, mecanismo cívico de apoio popular (`VOTO_CHAMADO`) com escalonamento dinâmico de prioridade, trilha de auditoria imutável (`HIST_CHAMADO`), autenticação segura JWT Bearer HS256 com senhas protegidas por BCrypt e RBAC granular (`CIDADAO` / `GESTOR`), garantia de idempotência via cabeçalho `Idempotency-Key`, rate limiting nativo Fixed Window, observabilidade com Health Checks customizados e logs estruturados via Serilog (`X-Correlation-ID`), Swagger OpenAPI 3.0 completo com 23 paths, integração total com o aplicativo mobile React Native (Expo) com suporte a miniaturas (`incluirFoto`) e suíte de **106 testes automatizados** (53 unitários + 52 de integração com WebApplicationFactory, >91% de cobertura em todas as camadas) no padrão AAA.
+> **Diretrizes Estratégicas:** Desenvolvimento de Web API RESTful corporativa de alta performance em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e DDD, publicada em nuvem no Render (`https://advanced-business-development-with-dot.onrender.com/`), persistência relacional estrita com Entity Framework Core 10 sobre Oracle Database 19c (`DatabaseVersion19`, 14 tabelas relacionais em 3FN e `DbInitializer` para migração e seed automáticos de domínio e usuários RBAC `gestor@zelafix.com.br` / `cidadao@zelafix.com.br`), resolução resiliente de endereços com ViaCEP, gestão transacional de evidências fotográficas em Base64/BLOB, mecanismo cívico de apoio popular (`VOTO_CHAMADO`) com escalonamento dinâmico de prioridade, trilha de auditoria imutável (`HIST_CHAMADO`), autenticação segura JWT Bearer HS256 com senhas protegidas por BCrypt e RBAC granular (`CIDADAO` / `GESTOR`), garantia de idempotência via cabeçalho `Idempotency-Key`, rate limiting nativo Fixed Window, observabilidade com Health Checks customizados e logs estruturados via Serilog (`X-Correlation-ID`), Swagger OpenAPI 3.0 completo com 23 paths e respostas HTTP (`400`/`401`/`403`/`404`/`429`/`500`), integração total com o aplicativo mobile React Native (Expo) com suporte a miniaturas (`incluirFoto`) e suíte de **106 testes automatizados** (53 unitários + 53 de integração com WebApplicationFactory, >91% de cobertura em todas as camadas) no padrão AAA.
 
 ---
 
@@ -97,7 +97,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `45`
 * **Business Value:** `100`
-* **Description:** Construção da API RESTful corporativa ZelaFix em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e Domain-Driven Design, contemplando persistência relacional com Entity Framework Core 10 sobre Oracle Database (14 tabelas em 3FN), resolução de endereços resiliente via ViaCEP, gestão de fotos binárias em BLOB, mecanismo de engajamento popular com recálculo dinâmico de prioridade, autenticação segura JWT Bearer HS256 com senhas em BCrypt, RBAC granular, idempotência de requisições, rate limiting nativo, observabilidade com Health Checks customizados, integração completa com o aplicativo mobile React Native e bateria de 80 testes automatizados no padrão AAA.
+* **Description:** Construção da API RESTful corporativa ZelaFix em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e Domain-Driven Design, contemplando persistência relacional com Entity Framework Core 10 sobre Oracle Database (14 tabelas em 3FN e `DbInitializer` com semeadura automática de usuários RBAC), resolução de endereços resiliente via ViaCEP, gestão de fotos binárias em BLOB, mecanismo de engajamento popular com recálculo dinâmico de prioridade, autenticação segura JWT Bearer HS256 com senhas em BCrypt, RBAC granular, idempotência de requisições, rate limiting nativo, observabilidade com Health Checks customizados, integração completa com o aplicativo mobile React Native e bateria de 106 testes automatizados no padrão AAA.
 
 ---
 
@@ -201,11 +201,12 @@
 - [x] `IUnitOfWork` gerenciando transações atômicas e persistência com `CommitAsync()`.
 - [x] `IChamadoRepository`, `IUsuarioRepository` e `ICategoriaRepository` com consultas especializadas e paginação otimizada.
 - [x] Persistência da foto em coluna `BLOB` (`byte[]`) mapeada com sanitização e conversão segura a partir de Base64.
-- [x] Compatibilidade estrita com Oracle 19c (`DatabaseVersion19`) e `DbInitializer` para migração e seed automáticos de domínio.
+- [x] Compatibilidade estrita com Oracle 19c (`DatabaseVersion19`) e `DbInitializer` para migração e seed automáticos de domínio e usuários padrão RBAC (`gestor@zelafix.com.br` e `cidadao@zelafix.com.br`).
 
 ##### Commits vinculados (GitHub Repository):
 - [`39a4f79`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/39a4f79) — `feat(infra): configurar persistencia EF Core para Oracle Database, repositorios e UnitOfWork` *(vinculado em AB#28)*
 - [`f5a8305`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f5a8305) — `fix(api,infra,swagger): expor todos os endpoints no Swagger, compatibilizar EF Core com Oracle 19c, auto-migrar/semear banco e corrigir StatusAnterior` *(vinculado em AB#200)*
+- [`8a280bd`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/8a280bd) — `fix(gs2): semear usuários padrão RBAC, completar respostas OpenAPI e alinhar documentação` *(vinculado em AB#200)*
 
 ---
 
@@ -542,9 +543,9 @@
 * **Description:** Implementação de rigorosa suíte de testes automatizados com xUnit cobrindo cenários unitários e de integração no padrão Arrange-Act-Assert (AAA) com cobertura superior a 91% em todas as camadas, documentação interativa Swagger OpenAPI 3.0 com 23 paths expostos e governança no Render/GitHub.
 * **Acceptance Criteria:**
   - [x] 53 testes unitários cobrindo domínio (`98.11%`) e aplicação (`94.20%`) com `ViaCepService`, `FotoImagem` e `RegisterRequest`.
-  - [x] 52 testes de integração HTTP utilizando `WebApplicationFactory`, cobrindo `Api` (`95.28%`) e `Infrastructure` (`91.73%`).
+  - [x] 53 testes de integração HTTP utilizando `WebApplicationFactory`, cobrindo `Api` (`95.28%`) e `Infrastructure` (`91.73%`).
   - [x] 106 testes executados com sucesso no `dotnet test` (0 falhas).
-  - [x] Swagger OpenAPI expondo todos os 23 paths em 7 grupos incluindo Health Checks e rotas diretas Mobile.
+  - [x] Swagger OpenAPI expondo todos os 23 paths em 7 grupos incluindo Health Checks, respostas HTTP completas (`400`/`401`/`403`/`404`/`429`/`500`) e rotas diretas Mobile.
 
 #### 🔹 [PBI-13] Suíte de Testes Unitários de Domínio e Aplicação com xUnit no Padrão AAA e Moq
 * **Work Item Type:** `Product Backlog Item`
@@ -605,7 +606,7 @@
 > **Para que** a comunicação entre pipeline ASP.NET Core, filtros, autenticação JWT, banco de dados e respostas REST seja validada integralmente.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Projeto `ZelaFix.Tests.Integration` com 52 testes usando `CustomWebApplicationFactory` e `RepositoriesAndInfrastructureTests`.
+- [x] Projeto `ZelaFix.Tests.Integration` com 53 testes usando `CustomWebApplicationFactory` e `RepositoriesAndInfrastructureTests`.
 - [x] Testes ponta a ponta de autenticação, categorias, chamados, idempotência (`Idempotent-Replayed: true`), observabilidade e `GlobalExceptionHandler`.
 - [x] Cobertura de `95.28%` na API e `91.73%` na Infraestrutura (excluindo migrations DDL geradas).
 - [x] Validação end-to-end contra Oracle 19c com as 6 imagens reais da pasta `situacoes-imagens`.
@@ -647,7 +648,7 @@
 - [x] Interface Swagger UI ativa na raiz (`/`) expondo todos os 23 paths em 7 grupos (incluindo Health Checks e rotas Mobile).
 - [x] Evidências visuais das tabelas populadas no Oracle Database 19c, Swagger UI e Health Checks em `docs/`.
 - [x] Guia de inicialização local com Docker Oracle Free e link de produção no Render documentados em `README.md`.
-- [x] Referência explícita e verificação de alinhamento com o app móvel `Mobile-Application-Development-Dot-Net`.
+- [x] Referência explícita e verificação de alinhamento com o app móvel `Mobile-Application-Development-Dot-Net` e seção obrigatória de Declaração de Uso de IA no `README.md`.
 
 ##### Commits vinculados (GitHub Repository):
 - [`ee3696b`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/ee3696b) — `docs(readme): atualizar documentacao tecnica, diagramas logico e relacional e integracao mobile`
@@ -663,3 +664,4 @@
 - [`10411be`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/10411be) — `feat: add identificação.txt`
 - [`1b71bae`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/1b71bae) — `feat: Só um pequeno ajuste no identificação.txt`
 - [`0cc6ff4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/0cc6ff4) — `chore: remove hardcoded Jwt:Key from appsettings, document Idempotency-Key in Swagger, update identificacao.txt and README (106 tests)`
+- [`8a280bd`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/8a280bd) — `fix(gs2): semear usuários padrão RBAC, completar respostas OpenAPI e alinhar documentação`

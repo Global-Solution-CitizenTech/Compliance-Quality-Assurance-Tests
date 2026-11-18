@@ -442,7 +442,7 @@ def parse_backlog_markdown(
                 epic_title = line.replace("# ", "").strip()
                 break
         if not epic_title:
-            epic_title = f"Epic Backlog Sprint 3 - {discipline}"
+            epic_title = f"Epic Backlog Global Solution 2 - {discipline}"
 
     epic_title = clean_title(epic_title)
 
@@ -557,7 +557,7 @@ def parse_backlog_markdown(
             elif epic_item.features:
                 target_feature = epic_item.features[-1]
             else:
-                target_feature = FeatureItem(title="Feature Geral da Sprint 3")
+                target_feature = FeatureItem(title="Feature Geral da Global Solution 2")
                 epic_item.features.append(target_feature)
 
             target_feature.pbis.append(current_pbi)

@@ -67,8 +67,8 @@ Todos os backlogs das 7 disciplinas estão centralizados em [`automatizar-boards
 
 | Disciplina | Iteration Path | Tag | Responsável | Epic ID | Features | PBIs | Story Points | Entregas Técnicas & Rastreabilidade |
 | :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| 📱 **Mobile Application Development** | `Semana 1` | `Mobile` | Luna de Carvalho Guimarães | `#1` | **5** | **18** | **49 SP** | **61 commits** vinculados; Expo SDK 58, `POST /chamados` direto via `DeferredResult` (sem polling), paginação infinita no Radar, `expo-network`, 66 testes unitários Node e APK `versionCode 13` (EAS `f1c2d185`) |
-| ☕ **Java Advanced** | `Semana 1` | `JavaAdvanced` | Enzo Okuizumi Miranda de Souza | `#14` | **6** | **22** | **66 SP** | **118 commits** + PRs (`#1..#41`); Gradle Multi-Project, Docker multi-stage non-root, `azure-pipelines.yml`, espelhamento `mirror-to-azure.yml`, `DeferredResult` (`90s`), recusa IA sem Oracle, `TriagemNormativaTools`, Fail-Fast, Hikari/LOB tuning & 228 testes |
+| 📱 **Mobile Application Development** | `Semana 1` | `Mobile` | Luna de Carvalho Guimarães | `#1` | **5** | **18** | **49 SP** | **62 commits** vinculados; Expo SDK 58, `POST /chamados` direto via `DeferredResult` (sem polling), paginação infinita no Radar, `expo-network`, 78 testes unitários Node (`35` suítes), declaração de IA e APK `versionCode 13` (EAS `f1c2d185`) |
+| ☕ **Java Advanced** | `Semana 1` | `JavaAdvanced` | Enzo Okuizumi Miranda de Souza | `#14` | **6** | **22** | **66 SP** | **120+ commits** + PRs (`#1..#46`); Gradle Multi-Project, Docker multi-stage non-root, `azure-pipelines.yml`, espelhamento `mirror-to-azure.yml`, `DeferredResult` (`90s`), recusa IA sem Oracle, `TriagemNormativaTools` (`EnumMap`), Fail-Fast, Hikari/LOB tuning & 229 testes |
 | 🗄️ **Database Advanced** | `Semana 1` | `Database` | Lucas Barros Gouveia | `#36` | **4** | **10** | **30 SP** | **25 commits** vinculados; **13 tabelas 3FN** Oracle + `auditoria_dml_chamado`, **5 ENUMs** alinhados ao Java, PL/SQL (`PRAGMA UDF`, JSON manual `CLOB`, subtotais manuais), MongoDB (`2` coleções `$jsonSchema`, `13` docs) |
 | 🔷 **Advanced Business Dev. with .NET** | `Semana 2` | `DotNet` | Gustavo Keiji Okada | `#27` | **5** | **15** | **45 SP** | Web API **.NET 10** Clean Architecture, EF Core Oracle 19c, Swagger 23 paths, OpenTelemetry/Prometheus, Serilog, Health Checks e **106 testes xUnit/Moq (>91% cobertura)** |
 | 🚀 **DevOps Tools & Cloud Computing** | `Semana 2` | `DevOps` | Milton Jakson de Sousa Marcelino | `#48` | **3** | **7** | **25 SP** | **34 commits** vinculados; Dockerfiles multi-stage Java 21, CloudAMQP TLS, IaC `script-provisionamento.sh` (App Service Plan `F1`, Web Apps API/Worker, Provedor de LLM Multimodal), DDL 13 tabelas (`script-bd.sql`), `azure-pipelines.yml` (**211 testes JUnit 5**) e diagrama Draw.io |
@@ -100,7 +100,7 @@ As capturas de tela oficiais dos Boards no Azure DevOps (`ZelaFixGS/ZelaFix`) es
 
 ### 🔷 Advanced Business Development with .NET
 
-![Backlog do Board .NET: Epic, 3 Features e 5 PBIs de Clean Architecture, Minimal APIs, observabilidade e testes xUnit](./docs/Dot%20Net.png)
+![Backlog do Board .NET: Epic, 5 Features e 15 PBIs de Clean Architecture, Minimal APIs, observabilidade e testes xUnit](./docs/Dot%20Net.png)
 
 ### 🚀 DevOps Tools & Cloud Computing
 
@@ -141,6 +141,7 @@ Compliance-Quality-Assurance-Tests/
 │   └── .env.example                           # Modelo de configuração de PAT e organização
 │
 ├── docs/
+│   ├── Documentação Compliance GS 2 - ZelaFix.pdf # Relatório oficial consolidado (Boards + Test Plans + Progress Report)
 │   ├── MATRIZ_CASOS_DE_TESTE_AZURE.md         # Matriz completa dos 25 Casos de Teste sincronizados com o Azure Test Plans
 │   ├── Todos-Epics.png                        # Evidência visual: visão consolidada dos 7 Épicos
 │   ├── Mobile.png                             # Evidência visual: Board Mobile
@@ -234,8 +235,8 @@ A coleção oficial de testes de API está disponível em [`postman/CitizenTech_
   2. `02. Autenticação & RBAC` (**9 requests**): `POST /login` para `ADMIN`, `GESTOR` e `CIDADAO` (seeds Flyway V2/V3), rejeições `401`/`400` (`erros[]`) e bloqueio `403` em `/actuator/metrics` para `CIDADAO`.
   3. `03. Usuários (/usuarios)` (**14 requests**): `POST /usuarios` (`201`, `409` duplicado, `400` Bean Validation/`@DddValidation`), `GET /usuarios/me`, `PUT /usuarios/me` (com header `X-Novo-Token`), gestão ADMIN (`GET /usuarios`, `GET /usuarios/{id}`, `GET /usuarios/by-email`, `PUT /usuarios/{id}`, `PATCH /usuarios/{id}/cargo`).
   4. `04. Endereços (/enderecos — ADMIN only)` (**8 requests**): CRUD completo em `/enderecos` restrito a `ROLE_ADMIN`, normalização de CEP e resolução ViaCEP.
-  5. `05. Chamados, Triagem IA (DeferredResult) & Apoio` (**16 requests**): `POST /chamados` exclusivamente `multipart/form-data` (`cep`, `numero`, `referencia`, `rua?` + `foto`) via `DeferredResult` (`60s` -> `201 Created` em `EM_ANALISE` ou `PENDENTE`, `400 Bad Request` para magic bytes inválidos ou recusa da IA `ocorrenciaValida=false` sem persistir no Oracle), `GET /chamados` paginado com filtros dinâmicos, `GET /chamados/{id}/foto` público, `PUT /chamados/{id}`, `PATCH /chamados/{id}/status` (`{status, observacao}` para `EM_EXECUCAO`/`CONCLUIDO`), `POST /chamados/{id}/apoiar` (toggle ON/OFF) e `GET /chamados/estatisticas`.
-  6. `06. Teardown & Limpeza` (**6 requests**): validações de exclusão (`DELETE /chamados/{id}` -> `403` GESTOR não-autor / `204` Autor -> `404`), `DELETE /usuarios/me` e `DELETE /usuarios/{id}`.
+  5. `05. Chamados, Triagem IA (DeferredResult) & Apoio` (**16 requests**): `POST /chamados` exclusivamente `multipart/form-data` (`cep`, `numero`, `referencia`, `rua?` + `foto`) via `DeferredResult` (`90s` -> `201 Created` em `EM_ANALISE` ou `PENDENTE`, `400 Bad Request` para magic bytes inválidos ou recusa da IA `ocorrenciaValida=false` sem persistir no Oracle), `GET /chamados` paginado com filtros dinâmicos, `GET /chamados/{id}/foto` público, `PUT /chamados/{id}`, `PATCH /chamados/{id}/status` (`{status, observacao}` para `EM_EXECUCAO`/`CONCLUIDO`), `POST /chamados/{id}/apoiar` (toggle ON/OFF) e `GET /chamados/estatisticas`.
+  6. `06. Teardown & Limpeza` (**6 requests**): validações de exclusão (`DELETE /chamados/{id}` -> `403` CIDADAO / `204` GESTOR ou ADMIN -> `404`), `DELETE /usuarios/me` e `DELETE /usuarios/{id}`.
 
 ---
 
@@ -250,7 +251,7 @@ Os **25 casos de teste** ativos (`15` Positivos e `10` Negativos, estado `Ready`
 | **TC-03** | `#139` | Bloquear endpoints protegidos sem token Bearer | `api-auth-rbac` | Negativo |
 | **TC-04** | `#140` | Rejeitar token JWT inválido ou assinatura adulterada | `api-auth-rbac` | Negativo |
 | **TC-05** | `#141` | Bloquear acesso de CIDADAO a endpoints administrativos (RBAC) | `api-auth-rbac` | Negativo |
-| **TC-06** | `#142` | Impedir CIDADAO de alterar status e GESTOR não-autor de excluir chamado | `api-auth-rbac` | Negativo |
+| **TC-06** | `#142` | Impedir CIDADAO de alterar status, editar ou excluir chamado (RBAC GESTOR/ADMIN) | `api-auth-rbac` | Negativo |
 | **TC-07** | `#145` | Cadastrar novo cidadão (`POST /usuarios`) e atualizar perfil (`/usuarios/me`) | `api-usuarios-enderecos` | Positivo |
 | **TC-08** | `#147` | Rejeitar cadastro com e-mail duplicado (`409`) ou dados inválidos (`400`) | `api-usuarios-enderecos` | Negativo |
 | **TC-09** | `#148` | Gerenciar usuários como ADMIN (listar, by-email, `PATCH` cargo e `DELETE`) | `api-usuarios-enderecos` | Positivo |
@@ -262,7 +263,7 @@ Os **25 casos de teste** ativos (`15` Positivos e `10` Negativos, estado `Ready`
 | **TC-15** | `#158` | Rejeitar abertura de chamado com part `foto` ausente, arquivo inválido ou endereço inválido | `api-chamados` | Negativo |
 | **TC-16** | `#161` | Consultar chamados paginados com filtros dinâmicos e painel de estatísticas | `api-chamados` | Positivo |
 | **TC-17** | `#163` | Atualizar chamado, alternar apoio comunitário e evoluir status com histórico | `api-chamados` | Positivo |
-| **TC-18** | `#166` | Excluir chamado como Autor ou ADMIN e confirmar remoção em cascata (`404`) | `api-chamados` | Positivo |
+| **TC-18** | `#166` | Excluir chamado como GESTOR ou ADMIN e confirmar remoção em cascata (`404`) | `api-chamados` | Positivo |
 | **TC-19** | `#124` | Confirmar triagem assíncrona do Worker Spring AI com Tools normativas e SLA | `ai-service` | Positivo |
 | **TC-20** | `#126` | Recusar imagem fora de escopo na triagem IA sem persistir chamado no Oracle | `ai-service` | Negativo |
 | **TC-21** | `#127` | Responder consulta ZelaBot com RAG normativo (ChromaDB) e higienização mobile | `ai-service` | Positivo |
@@ -272,3 +273,14 @@ Os **25 casos de teste** ativos (`15` Positivos e `10` Negativos, estado `Ready`
 | **TC-25** | `#197` | Validar observabilidade, sessões SQLite e leitura Oracle no ZelaBot AI | `ai-service` | Positivo |
 
 Consulte a [matriz completa de casos de teste](./docs/MATRIZ_CASOS_DE_TESTE_AZURE.md) para pré-condições, payloads, códigos HTTP e passos XML (`Microsoft.VSTS.TCM.Steps`) cadastrados no Azure DevOps.
+
+---
+
+## 🤖 Declaração de Uso de Inteligência Artificial Generativa
+
+Em cumprimento às diretrizes da Global Solution FIAP:
+
+* **Ferramentas Utilizadas:** **Gemini 3.8 Flash**, **Gemini 4 Hydrogen** e **Claude Sonnet 5.5**.
+* **Finalidade de Uso:** Apoio na estruturação de scripts Python de sincronização REST com o Azure DevOps (`SyncEngine` e `AzureClient`), revisão de asserções JavaScript `pm.test()` na coleção Postman e revisão textual da documentação e matriz de casos de teste.
+* **Revisão Humana:** Todo o planejamento Scrum (Epics, Features e PBIs), critérios de aceite, modelagem de 25 casos de teste caixa-preta (positivos e negativos), execução no Azure Test Plans e homologação E2E foram projetados, executados e auditados pelos integrantes do grupo.
+

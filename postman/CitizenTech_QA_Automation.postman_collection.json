@@ -1690,7 +1690,7 @@
     },
     {
       "name": "05. Chamados, Triagem IA (DeferredResult) & Apoio",
-      "description": "Fluxo completo de zeladoria: POST /chamados via multipart/form-data com processamento assíncrono RabbitMQ + LLM Multimodal (DeferredResult até 60s), recusa IA sem persistência (400), filtros dinâmicos, GET /chamados/{id}/foto público, PUT /chamados/{id}, PATCH /chamados/{id}/status (observacao singular), POST /chamados/{id}/apoiar e GET /chamados/estatisticas.",
+      "description": "Fluxo completo de zeladoria: POST /chamados via multipart/form-data com processamento assíncrono RabbitMQ + LLM Multimodal (DeferredResult até 90s), recusa IA sem persistência (400), filtros dinâmicos, GET /chamados/{id}/foto público, PUT /chamados/{id}, PATCH /chamados/{id}/status (observacao singular), POST /chamados/{id}/apoiar e GET /chamados/estatisticas.",
       "item": [
         {
           "name": "05.1 Abrir Chamado via Multipart + Triagem IA (POST /chamados -> 201)",
@@ -1746,7 +1746,7 @@
                 "chamados"
               ]
             },
-            "description": "Envia @ModelAttribute EnderecoRequest (cep, numero, referencia, rua?) + @RequestPart(\"foto\") MultipartFile (JPEG/PNG/WEBP/GIF, máx 10MB). Retorna DeferredResult<ChamadoResponse> (timeout 60s; 504 Gateway Timeout se exceder). Ao concluir com sucesso, persiste e retorna 201 Created com titulo, descricao, categoriaNome, prioridadeNome e orgaoNome classificados pela IA (ou fallback de contingência)."
+            "description": "Envia @ModelAttribute EnderecoRequest (cep, numero, referencia, rua?) + @RequestPart(\"foto\") MultipartFile (JPEG/PNG/WEBP/GIF, máx 10MB). Retorna DeferredResult<ChamadoResponse> (timeout 90s; 504 Gateway Timeout se exceder). Ao concluir com sucesso, persiste e retorna 201 Created com titulo, descricao, categoriaNome, prioridadeNome e orgaoNome classificados pela IA (ou fallback de contingência)."
           },
           "event": [
             {
@@ -1961,7 +1961,7 @@
                 "chamados"
               ]
             },
-            "description": "Cenário negativo: ao enviar arquivo com magic bytes inválidos (ex: .md/.txt) ou imagem não-urbana recusada pela IA (ocorrenciaValida=false), a API rejeita o DeferredResult com 400 Bad Request (ApiErrorResponse) sem persistir chamado no Oracle. Em timeout >60s do Worker, retorna 504 Gateway Timeout."
+            "description": "Cenário negativo: ao enviar arquivo com magic bytes inválidos (ex: .md/.txt) ou imagem não-urbana recusada pela IA (ocorrenciaValida=false), a API rejeita o DeferredResult com 400 Bad Request (ApiErrorResponse) sem persistir chamado no Oracle. Em timeout >90s do Worker, retorna 504 Gateway Timeout."
           },
           "event": [
             {
@@ -2604,7 +2604,7 @@
     },
     {
       "name": "06. Teardown & Limpeza",
-      "description": "Valida regra de exclusão (apenas AUTOR ou ADMIN pode deletar chamado; GESTOR não-autor recebe 403), remove chamado QA e exclui o usuário de teste via /usuarios/me e /usuarios/{id}.",
+      "description": "Valida regra de exclusão (apenas GESTOR ou ADMIN pode deletar chamado; CIDADAO recebe 403), remove chamado QA e exclui o usuário de teste via /usuarios/me e /usuarios/{id}.",
       "item": [
         {
           "name": "06.1 Deletar Chamado como CIDADAO (403 Forbidden)",

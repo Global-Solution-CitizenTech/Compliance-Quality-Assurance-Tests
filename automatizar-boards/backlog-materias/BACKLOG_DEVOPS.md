@@ -13,7 +13,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
-> **Diretrizes Estratégicas:** Infraestrutura em nuvem **Microsoft Azure** provisionada de forma declarativa e idempotente via **Azure CLI** (`scripts/script-provisionamento.sh`) utilizando App Service Plan Linux `F1` Free Tier compartilhado para API REST (`app-zelafix`, porta `8080`) e Worker Assíncrono (`app-zelafix-worker`, porta `8081`), **Provedor de LLM Multimodal** (via `AI_MODEL`), mensageria TLS via **CloudAMQP** (`RABBITMQ_URI`), banco **Oracle 19c** (`scripts/script-bd.sql` com 13 tabelas 3FN + `auditoria_dml_chamado`), **Dockerfiles multi-stage** non-root e esteira CI/CD multi-service no **Azure Pipelines** (`azure-pipelines.yml`) executando **211 testes automatizados JUnit 5**.
+> **Diretrizes Estratégicas:** Infraestrutura em nuvem **Microsoft Azure** provisionada de forma declarativa e idempotente via **Azure CLI** (`scripts/script-provisionamento.sh`) utilizando App Service Plan Linux `F1` Free Tier compartilhado para API REST (`app-zelafix`, porta `8080`, `WORKER_URL` para wake-up) e Worker Assíncrono (`app-zelafix-worker`, porta `8081`), **Provedor de LLM Multimodal** (via `AI_MODEL`), mensageria TLS via **CloudAMQP** (`RABBITMQ_URI`), banco **Oracle 19c** (`scripts/script-bd.sql` sincronizado com `Database-Advanced` — 13 tabelas 3FN + `auditoria_dml_chamado`), **Dockerfiles multi-stage** (`eclipse-temurin:21-jdk-alpine` com `./gradlew` + `HEALTHCHECK`) non-root e esteira CI/CD multi-service no **Azure Pipelines** (`azure-pipelines.yml`) executando **211+ testes automatizados JUnit 5**.
 
 ---
 
@@ -85,11 +85,11 @@
 * **Business Value:** `100`
 * **Description:** Implementação completa da cultura DevOps, Infraestrutura como Código (IaC) e arquitetura em nuvem Microsoft Azure para o ecossistema ZelaFix, contemplando Dockerfiles multi-stage non-root para Java 21 (`dockerfiles/Dockerfile.api` e `dockerfiles/Dockerfile.worker`), mensageria TLS gerenciada via CloudAMQP (`RABBITMQ_URI`), provisionamento idempotente via Azure CLI (`scripts/script-provisionamento.sh`) incluindo App Service Plan Linux F1, Web Apps (API + Worker) e Serviços de IA Multimodal, DDL Oracle 19c em 3FN (`scripts/script-bd.sql`), isolamento DevSecOps de credenciais e esteira CI/CD multi-service no Azure Pipelines (`azure-pipelines.yml`) com 211 testes JUnit 5.
 * **Acceptance Criteria:**
-  - [x] Dockerfiles multi-stage (`Dockerfile.api` e `Dockerfile.worker`) utilizando `gradle:8.10-jdk21-alpine` + `eclipse-temurin:21-jre-alpine`, usuário não-root (`appuser`) e geração de chaves RSA 2048-bit.
+  - [x] Dockerfiles multi-stage (`Dockerfile.api` e `Dockerfile.worker`) utilizando `eclipse-temurin:21-jdk-alpine` (`./gradlew`) + `eclipse-temurin:21-jre-alpine`, `HEALTHCHECK` (`/actuator/health`), usuário não-root (`appuser`) e geração de chaves RSA 2048-bit.
   - [x] Mensageria CloudAMQP (`amqps://`) configurada via `SPRING_RABBITMQ_ADDRESSES` com desacoplamento total entre Worker e Oracle DB.
-  - [x] Script IaC `scripts/script-provisionamento.sh` idempotente provisionando `rg-zelafix`, `asp-zelafix` (F1 Linux), Web Apps `app-zelafix` e `app-zelafix-worker` e Serviços de IA Multimodal (deployment multimodal).
-  - [x] Script DDL `scripts/script-bd.sql` alinhado às 13 tabelas 3FN + `auditoria_dml_chamado` no Oracle 19c e migrations Flyway (`V1`, `V2`, `V3`).
-  - [x] Esteira CI/CD `azure-pipelines.yml` executando build Gradle multi-project, 211 testes JUnit 5 (`181` API + `30` Worker) e deploy contínuo nos dois Azure Web Apps, documentada com diagrama Draw.io.
+  - [x] Script IaC `scripts/script-provisionamento.sh` idempotente provisionando `rg-zelafix`, `asp-zelafix` (F1 Linux), Web Apps `app-zelafix` (com `WORKER_URL`) e `app-zelafix-worker` e Serviços de IA Multimodal (deployment multimodal).
+  - [x] Script DDL `scripts/script-bd.sql` alinhado às 13 tabelas 3FN + `auditoria_dml_chamado` no Oracle 19c, sincronizado com `Database-Advanced` e migrations Flyway (`V1`, `V2`, `V3`).
+  - [x] Esteira CI/CD `azure-pipelines.yml` executando build Gradle multi-project, testes JUnit 5 e deploy contínuo nos dois Azure Web Apps, documentada com diagrama Draw.io e declaração de uso de IA no `README.md`.
 
 ---
 
@@ -111,7 +111,7 @@
 * **Description:** Padronização do empacotamento em containers Docker multi-stage com Java 21 LTS para os microsserviços ZelaFix (API REST e Worker Assíncrono) e adoção de mensageria gerenciada CloudAMQP sobre TLS (`amqps://`), garantindo portabilidade, segurança non-root e desacoplamento entre a API e o processamento assíncrono de IA.
 * **Acceptance Criteria:**
   - [x] Pastas oficiais `/dockerfiles` e `/scripts` estruturadas conforme rubrica de entrega.
-  - [x] Dockerfiles multi-stage determinísticos com `gradle:8.10-jdk21-alpine` no build e `eclipse-temurin:21-jre-alpine` no runtime com `appuser`.
+  - [x] Dockerfiles multi-stage determinísticos com `eclipse-temurin:21-jdk-alpine` (`./gradlew`) no build e `eclipse-temurin:21-jre-alpine` no runtime com `appuser` e `HEALTHCHECK`.
   - [x] Mensageria RabbitMQ operada em nuvem via CloudAMQP (`RABBITMQ_URI` / `SPRING_RABBITMQ_ADDRESSES`) sem dependência de container ACI local.
 
 ---
@@ -137,8 +137,8 @@
 > **Para que** as imagens Java 21 sejam enxutas, seguras com usuário não-root (`appuser`), timezone `America/Sao_Paulo` e chaves RSA geradas em tempo de build.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Stage 1 (`gradle:8.10-jdk21-alpine`) com cache de dependências multi-project, geração de chaves RSA 2048-bit via `openssl` em `zelafix-api/src/main/resources/keys/` e geração de `bootJar`.
-- [x] Stage 2 (`eclipse-temurin:21-jre-alpine`) com instalação de `tzdata` (`America/Sao_Paulo`) e criação de `appgroup` / `appuser` sem privilégios de root.
+- [x] Stage 1 (`eclipse-temurin:21-jdk-alpine`) utilizando `./gradlew` wrapper para build multi-project, geração de chaves RSA 2048-bit via `openssl` em `zelafix-api/src/main/resources/keys/` e geração de `bootJar`.
+- [x] Stage 2 (`eclipse-temurin:21-jre-alpine`) com instalação de `tzdata` (`America/Sao_Paulo`), `HEALTHCHECK` em `/actuator/health` e criação de `appgroup` / `appuser` sem privilégios de root.
 - [x] Exposição correta das portas `8080` (`Dockerfile.api`) e `8081` (`Dockerfile.worker`) com `ENTRYPOINT` configurado para JVM Java 21.
 - [x] Padronização da estrutura de pastas `/dockerfiles` e `/scripts` idêntica ao repositório `Java-Advanced`.
 
@@ -242,8 +242,8 @@
 > **Para que** nenhum segredo ou parâmetro redundante seja exposto no repositório público e os Application Settings dos Web Apps reflitam apenas a configuração ativa.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `.gitignore` bloqueando `.env` e `.env.example` fornecendo template completo para Azure, Oracle (`ORACLE_URL`, `ORACLE_USER`, `ORACLE_PASSWORD`), `RABBITMQ_URI` e Provedor de IA (`AI_ACCOUNT_NAME`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`).
-- [x] Injeção automatizada das configurações seguras via `az webapp config appsettings set` na API e no Worker, validando presença obrigatória de `RABBITMQ_URI`.
+- [x] `.gitignore` bloqueando `.env` e `.env.example` fornecendo template completo para Azure, Oracle (`ORACLE_URL`, `ORACLE_USER`, `ORACLE_PASSWORD`), `RABBITMQ_URI`, `WORKER_URL` e Provedor de IA (`AI_ACCOUNT_NAME`, `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`).
+- [x] Injeção automatizada das configurações seguras via `az webapp config appsettings set` na API (incluindo `WORKER_URL` para wake-up no plano `F1`) e no Worker, validando presença obrigatória de `RABBITMQ_URI`.
 - [x] Limpeza de variáveis obsoletas (`FLYWAY_ENABLED`, `JPA_DDL_AUTO`, `PORT`, `WORKER_PORT`, `WORKER_URL`, `RABBITMQ_CONCURRENCY`) e remoção de URL hardcoded da API de IA em `.env.example`, `azure-pipelines.yml` e `scripts/script-provisionamento.sh`.
 
 ---
@@ -271,7 +271,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Bloco de limpeza segura e idempotente (`DROP TABLE ... CASCADE CONSTRAINTS PURGE` e remoção de packages PL/SQL preexistentes).
 - [x] Criação das 13 tabelas 3FN fiéis a `citizenTech.ddl` (`estado`, `cidade`, `bairro`, `endereco`, `usuario`, `telefone`, `categoria`, `status`, `prioridade`, `orgao_governo`, `chamado`, `hist_chamado`, `voto_chamado`) mais tabela `auditoria_dml_chamado`.
-- [x] Constraints, chaves primárias/estrangeiras e alinhamento integral com `jdbc:oracle:thin:@//oracle.fiap.com.br:1521/orcl` e migrations Flyway da API.
+- [x] Constraints, chaves primárias/estrangeiras, remoção prévia de packages antes das tabelas, `TO_BLOB(HEXTORAW(...))` e alinhamento integral com `Database-Advanced/2TDSPG_2026_CodigoSql_ZelaFix.sql` e migrations Flyway da API.
 
 ---
 
@@ -385,3 +385,4 @@
 | [`1da20c0`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/1da20c0) | 2026-11-15 | `feat: atualizando imagens drawio` | **PBI-07** (`#57`) |
 | [`094f8ce`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/094f8ce) | 2026-11-15 | `docs(devops): adicionar link para a documentacao oficial em PDF` | **PBI-07** (`#57`) |
 | [`2d9193a`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/2d9193a) | 2026-11-15 | `docs: atualizar diagrama arquitetural com as 4 filas RabbitMQ e documentacao PDF` | **PBI-07** (`#57`) |
+| [`22d23f3`](https://github.com/Global-Solution-CitizenTech/DevOps-Tools-Cloud-Computing/commit/22d23f3) | 2026-11-17 | `fix(devops): corrigir Dockerfiles, sincronizar script-bd, WORKER_URL e documentacao` | **PBI-01** (`#50`) / **PBI-07** (`#57`) |

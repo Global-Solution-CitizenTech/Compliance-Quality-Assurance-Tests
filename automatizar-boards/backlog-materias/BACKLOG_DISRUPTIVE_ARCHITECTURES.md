@@ -330,12 +330,13 @@
 > **Para que** subprefeituras e concessionárias recebam despacho preciso alinhado ao ODS 11 e à legislação paulistana.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `POST /ai/triagem` retornando categoria, urgência, órgão responsável, SLA normativo, checklist técnico de vistoria e parecer técnico sintético (`<= 150` caracteres).
-- [x] Análise visual multimodal nativa via `AI_MODEL` identificando coerência da foto Base64 com o relato urbano sem rebaixamentos artificiais.
+- [x] `POST /ai/triagem` retornando categoria, urgência, órgão responsável, SLA normativo (com roteamento `sab_`, `dren_` 24/48h, `limp_` 48h e teto `cet_01 <= 4h` em contingência), checklist técnico de vistoria e parecer técnico sintético (`<= 150` caracteres).
+- [x] Análise visual multimodal nativa via `AI_MODEL` identificando coerência da foto Base64 com o relato urbano (`analise_visual: null` em contingência), além de circuit-breaker cooldown (`60s` em `HTTP 429`) e fallback priorizando contexto Oracle no `ChatService`.
 - [x] `POST /ai/insights` consolidando diagnósticos e alertas preventivos comunitários por bairro via ODS 11.
 
 ##### Commits vinculados (GitHub Repository):
 - [`4102d6b`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/4102d6b) — `feat(ai,oracle): integrate multimodal JSON triage, IoT telemetry, read-only Oracle queries and session memory` *(vinculado em AB#187)*
+- [`5bd6d24`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/5bd6d24) — `fix(ai,tests,docs): corrigir roteamento de contingencia, cooldown 429 e alinhar entregas GS2` *(vinculado em AB#187)*
 
 ---
 
@@ -466,8 +467,8 @@
 > **Para que** cada refatoração mantenha 100% de confiabilidade clínica/normativa sem regressões em produção.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `test_knowledge_coverage.py` (37/37 asserções) cobrindo os 8 módulos normativos PMSP e 31 chunks.
-- [x] `test_zelafix_scenarios.py` (12/12 cenários) testando visão multimodal, triagem, chat, Oracle e persistência SQLite.
+- [x] `test_knowledge_coverage.py` (37/37 asserções com pré-aquecimento em lote de embeddings) cobrindo os 8 módulos normativos PMSP e 31 chunks.
+- [x] `test_zelafix_scenarios.py` (12/12 cenários) testando visão multimodal (com validação honesta de `analise_visual is None` em contingência e rejeição de imagem inválida), triagem, chat, mascaramento LGPD, Oracle e persistência SQLite.
 - [x] Eliminação de testes de sobrecarga destrutiva (`stress_test_zelafix.py`) para proteção de cota de tokens (TPM/RPM) e blindagem contra erro HTTP 429.
 - [x] Script `run_qa_demo.py` para homologação integrada de 10 cenários em terminal.
 
@@ -478,6 +479,7 @@
 - [`b54102e`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/b54102e) — `test,docs(qa): expand automated QA suites to 82 tests and sync README and AGENT docs` *(vinculado em AB#189)*
 - [`fb21647`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/fb21647) — `test(qa): align RAG, scenario, and stress suites with multimodal LLM and 1536D embeddings` *(vinculado em AB#189)*
 - [`5b6a8a4`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/5b6a8a4) — `refactor(qa,docs): generalizar especificacao de modelo de IA e remover testes de estresse de alto consumo` *(vinculado em AB#189)*
+- [`5bd6d24`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/5bd6d24) — `fix(ai,tests,docs): corrigir roteamento de contingencia, cooldown 429 e alinhar entregas GS2` *(vinculado em AB#189)*
 
 ---
 
@@ -501,9 +503,9 @@
 > **Para que** qualquer desenvolvedor ou avaliador compreenda e teste imediatamente a arquitetura RAG + IA Multimodal + Oracle do projeto.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `README.md` padronizado no padrão CitizenTech com URL de produção no Render, Swagger `/docs` e links de saúde/telemetria.
+- [x] `README.md` padronizado no padrão CitizenTech com URL de produção no Render, Swagger `/docs`, links de saúde/telemetria, tabela de KPIs, métricas quantitativas/limitações, declaração de uso de IA e nomes completos dos 5 integrantes.
 - [x] `AGENT.md` especificando arquitetura de IA agnóstica a modelo (via `AI_MODEL` e `AI_EMBEDDING_MODEL`), regras operacionais e estrutura de diretórios.
-- [x] Manifesto formal `ENTREGA_GS_2026_2.txt` atualizado em sincronia com a entrega final da Global Solution.
+- [x] Manifesto formal `ENTREGA_GS_2026_2.txt` / `identificacao.txt` atualizado com nomes completos em sincronia com a entrega final da Global Solution.
 
 ##### Commits vinculados (GitHub Repository):
 - [`5b6bdb6`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/5b6bdb6) — `docs(compliance): update technical documentation, ASCII architecture diagrams and delivery manifest` *(vinculado em AB#190)*
@@ -517,3 +519,4 @@
 - [`504394d`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/504394d) — `feat: ajuste no readme` *(vinculado em AB#190)*
 - [`898401f`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/898401f) — `feat: add identificação.txt` *(vinculado em AB#190)*
 - [`e6acedc`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e6acedc) — `fix(rag,docs): alinhar dimensoes MRL no ChromaDB, sincronia de indice e corrigir inconsistencias de entrega` *(vinculado em AB#190)*
+- [`5bd6d24`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/5bd6d24) — `fix(ai,tests,docs): corrigir roteamento de contingencia, cooldown 429 e alinhar entregas GS2` *(vinculado em AB#190)*

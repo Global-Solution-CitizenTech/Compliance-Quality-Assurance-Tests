@@ -175,15 +175,15 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 - **Azure Test Case ID:** `#142` | **Plan/Suite:** `#132` / `#133` (`api-auth-rbac`) | **Tipo:** `Negativo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `RBAC`, `Negative`
 - **Cobertura / Endpoints:** 05. Chamados / 06. Teardown & Limpeza (05.11, 06.1) (`PATCH /chamados/{id}/status, DELETE /chamados/{id}`)
-- **Objetivo:** Validar isolamento RBAC nas operações de ciclo de vida de chamados (PATCH /status restrito a GESTOR/ADMIN e DELETE restrito ao Autor ou ADMIN).
-- **Pré-condições:** Tokens JWT válidos de CIDADAO e GESTOR; chamado existente criado por outro usuário (ex.: seed ID 1).
-- **Dados de Entrada / Payload:** PATCH /chamados/{id}/status como CIDADAO ({ "status": "EM_EXECUCAO", "observacao": "Teste" }); DELETE /chamados/{id} como GESTOR não autor.
-- **Resultado Esperado & HTTP Codes:** HTTP 403 Forbidden (ApiErrorResponse) em ambas as operações não autorizadas.
+- **Objetivo:** Validar isolamento RBAC nas operações de gestão e exclusão de chamados (`PUT /chamados/{id}`, `PATCH /chamados/{id}/status` e `DELETE /chamados/{id}` restritos exclusivamente a `GESTOR` e `ADMIN`).
+- **Pré-condições:** Token JWT válido de CIDADAO; chamado existente na base (ex.: chamado criado em QA ou seed ID 1).
+- **Dados de Entrada / Payload:** PATCH /chamados/{id}/status como CIDADAO ({ "status": "EM_ANALISE", "observacao": "Tentativa de alteração por usuário CIDADAO" }); DELETE /chamados/{id} como CIDADAO.
+- **Resultado Esperado & HTTP Codes:** HTTP 403 Forbidden (ApiErrorResponse) em ambas as operações não autorizadas para perfil CIDADAO.
 
 | Passo | Ação do Testador | Resposta Esperada do Sistema |
 | :---: | :--- | :--- |
-| 1 | Autenticado como CIDADAO, enviar PATCH /chamados/1/status com { "status": "EM_EXECUCAO", "observacao": "Tentativa indevida" }. | API bloqueia via @PreAuthorize('hasAnyRole(GESTOR, ADMIN)') e retorna HTTP 403 Forbidden. |
-| 2 | Autenticado como GESTOR (não autor do chamado 1), enviar DELETE /chamados/1. | ChamadoService.validarPermissaoExclusao lança AccessDeniedException e API retorna HTTP 403 Forbidden. |
+| 1 | Autenticado como CIDADAO, enviar PATCH /chamados/{id}/status com { "status": "EM_ANALISE", "observacao": "Tentativa de alteração por usuário CIDADAO" }. | API bloqueia via @PreAuthorize("hasAnyRole('GESTOR', 'ADMIN')") e retorna HTTP 403 Forbidden. |
+| 2 | Autenticado como CIDADAO, enviar DELETE /chamados/{id}. | API bloqueia via @PreAuthorize("hasAnyRole('GESTOR', 'ADMIN')") / ChamadoService.validarPermissaoGestao e retorna HTTP 403 Forbidden. |
 
 ### Plan `#143` / Suite `#144` — `api-usuarios-enderecos` (6 Casos de Teste)
 
@@ -368,7 +368,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 
 | Passo | Ação do Testador | Resposta Esperada do Sistema |
 | :---: | :--- | :--- |
-| 1 | Como autor (ou GESTOR/ADMIN), enviar PUT /chamados/{id} com novo título, descrição, CategoriaEnum e EnderecoRequest. | API retorna HTTP 200 OK com os dados atualizados. |
+| 1 | Como GESTOR (ou ADMIN), enviar PUT /chamados/{id} com novo título, descrição, CategoriaEnum e EnderecoRequest. | API retorna HTTP 200 OK com os dados atualizados. |
 | 2 | Enviar POST /chamados/{id}/apoiar (toggle OFF) e repetir POST /chamados/{id}/apoiar (toggle ON). | A cada chamada HTTP 200 OK, totalVotos e apoiadoPorMim alternam e VotoEventProducer publica evento em chamado.voto.queue. |
 | 3 | Como GESTOR ou ADMIN, enviar PATCH /chamados/{id}/status para EM_EXECUCAO e depois CONCLUIDO com 'observacao' preenchida. | API retorna HTTP 200 OK e grava cada transição em HIST_CHAMADO. |
 | 4 | Enviar PATCH /chamados/{id}/status com status inexistente ou observacao em branco. | API rejeita via @EnumValidation / @NotBlank retornando HTTP 400 Bad Request. |
@@ -379,14 +379,14 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 - **Azure Test Case ID:** `#166` | **Plan/Suite:** `#153` / `#154` (`api-chamados`) | **Tipo:** `Positivo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `Chamados`
 - **Cobertura / Endpoints:** 06. Teardown & Limpeza (06.2–06.4) (`DELETE /chamados/{id}, GET /chamados/{id}, DELETE /usuarios/me`)
-- **Objetivo:** Validar exclusão de chamado com remoção em cascata de votos (VOTO_CHAMADO) e históricos (HIST_CHAMADO), confirmando ausência posterior do recurso.
-- **Pré-condições:** Chamado descartável existente; token do Autor ou ADMIN.
+- **Objetivo:** Validar exclusão de chamado como GESTOR ou ADMIN com remoção em cascata de votos (VOTO_CHAMADO) e históricos (HIST_CHAMADO), confirmando ausência posterior do recurso.
+- **Pré-condições:** Chamado descartável existente; token de GESTOR ou ADMIN.
 - **Dados de Entrada / Payload:** DELETE /chamados/{id} seguido de GET /chamados/{id} e GET /chamados/{id}/foto.
 - **Resultado Esperado & HTTP Codes:** HTTP 204 No Content na exclusão e HTTP 404 Not Found nas consultas subsequentes.
 
 | Passo | Ação do Testador | Resposta Esperada do Sistema |
 | :---: | :--- | :--- |
-| 1 | Autenticado como Autor ou ADMIN, enviar DELETE /chamados/{id}. | API remove votos, histórico e chamado e retorna HTTP 204 No Content. |
+| 1 | Autenticado como GESTOR ou ADMIN, enviar DELETE /chamados/{id}. | API remove votos, histórico e chamado e retorna HTTP 204 No Content. |
 | 2 | Enviar GET /chamados/{id} e GET /chamados/{id}/foto após a exclusão. | Ambas as consultas retornam HTTP 404 Not Found confirmando remoção definitiva. |
 
 ### Plan `#122` / Suite `#123` — `ai-service` (7 Casos de Teste)

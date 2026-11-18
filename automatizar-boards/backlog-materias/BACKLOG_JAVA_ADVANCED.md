@@ -605,7 +605,7 @@
 - [x] Suíte de testes no Worker cobrindo concorrência no `VotoConsumer`, mensageria RabbitMQ e testes de integração com LLM Multimodal em `ZelaFixAiServiceTest`.
 - [x] Testes de concorrência e stress multithread passando sem falhas.
 - [x] Isolamento de chaves da API de IA nas etapas de build para evitar HTTP 429 na pipeline.
-- [x] Todos os testes passando com sucesso via `.\gradlew test`, incluindo cenários unitários recentes para `ImageMimeTypeDetectorTest`, `ZelaFixAiServiceTest`, `ChamadoAiConsumerTest`, `TriagemPendenteStoreTest`, `GlobalExceptionHandlerTest` e `ChamadoTriagemFeedbackConsumerTest`.
+- [x] Todos os testes passando com sucesso via `.\gradlew test` (**229 testes**: `196` API + `33` Worker), incluindo cenários unitários recentes para `ImageMimeTypeDetectorTest`, `ZelaFixAiServiceTest`, `TriagemNormativaToolsTest` (`EnumMap` null-safe), `ChamadoAiConsumerTest`, `TriagemPendenteStoreTest`, `GlobalExceptionHandlerTest`, `SwaggerConfigTest` e `ChamadoTriagemFeedbackConsumerTest`.
 
 ##### Pull Requests no Azure Repos:
 - PR #7 (`test: remover ZelaFixAiLiveIntegrationTest e manter testes unitarios mockados`)
@@ -832,7 +832,7 @@
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] Configuração de `spring.ai.openai.*` desacoplada para provedor LLM Multimodal (OpenAI API Standard) no `zelafix-worker` e variáveis `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`.
-- [x] Classe `TriagemNormativaTools` registrando `@Tool consultarNormaMunicipal` (decretos PMSP) e `@Tool calcularPrazoSla` (`America/Sao_Paulo`, `12h`/`24h`/`48h`/`72h`), acionadas apenas quando `ocorrenciaValida = true`.
+- [x] `TriagemNormativaTools` registrando `@Tool consultarNormaMunicipal` e `@Tool calcularPrazoSla` usando `EnumMap` null-safe (`.getOrDefault` + `Objects.requireNonNullElse`), acionadas apenas quando `ocorrenciaValida = true`.
 - [x] Injeção idiomática de `ChatClient.Builder` com `SimpleLoggerAdvisor`, `defaultTools`, prompt parametrizado (`{bairro}`) e Structured Output validado via `EntityParamSpec::validateSchema`.
 - [x] Validação de escopo urbano (`ocorrenciaValida`) recusando capturas de tela, memes, desenhos, selfies ou ambientes internos, e `TriagemIaResult.comLimitesOracle()` truncando título (`<= 100` bytes) e descrição (`<= 1000` bytes) em UTF-8.
 - [x] Otimização de payload multimodal via `ImageMimeTypeDetector.redimensionarParaIa()` convertendo imagens acima de `768px` (ou `> 150 KB`) para JPEG comprimido para reduzir consumo de tokens visuais (TPM), preservando stubs inválidos/pequenos intactos.
@@ -841,6 +841,7 @@
 - PR #9 (`feat(ai): migrar Spring AI para Provedor de LLM Multimodal`)
 - PR #20 (`feat(worker): validacao de escopo de imagem na IA, recusa de fotos invalidas e ajuste de prompt/limites UTF-8`)
 - PR #41 (`refactor(worker): refinar prompt de triagem IA e ajustar max-tokens para 4096`)
+- PR #45 (`fix(gs2): normalizar e-mail no login, tornar TriagemNormativaTools nulo-seguro com EnumMap e alinhar SwaggerConfig`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `bee01b4` feat(ai): migrar Spring AI para Provedor de LLM Multimodal
@@ -851,6 +852,7 @@
 - `eea41a6` refactor(worker): remove field injection @Value e condicional de api key em ZelaFixAiService
 - `edfb9d8` refactor(worker): refinar prompt de triagem IA e ajustar max-tokens para 4096
 - `582cb9f` perf(ai): usar reasoning-effort low, incluir decreto/SLA na descricao e subir timeout para 90s
+- `2433456` fix(gs2): normalizar email de login, EnumMap nulo-seguro em TriagemNormativaTools e 5 tags oficiais no SwaggerConfig
 
 ---
 
@@ -913,14 +915,18 @@
 - [x] Entidades, enums (`PrioridadeEnum`, `OrgaoGovernoEnum`, `CategoriaEnum`, `StatusChamadoEnum`), repositórios e serviços de `Prioridade` e `OrgaoGoverno` refletidos em `ChamadoResponse` (`prioridadeId`, `prioridadeNome`, `orgaoId`, `orgaoNome`).
 - [x] `ChamadoFiltroRequest` ampliado com `status`, `categoria`, `busca`, `apenasMeus`, `cidade`, `bairro` e `estado` aplicados em `ChamadoRepository.findByFiltros`.
 - [x] Remoção de `CategoriaController` (`/categorias`), `StatusController` (`/status`) e DTOs redundantes (`CategoriaRequest/Response`, `StatusRequest/Response`, `ChamadoCreateRequest`, `RecusaIaResponse`), além da consolidação de `LoginRequest`/`LoginResponse` como records internos em `AuthController`.
-- [x] `SecurityConfig` liberando `DispatcherType.ASYNC` e `DispatcherType.ERROR` para suporte ao `DeferredResult`, e `SwaggerConfig` atualizado com ordenação das 4 tags oficiais (`Autenticação`, `Usuarios`, `Chamados`, `Endereco`).
+- [x] `SecurityConfig` liberando `DispatcherType.ASYNC` e `DispatcherType.ERROR` para suporte ao `DeferredResult`, `AuthController`/`UsuarioService` normalizando e-mail (`trim().toLowerCase()`), e `SwaggerConfig` atualizado com ordenação das 5 tags oficiais (`Autenticação`, `Usuarios`, `Chamados`, `Históricos`, `Endereco`) validada por `SwaggerConfigTest`.
 
-##### Pull Request no Azure Repos:
+##### Pull Requests no Azure Repos:
 - PR #19 (`refactor: persistencia pos-triagem IA, enums de dominio, permissoes e filtros de localizacao`)
+- PR #45 (`fix(gs2): normalizar e-mail no login, tornar TriagemNormativaTools nulo-seguro com EnumMap e alinhar SwaggerConfig`)
+- PR #46 (`docs(readme): completar catalogo de endpoints e permissoes RBAC na secao 7`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `25b6c31` refactor: persistencia pos-triagem IA, enums de dominio (status, categoria, prioridade, orgao), permissoes e filtros de localizacao
 - `a520c3e` refactor(triagem,auth): deferir triagem via DeferredResult e enxugar seguranca e DTOs
+- `2433456` fix(gs2): normalizar email de login, EnumMap nulo-seguro em TriagemNormativaTools e 5 tags oficiais no SwaggerConfig
+- `574c035` docs(readme): completar catalogo de endpoints e permissoes RBAC na secao 7
 
 ---
 

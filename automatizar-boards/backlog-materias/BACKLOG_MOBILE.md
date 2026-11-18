@@ -12,7 +12,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Tags:** `Mobile` — todos os Work Items da disciplina utilizam exclusivamente esta tag.  
-> **Diretrizes Estratégicas:** Aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler e TypeScript estrito), contemplando autenticação JWT com sessão persistente no `expo-secure-store`, 12 telas (11 fluxos funcionais + Sobre o App), integração HTTP via Axios com a API Java Spring Boot (`https://app-zelafix.azurewebsites.net`) e com o microsserviço ZelaBot IA (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`), cache reativo com TanStack Query v5 (`AppState` + `expo-network`), paginação infinita no Radar do Bairro, formulários validados com Zod v4, GPS via `expo-location`, upload fotográfico `multipart/form-data` com triagem direta por IA (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), RBAC Cidadão/Gestor Público, suíte de 66 testes unitários Node e build Android EAS `versionCode 13`.
+> **Diretrizes Estratégicas:** Aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler e TypeScript estrito), contemplando autenticação JWT com sessão persistente no `expo-secure-store`, 12 telas (11 fluxos funcionais + Sobre o App), integração HTTP via Axios com a API Java Spring Boot (`https://app-zelafix.azurewebsites.net`) e com o microsserviço ZelaBot IA (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`), cache reativo com TanStack Query v5 (`AppState` + `expo-network`), paginação infinita no Radar do Bairro, formulários validados com Zod v4, GPS via `expo-location`, upload fotográfico `multipart/form-data` com triagem direta por IA (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), RBAC Cidadão/Gestor Público, suíte de 78 testes unitários Node e build Android EAS `versionCode 13`.
 
 ---
 
@@ -110,9 +110,9 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `49`
 * **Business Value:** `100`
-* **Description:** Desenvolvimento do aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler) e TypeScript estrito, alinhado à ODS 11, integrado 100% aos contratos da API RESTful Java Spring Boot em Azure (`https://app-zelafix.azurewebsites.net`) e ao microsserviço FastAPI ZelaBot IA no Render (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`). Contempla autenticação JWT segura com `expo-secure-store`, formulários reativos tipados com Zod v4, cache reativo via TanStack Query v5 com paginação infinita no Radar e lifecycle nativo (`AppState` + `expo-network`), geolocalização GPS com geocodificação reversa (`expo-location`), envio fotográfico `multipart/form-data` com triagem automática direta pela Spring AI (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), controle RBAC (Cidadão/Gestor Público), suíte de 66 testes unitários Node, auditoria automática de commit Git em tempo de build, assistente conversacional ZelaBot IA com RAG normativo e APK standalone publicado via EAS Build (`versionCode 13`).
+* **Description:** Desenvolvimento do aplicativo móvel multiplataforma em React Native (Expo SDK 58, React 19.3, React Compiler) e TypeScript estrito, alinhado à ODS 11, integrado 100% aos contratos da API RESTful Java Spring Boot em Azure (`https://app-zelafix.azurewebsites.net`) e ao microsserviço FastAPI ZelaBot IA no Render (`https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`). Contempla autenticação JWT segura com `expo-secure-store`, formulários reativos tipados com Zod v4, cache reativo via TanStack Query v5 com paginação infinita no Radar e lifecycle nativo (`AppState` + `expo-network`), geolocalização GPS com geocodificação reversa (`expo-location`), envio fotográfico `multipart/form-data` com triagem automática direta pela Spring AI (`DeferredResult`), apoio comunitário otimista (`chamadoCache.ts`), controle RBAC (Cidadão/Gestor Público), suíte de 78 testes unitários Node, auditoria automática de commit Git em tempo de build, assistente conversacional ZelaBot IA com RAG normativo e APK standalone publicado via EAS Build (`versionCode 13`).
 * **Acceptance Criteria:**
-  - [x] Aplicativo em React Native + Expo SDK 58 + React Compiler + TypeScript estrito (zero `any`, ESLint v9, `type-check` e 66 testes unitários passando).
+  - [x] Aplicativo em React Native + Expo SDK 58 + React Compiler + TypeScript estrito (zero `any`, ESLint v9, `type-check` e 78 testes unitários passando).
   - [x] 12 telas (11 fluxos funcionais + Sobre o App) organizadas por stacks/tabs com Dark Mode e Light Mode adaptativos via `AppTheme`.
   - [x] Integração 100% alinhada aos DTOs e rotas da API Java em Azure (`multipart/form-data` + `DeferredResult` + `Page<T>`) e ZelaBot IA no Render.
   - [x] Build Android compilado e publicado via EAS Build (`versionCode 13`, build `ba71cba6`) com link direto de download do APK.
@@ -585,12 +585,12 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `7`
 * **Business Value:** `100`
-* **Description:** Acompanhamento completo de ocorrências com timeline de 5 estados, exibição da classificação gerada pela triagem IA (prioridade e órgão competente), feedback visual em recusas da IA, botão de apoio comunitário com atualização otimista em cache (`chamadoCache.ts` para listas simples e infinitas), lifecycle nativo React Native no TanStack Query (`AppState` + `expo-network`), suíte de 66 testes unitários Node, builds EAS (`versionCode` 2, 3, 5, 6, 7 e 8) e entrega documentada FIAP.
+* **Description:** Acompanhamento completo de ocorrências com timeline de 5 estados, exibição da classificação gerada pela triagem IA (prioridade e órgão competente), feedback visual em recusas da IA, botão de apoio comunitário com atualização otimista em cache (`chamadoCache.ts` para listas simples e infinitas), lifecycle nativo React Native no TanStack Query (`AppState` + `expo-network`), suíte de 78 testes unitários Node, builds EAS (`versionCode` 2 a 13) e entrega documentada FIAP.
 * **Acceptance Criteria:**
   - [x] `ChamadoDetailsScreen` exibindo foto, localização, timeline de 5 estados, prioridade e órgão responsável gerados pela triagem IA.
   - [x] Apoio comunitário otimista em `useChamadoMutations` + `chamadoCache.ts` via `POST /chamados/{id}/apoiar` com rollback em erro.
   - [x] Integração de `AppState` + `expo-network` no `QueryClient` para refetch e pausas conscientes de bateria.
-  - [x] Rastreabilidade de versão/commit dinâmico, suíte de 66 testes unitários Node e APK EAS `versionCode 13` publicado.
+  - [x] Rastreabilidade de versão/commit dinâmico, suíte de 78 testes unitários Node e APK EAS `versionCode 13` publicado.
 
 #### 🔹 [PBI-13] Detalhes do Chamado, Timeline 5 Estados, Triagem IA, Feedback de Recusa e Apoio Otimista
 
@@ -648,7 +648,7 @@
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `bindReactNativeQueryLifecycle` em `lib/queryClient.ts` conectando `AppState` (`focusManager`) e `expo-network` (`onlineManager`).
 - [x] `app.config.js` + `config/version.ts` injetando hash completo/curto do commit Git e branch via `expo-constants` em tempo de build, com React Compiler (`reactCompiler: true`) em `app.json`.
-- [x] Suíte de testes unitários com Node test runner (`node --experimental-strip-types --test`) com 66 testes unitários passando em 7 arquivos (`tests/apiError.test.ts`, `tests/chamadoCache.test.ts`, `tests/chamadoMappers.test.ts`, `tests/coreUtils.test.ts`, `tests/formatters.test.ts`, `tests/permissions.test.ts` e `tests/schemas.test.ts`).
+- [x] Suíte de testes unitários com Node test runner (`node --experimental-strip-types --test`) com 78 testes unitários passando em 35 suítes.
 - [x] Evolução de releases EAS Build Android APK (`versionCode` 2 ➔ 3 ➔ 5 ➔ 6 ➔ 7 ➔ 8 ➔ 9 ➔ 10 ➔ 11 ➔ 12 ➔ 13) sem referências legadas ao Firebase, URLs centrais de produção Azure (`apiUrl`) e Render (`aiUrl`) em `src/config/env.ts`, desacoplamento de telas/tipos sem barrels, remoção de casts inseguros e migração de splash screen (`expo-splash-screen` + `expo-font`).
 
 ##### Commits vinculados (GitHub Repository):
@@ -691,7 +691,7 @@
 > **Para que** seja comprovado o atendimento rigoroso a todos os critérios da Global Solution 2026/2.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `README.md` e `ENTREGA_GS_2026_2.txt` documentando stack, 12 telas, contratos REST atualizados (`POST /chamados` `multipart/form-data` + `DeferredResult`), `expo-network`, instruções de execução e instalação standalone.
+- [x] `README.md` e `identificacao.txt` documentando stack, 12 telas, contratos REST atualizados (`POST /chamados` `multipart/form-data` + `DeferredResult`, rotas `GESTOR`), credenciais de teste, declaração de uso de IA, nomes completos dos integrantes e instalação standalone.
 - [x] Publicação oficial do APK `versionCode 13` via EAS Build (`f1c2d185`, commit `77492e1`) com link direto de artefato (`xkqIruhd5mVE-kVvlzhiFprCvaOKyd2YCNo5A6UNC-c.apk`) e painel Expo.
 - [x] Tela `SobreAppScreen` exibindo versão, commit hash dinâmico e equipe em ordem alfabética estrita.
 - [x] Estrutura preparada para link do vídeo demonstrativo cobrindo autenticação, telas principais, sensores GPS/câmera, CRUD, RBAC e ZelaBot IA.
@@ -711,6 +711,7 @@
 - [`9b22136`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/9b22136) — `docs: atualizar link do APK versionCode 13 (EAS Build ba71cba6)` *(vinculado em AB#13)*
 - [`1c4b160`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/1c4b160) — `docs: atualizar link do APK versionCode 9 (EAS Build 39a21c29)` *(vinculado em AB#13)*
 - [`2f300c8`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/2f300c8) — `docs: atualizar link do APK versionCode 13 (EAS Build d6f6ece9)` *(vinculado em AB#13)*
+- [`d7a7fc1`](https://github.com/Global-Solution-CitizenTech/Mobile-Application-Development/commit/d7a7fc1) — `docs: atualizar credenciais de teste, declaracao de IA e nomes completos dos integrantes` *(vinculado em AB#13)*
 
 ---
 

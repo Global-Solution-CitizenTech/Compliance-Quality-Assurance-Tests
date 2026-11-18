@@ -22,8 +22,8 @@ Arquivo: `Compliance-Quality-Assurance-Tests/automatizar-boards/.env`
 
 ```ini
 # Organização e Projeto no Azure DevOps
-AZURE_DEVOPS_ORG=Global-Solution-CitizenTech
-AZURE_DEVOPS_PROJECT=CitizenTech
+AZURE_DEVOPS_ORG=ZelaFixGS
+AZURE_DEVOPS_PROJECT=ZelaFix
 
 # Personal Access Token (PAT) com escopos:
 # - Work Items (Read & Write)
@@ -40,13 +40,13 @@ GITHUB_ORG=Global-Solution-CitizenTech
 
 | Disciplina | Tag no Azure Boards | Iteration Path Alvo | Arquivo de Backlog |
 | :--- | :--- | :--- | :--- |
-| 📱 **Mobile Application Development** | `Mobile` | `CitizenTech\Sprint 1` | `backlog-materias/BACKLOG_MOBILE.md` |
-| ☕ **Java Advanced** | `JavaAdvanced` | `CitizenTech\Sprint 1` | `backlog-materias/BACKLOG_JAVA_ADVANCED.md` |
-| 🗄️ **Database Advanced** | `Database` | `CitizenTech\Sprint 1` | `backlog-materias/BACKLOG_DATABASE_ADVANCED.md` |
-| 💻 **.NET & Observabilidade** | `DotNet` | `CitizenTech\Sprint 1` | `backlog-materias/BACKLOG_DOT_NET.md` |
-| ☁️ **DevOps Tools & Cloud Computing** | `DevOps` | `CitizenTech\Sprint 2` | `backlog-materias/BACKLOG_DEVOPS.md` |
-| 🤖 **Disruptive Architectures (IoT/IA)** | `DisruptiveArchitectures` | `CitizenTech\Sprint 2` | `backlog-materias/BACKLOG_DISRUPTIVE_ARCHITECTURES.md` |
-| 🛡️ **Compliance, QA & Tests** | `Compliance` | `CitizenTech\Sprint 2` | `backlog-materias/BACKLOG_COMPLIANCE.md` |
+| 📱 **Mobile Application Development** | `Mobile` | `ZelaFix\Release 1 - Global Solution\Semana 1` | `backlog-materias/BACKLOG_MOBILE.md` |
+| ☕ **Java Advanced** | `JavaAdvanced` | `ZelaFix\Release 1 - Global Solution\Semana 1` | `backlog-materias/BACKLOG_JAVA_ADVANCED.md` |
+| 🗄️ **Database Advanced** | `Database` | `ZelaFix\Release 1 - Global Solution\Semana 1` | `backlog-materias/BACKLOG_DATABASE_ADVANCED.md` |
+| 💻 **Advanced Business Dev. with .NET** | `DotNet` | `ZelaFix\Release 1 - Global Solution\Semana 2` | `backlog-materias/BACKLOG_DOT_NET.md` |
+| ☁️ **DevOps Tools & Cloud Computing** | `DevOps` | `ZelaFix\Release 1 - Global Solution\Semana 2` | `backlog-materias/BACKLOG_DEVOPS.md` |
+| 🤖 **Disruptive Architectures (IoT/IA)** | `DisruptiveArchitectures` | `ZelaFix\Release 1 - Global Solution\Semana 2` | `backlog-materias/BACKLOG_DISRUPTIVE_ARCHITECTURES.md` |
+| 🛡️ **Compliance, QA & Tests** | `Compliance` | `ZelaFix\Release 1 - Global Solution\Semana 2` | `backlog-materias/BACKLOG_COMPLIANCE.md` |
 
 ---
 

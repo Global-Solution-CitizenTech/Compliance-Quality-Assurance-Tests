@@ -11,7 +11,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
-> **Diretrizes Estratégicas:** 100% de aderência à rubrica oficial da Global Solution 2 (5 critérios de 20% cada), governança ágil Scrum no Azure Boards para todas as 7 disciplinas (`7` Epics, `30` Features, `89` PBIs, `276` Story Points), validação estrita de contrato via Python (`parser_backlog.py` + `run_sync.py --validate`), iterações padronizadas (`Semana 1` e `Semana 2`), tag única por disciplina (sem tag redundante `ZelaFix`), rastreabilidade contínua de commits e PRs nos 7 repositórios (GitHub + Azure Repos), suíte automatizada Postman (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em **4 Azure Test Plans / 4 Suites / 25 Casos de Teste (`TC-01`..`TC-25` — 100% `Passed`)** alinhados à arquitetura `DeferredResult` (`90s`), recusa de imagem IA sem persistência no Oracle e às `13` tabelas / `5` ENUMs oficiais.
+> **Diretrizes Estratégicas:** 100% de aderência à rubrica oficial da Global Solution 2 (5 critérios de 20% cada), governança ágil Scrum no Azure Boards para todas as 7 disciplinas (`7` Epics, `30` Features, `89` PBIs, `276` Story Points), validação estrita de contrato via Python (`parser_backlog.py` + `run_sync.py --validate`), iterações padronizadas (`Semana 1` e `Semana 2`), tag única por disciplina (sem tag redundante `ZelaFix`), rastreabilidade contínua de commits e PRs nos 7 repositórios (GitHub + Azure Repos), suíte automatizada Postman (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em **4 Azure Test Plans / 4 Suites / 25 Casos de Teste (`TC-01`..`TC-25` — 100% `Passed`)** alinhados à arquitetura `DeferredResult` (`90s`), RBAC `GESTOR`/`ADMIN`, recusa de imagem IA sem persistência no Oracle e às `13` tabelas / `5` ENUMs oficiais.
 
 ---
 
@@ -22,7 +22,7 @@
 | Integrante | RM | Turma | Papel no Projeto / Foco na Global Solution 2 |
 | :--- | :---: | :---: | :--- |
 | **Enzo Okuizumi Miranda de Souza** | **561432** | 2TDSPG | Governança Scrum, Java Advanced, Disruptive AI e Automação QA/Azure DevOps |
-| **Gustavo Keiji Okada** | **563428** | 2TDSPG | Arquitetura .NET 10, Testes Unitários xUnit (105 testes) e Observabilidade OpenTelemetry |
+| **Gustavo Keiji Okada** | **563428** | 2TDSPG | Arquitetura .NET 10, Testes Unitários xUnit (106 testes) e Observabilidade OpenTelemetry |
 | **Lucas Barros Gouveia** | **566422** | 2TDSPG | Database Advanced (Oracle PL/SQL 13 Tabelas 3FN, Auditoria DML e MongoDB) |
 | **Luna de Carvalho Guimarães** | **562290** | 2TDSPG | Mobile Development (React Native Expo SDK 58, Rotas Protegidas e EAS Build) |
 | **Milton Jakson de Sousa Marcelino** | **564836** | 2TDSPG | DevOps Tools & Cloud Computing (Docker Multi-Stage, IaC Azure CLI e CI/CD) |
@@ -96,7 +96,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `21`
 * **Business Value:** `100`
-* **Description:** Governança ágil Scrum de ponta a ponta para o ecossistema ZelaFix no Microsoft Azure DevOps (`ZelaFixGS/ZelaFix`), contemplando a centralização e validação estrita dos backlogs das 7 disciplinas (`7` Epics, `30` Features, `89` PBIs e `276` Story Points) via `parser_backlog.py` (`BacklogValidationError` e `run_sync.py --validate`), organização em duas iterações (`Release 1 - Global Solution\Semana 1` e `Semana 2`), governança de tag única por disciplina e responsáveis, rastreabilidade automatizada de commits e Pull Requests (GitHub e Azure Repos ArtifactLinks), suíte Postman automatizada (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em 4 Azure Test Plans / 4 Test Suites / 25 Casos de Teste (`TC-01`..`TC-25`) cobrindo API Java (`DeferredResult` `60s`, recusa IA sem Oracle, 13 tabelas 3FN / 5 ENUMs) e ZelaBot AI.
+* **Description:** Governança ágil Scrum de ponta a ponta para o ecossistema ZelaFix no Microsoft Azure DevOps (`ZelaFixGS/ZelaFix`), contemplando a centralização e validação estrita dos backlogs das 7 disciplinas (`7` Epics, `30` Features, `89` PBIs e `276` Story Points) via `parser_backlog.py` (`BacklogValidationError` e `run_sync.py --validate`), organização em duas iterações (`Release 1 - Global Solution\Semana 1` e `Semana 2`), governança de tag única por disciplina e responsáveis, rastreabilidade automatizada de commits e Pull Requests (GitHub e Azure Repos ArtifactLinks), suíte Postman automatizada (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em 4 Azure Test Plans / 4 Test Suites / 25 Casos de Teste (`TC-01`..`TC-25`) cobrindo API Java (`DeferredResult` `90s`, RBAC `GESTOR`/`ADMIN`, recusa IA sem Oracle, 13 tabelas 3FN / 5 ENUMs) e ZelaBot AI.
 * **Acceptance Criteria:**
   - [x] Todos os 7 arquivos de backlog aprovados por `run_sync.py --validate` (`strict=True`) sem perda de datas, tags, esforço, valor de negócio, histórias ou critérios de aceite.
   - [x] Work Items padronizados com `IterationPath` (`Semana 1` e `Semana 2`), `AssignedTo` correto e tag exclusiva da disciplina (sem tag `ZelaFix`).
@@ -353,7 +353,7 @@
 > **Para que** a matriz `docs/MATRIZ_CASOS_DE_TESTE_AZURE.md` e o Azure Test Plans estejam em paridade 1:1 sem duplicidades para execução e emissão de métricas.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `4` Test Plans e `4` Test Suites ativos no Azure Test Plans (`#132`/`#133` com `6` TCs, `#143`/`#144` com `6` TCs, `#153`/`#154` com `6` TCs e `#122`/`#123` com `7` TCs).
+- [x] `4` Test Plans e `4` Test Suites ativos no Azure Test Plans (`#132`/`#133` com `6` TCs, `#143`/`#144` com `6` TCs, `#153`/`#154` com `6` TCs e `#122`/`#123` com `7` TCs), com `#142`, `#155`, `#163` e `#166` sincronizados para RBAC `GESTOR`/`ADMIN` e timeout `90s`.
 - [x] `14` Test Cases duplicados/obsoletos removidos do Azure DevOps garantindo exatamente `25` Test Cases ativos em estado `Ready`.
 - [x] Todos os Test Cases atribuídos a `RM561432@fiap.com.br` na iteração `ZelaFix\Release 1 - Global Solution\Semana 2` com tags sem `ZelaFix` e passos XML completos.
 
@@ -364,6 +364,8 @@
 - [`5f5aefe`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/5f5aefe) — `docs(qa): alinhar matriz de casos de teste com enums canonicos e endpoints de producao` *(vinculado em AB#76)*
 - [`1315724`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/1315724) — `docs(compliance): adiciona PDF oficial de entrega e vincula no README` *(vinculado em AB#76)*
 - [`e4a0e5f`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e4a0e5f) — `docs(compliance): atualizar PDF final, totais consolidados (30 Features, 89 PBIs, 276 SP) e identificacao.txt` *(vinculado em AB#76)*
+- [`1504468`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/1504468) — `docs(boards,qa): sincronizar todos os commits recentes das 7 disciplinas, RBAC GESTOR/ADMIN no Postman/Matriz e APK versionCode 13` *(vinculado em AB#76)*
+- [`31468e6`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/31468e6) — `docs(compliance): atualizar versao final do PDF de documentacao da GS 2` *(vinculado em AB#76)*
 
 ---
 
@@ -387,9 +389,9 @@
 > **Para que** todos os repositórios da Global Solution 2 possuam rastreabilidade verificável entre código-fonte e Azure Boards.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] Arquitetura Python unificada em `automatizar-boards/` (`run_sync.py`, `sync_engine.py`, `azure_client.py`, `parser_backlog.py`, `config.py`, `link_commits.py`, `install_git_hooks.py`).
-- [x] Rastreabilidade aplicada aos repositórios integrados (Mobile `39/39`, Java `101` commits Azure Repos + `19` PRs, Database `19/19`, DevOps `20/20`, Disruptive AI `32/32` e Compliance `22/22` commits).
-- [x] Documentação consolidada em `README.md`, `identificacao.txt` e capturas de evidência preservadas em `docs/*.png`.
+- [x] Arquitetura Python unificada em `automatizar-boards/` (`run_sync.py`, `sync_engine.py`, `azure_client.py`, `parser_backlog.py`, `config.py`, `install_git_hooks.py`) e documentação atualizada para `ZelaFixGS/ZelaFix`.
+- [x] Rastreabilidade aplicada aos repositórios integrados (Mobile `48` commits, Java `120+` commits Azure Repos + PRs, Database `25` commits, DevOps `35` commits, Disruptive AI `45` commits e Compliance `24+` commits).
+- [x] Documentação consolidada em `README.md` (com Declaração de Uso de IA), `identificacao.txt` e capturas de evidência preservadas em `docs/*.png`.
 
 ##### Commits vinculados (GitHub Repository):
 - [`015c6dd`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/015c6dd) — `refactor(compliance): unifica arquitetura de automacao no AzureClient, SyncEngine e config centralizada, eliminando codigo legado e redundante` *(vinculado em AB#77)*
