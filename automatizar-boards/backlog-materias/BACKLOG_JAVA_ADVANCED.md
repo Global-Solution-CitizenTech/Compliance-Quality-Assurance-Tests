@@ -114,6 +114,10 @@
 * **Business Value:** `100`
 * **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 1`
 * **Description:** Arquitetura distribuída de microsserviços em Java 21+ com Spring Boot 4.1.1 (Opção A da Global Solution), composta pela API REST Gateway (`zelafix-api`) e pelo Worker de processamento assíncrono (`zelafix-worker`) estruturados no padrão corporativo **Gradle Multi-Project**. Contempla banco de dados relacional Oracle 11g/19c/23c em Terceira Forma Normal (3FN — 13 tabelas incluindo `PRIORIDADE` e `ORGAO_GOVERNO`), versionamento com Flyway (V1, V2, V3 com imagens BLOB reais), autenticação via tokens JWT assinados por par de chaves RSA assimétricas, controle de acesso RBAC, mensageria com RabbitMQ / CloudAMQP (Exchange `zelafix.direct` e filas duráveis), triagem inteligente multimodal com **Spring AI (LLM Multimodal + Tool Calling normativo `TriagemNormativaTools`)**, **`DeferredResult` (`TriagemPendenteStore`)** com validação de escopo e recusa sem persistência no Oracle, estratégia **Fail-Fast** imediata e fallback gracioso de contingência `PENDENTE`, persistência com histórico duplo conectado via `saveAll`, agregador de votos comunitários em buffer de memória thread-safe (Padrão Paredão), documentação OpenAPI 3.0 / Swagger UI, containerização multi-stage build com Docker (Temurin 21 alpine com usuário não-root) e esteira de CI/CD completa no Azure DevOps (`azure-pipelines.yml`) com espelhamento GitHub Actions e proteção de branch na main (`TF402455`).
+* **Acceptance Criteria:**
+  - [x] Arquitetura Gradle Multi-Project (`zelafix-api` + `zelafix-worker`) em Java 21 / Spring Boot 4.1.1 com Oracle 3FN (`13` tabelas + Flyway V1..V3), JWT RSA, RBAC e CloudAMQP (`zelafix.direct`).
+  - [x] Triagem assíncrona via `DeferredResult` (`90s`) integrada a LLM Multimodal via Spring AI com `TriagemNormativaTools` (`EnumMap` nulo-seguro), recusa sem persistência e fallback resiliente Fail-Fast.
+  - [x] Suíte de **229 testes automatizados** (`196` API + `33` Worker) aprovada, Swagger com `5` tags oficiais e esteira CI/CD Azure Pipelines + Docker multi-stage non-root operacional.
 
 ---
 

@@ -140,6 +140,8 @@ def validate_backlog_document(
         errors.append("Epic: 'Title' obrigatório ausente.")
     if not epic.description.strip():
         errors.append("Epic: 'Description' obrigatória ausente.")
+    if not epic.acceptance_criteria.strip():
+        errors.append("Epic: 'Acceptance Criteria' obrigatório ausente.")
     _check_dates("Epic", epic.start_date, epic.target_date)
     _check_tags("Epic", epic.tags)
     if epic.effort <= 0:
@@ -157,6 +159,8 @@ def validate_backlog_document(
             errors.append(f"{f_scope}: 'Title' obrigatório ausente.")
         if not feat.description.strip():
             errors.append(f"{f_scope}: 'Description' obrigatória ausente.")
+        if not feat.acceptance_criteria.strip():
+            errors.append(f"{f_scope}: 'Acceptance Criteria' obrigatório ausente.")
         _check_dates(f_scope, feat.start_date, feat.target_date)
         if exact_tag_only:
             _check_tags(f_scope, feat.tags)
@@ -574,6 +578,66 @@ def parse_backlog_markdown(
             epic_item.features.append(current_feature)
             current_feature = None
 
+    def consume_acceptance_criteria(start_idx: int, inline_text: str) -> tuple[str, int]:
+        """Coleta Acceptance Criteria inline ou em bloco de bullets para Epics e Features."""
+        ac_lines: List[str] = []
+        if inline_text.strip():
+            ac_lines.append(inline_text.strip())
+        j = start_idx + 1
+        while j < len(lines):
+            raw_next = lines[j]
+            nxt = raw_next.strip()
+            if nxt.startswith("---") or nxt.startswith("#"):
+                break
+            if re.match(r"^(?:\*\s+)?\*\*[^*\n]+:?\*\*:?", raw_next.lstrip()) and not raw_next.startswith("  "):
+                break
+            if not nxt:
+                k = j + 1
+                while k < len(lines) and not lines[k].strip():
+                    k += 1
+                if k < len(lines) and re.match(r"^(?:[-*]|\d+\.)\s+", lines[k].strip()):
+                    j += 1
+                    continue
+                break
+            ac_lines.append(nxt)
+            j += 1
+        return _markdown_to_clean_html("\n".join(ac_lines)), j
+
+    def parse_header_metadata(target_item) -> Optional[int]:
+        """Processa metadados comuns de Epic ou Feature; retorna próximo índice se consumido."""
+        azure_id_match = re.search(r"^\*?\s*\*\*(?:Azure Boards ID|Work Item ID|AB):?\*\*:?\s*[`#\s]*(\d+)", stripped, re.IGNORECASE)
+        if azure_id_match:
+            target_item.azure_id = int(azure_id_match.group(1))
+            return i + 1
+
+        start_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Start Date|Data de In[íi]cio)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
+        if start_date_match:
+            target_item.start_date = _parse_date(start_date_match.group(1))
+            return i + 1
+
+        target_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Target Date|End Date|Data de T[ée]rmino|Data Alvo)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
+        if target_date_match:
+            target_item.target_date = _parse_date(target_date_match.group(1))
+            return i + 1
+
+        tags_match = re.search(r"^\*?\s*\*\*Tags?:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
+        if tags_match:
+            target_item.tags = _parse_tags(tags_match.group(1))
+            return i + 1
+
+        desc_match = re.search(r"^\*?\s*\*\*(?:Descri[çc][ãa]o|Description)[^\*]*:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
+        if desc_match:
+            target_item.description = _markdown_to_clean_html(desc_match.group(1))
+            return i + 1
+
+        ac_match = re.search(r"^\*?\s*\*\*(?:Acceptance Criteria|Crit[ée]rios de Aceite)[^\*]*:?\*\*:?\s*(.*)$", stripped, re.IGNORECASE)
+        if ac_match:
+            ac_html, next_i = consume_acceptance_criteria(i, ac_match.group(1))
+            target_item.acceptance_criteria = ac_html
+            return next_i
+
+        return None
+
     i = 0
     while i < len(lines):
         line = lines[i]
@@ -718,68 +782,11 @@ def parse_backlog_markdown(
                     raw_msg = re.sub(r"^`|`$", "", raw_msg).strip()
                     current_pbi.linked_commits.append((sha, raw_msg))
 
-        # Se estamos dentro de uma Feature
-        elif current_feature is not None:
-            azure_id_match = re.search(r"^\*?\s*\*\*(?:Azure Boards ID|Work Item ID|AB):?\*\*:?\s*[`#\s]*(\d+)", stripped, re.IGNORECASE)
-            if azure_id_match:
-                current_feature.azure_id = int(azure_id_match.group(1))
-                i += 1
-                continue
-
-            start_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Start Date|Data de In[íi]cio)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
-            if start_date_match:
-                current_feature.start_date = _parse_date(start_date_match.group(1))
-                i += 1
-                continue
-
-            target_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Target Date|End Date|Data de T[ée]rmino|Data Alvo)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
-            if target_date_match:
-                current_feature.target_date = _parse_date(target_date_match.group(1))
-                i += 1
-                continue
-
-            tags_match = re.search(r"^\*?\s*\*\*Tags?:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
-            if tags_match:
-                current_feature.tags = _parse_tags(tags_match.group(1))
-                i += 1
-                continue
-
-            desc_match = re.search(r"^\*?\s*\*\*(?:Descri[çc][ãa]o|Description)[^\*]*:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
-            if desc_match:
-                current_feature.description = _markdown_to_clean_html(desc_match.group(1))
-                i += 1
-                continue
-
-        # Se estamos no cabeçalho do Epic (antes da primeira feature)
-        elif current_feature is None and current_pbi is None:
-            azure_id_match = re.search(r"^\*?\s*\*\*(?:Azure Boards ID|Work Item ID|AB):?\*\*:?\s*[`#\s]*(\d+)", stripped, re.IGNORECASE)
-            if azure_id_match:
-                epic_item.azure_id = int(azure_id_match.group(1))
-                i += 1
-                continue
-
-            start_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Start Date|Data de In[íi]cio)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
-            if start_date_match:
-                epic_item.start_date = _parse_date(start_date_match.group(1))
-                i += 1
-                continue
-
-            target_date_match = re.search(r"^(?:[>\*\s]*)\*\*(?:Target Date|End Date|Data de T[ée]rmino|Data Alvo)[^\*]*:?\*\*:?\s*`?([^`\n]+)`?", stripped, re.IGNORECASE)
-            if target_date_match:
-                epic_item.target_date = _parse_date(target_date_match.group(1))
-                i += 1
-                continue
-
-            tags_match = re.search(r"^\*?\s*\*\*Tags?:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
-            if tags_match:
-                epic_item.tags = _parse_tags(tags_match.group(1))
-                i += 1
-                continue
-
-            desc_match = re.search(r"^\*?\s*\*\*(?:Descri[çc][ãa]o|Description)[^\*]*:?\*\*:?\s*(.+)", stripped, re.IGNORECASE)
-            if desc_match:
-                epic_item.description = _markdown_to_clean_html(desc_match.group(1))
-                i += 1
+        # Se estamos dentro de uma Feature ou no cabeçalho do Epic
+        elif current_feature is not None or current_pbi is None:
+            next_idx = parse_header_metadata(current_feature if current_feature is not None else epic_item)
+            if next_idx is not None:
+                i = next_idx
                 continue
 
         i += 1

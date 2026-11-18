@@ -98,6 +98,10 @@
 * **Effort (Story Points):** `45`
 * **Business Value:** `100`
 * **Description:** Construção da API RESTful corporativa ZelaFix em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e Domain-Driven Design, contemplando persistência relacional com Entity Framework Core 10 sobre Oracle Database (14 tabelas em 3FN e `DbInitializer` com semeadura automática de usuários RBAC), resolução de endereços resiliente via ViaCEP, gestão de fotos binárias em BLOB, mecanismo de engajamento popular com recálculo dinâmico de prioridade, autenticação segura JWT Bearer HS256 com senhas em BCrypt, RBAC granular, idempotência de requisições, rate limiting nativo, observabilidade com Health Checks customizados, integração completa com o aplicativo mobile React Native e bateria de 106 testes automatizados no padrão AAA.
+* **Acceptance Criteria:**
+  - [x] Solução .NET 10 em Clean Architecture (Domain, Application, Infrastructure, Api) integrada ao Oracle 19c (`14` tabelas 3FN) com `DbInitializer.SemearUsuariosPadraoAsync()` para contas `CIDADAO` e `GESTOR`.
+  - [x] Segurança completa com JWT Bearer HS256, BCrypt, RBAC granular, idempotência, rate limiting nativo, ViaCEP resiliente e Health Checks customizados.
+  - [x] Documentação OpenAPI/Swagger completa (`23` paths e códigos `400`/`401`/`403`/`404`/`429`/`500`) e suíte xUnit/Moq com **106 testes aprovados** (`53` unitários + `53` integração, >91% cobertura).
 
 ---
 
