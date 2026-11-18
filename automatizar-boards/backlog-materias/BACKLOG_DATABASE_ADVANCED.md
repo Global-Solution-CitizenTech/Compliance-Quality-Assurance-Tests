@@ -514,3 +514,8 @@
 - [`46a8d46`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/46a8d46) — `chore: align SQL comments, PL/SQL report width, MongoDB dataset and README with Java enums` *(vinculado em AB#121)*
 - [`6a6c157`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/6a6c157) — `feat: só uma pequena atualização no script de mongo` *(vinculado em AB#121)*
 - [`d3ea34e`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/d3ea34e) — `feat: Alguns pequenos ajustes no script de DB e identificação.txt` *(vinculado em AB#121)*
+- [`e7c9608`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/e7c9608) — `feat: pequeno ajuste na modelagem e DDL!` *(vinculado em AB#121)*
+- [`feb7e62`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/feb7e62) — `feat: Algumas pequenas alterações nos scripts de DB, no mongo, e readme` *(vinculado em AB#121)*
+- [`2bad73d`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/2bad73d) — `feat(db,nosql,docs): ajusta LENGTHB e TESTE 4 em PL/SQL, compatibiliza scripts MongoDB para Compass, atualiza metricas de bairros e adiciona PDF de evidencias` *(vinculado em AB#121)*
+- [`79343cb`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/79343cb) — `feat: dando uma ajustada no script de chamados` *(vinculado em AB#121)*
+- [`1323881`](https://github.com/Global-Solution-CitizenTech/Database-Advanced/commit/1323881) — `feat(db,nosql,docs): adiciona script de relatorios Oracle, use(zelafix) e dataset embutido no MongoDB e aprimora Teste 4 e README` *(vinculado em AB#121)*

@@ -13,13 +13,20 @@
         {
           "name": "01.1 API Health Check (Público)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/actuator/health",
-              "host": ["{{baseUrl}}"],
-              "path": ["actuator", "health"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
             },
             "description": "Endpoint público liberado em SecurityConfig. Verifica status UP da API."
           },
@@ -44,13 +51,20 @@
         {
           "name": "01.2 Worker Health Check (RabbitMQ & IA)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{workerBaseUrl}}/actuator/health",
-              "host": ["{{workerBaseUrl}}"],
-              "path": ["actuator", "health"]
+              "host": [
+                "{{workerBaseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "health"
+              ]
             },
             "description": "Verifica disponibilidade do serviço consumidor zelafix-worker (porta local 8081 ou cloudWorkerBaseUrl)."
           },
@@ -75,13 +89,20 @@
         {
           "name": "01.3 Actuator Info (Público)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/actuator/info",
-              "host": ["{{baseUrl}}"],
-              "path": ["actuator", "info"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "info"
+              ]
             }
           },
           "event": [
@@ -101,13 +122,20 @@
         {
           "name": "01.4 OpenAPI Spec (/v3/api-docs)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/v3/api-docs",
-              "host": ["{{baseUrl}}"],
-              "path": ["v3", "api-docs"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "v3",
+                "api-docs"
+              ]
             },
             "description": "Valida contrato OpenAPI 3 configurado em SwaggerConfig.java."
           },
@@ -143,10 +171,15 @@
         {
           "name": "02.1 Login Admin (Seed V2)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -154,8 +187,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
             },
             "description": "Autentica como ADMIN seed (admin@zelafix.com.br) e armazena adminToken."
           },
@@ -183,10 +220,15 @@
         {
           "name": "02.2 Login Gestor (Seed V3)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -194,8 +236,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
             },
             "description": "Autentica como GESTOR seed (roberto.gestor@subprefeitura.sp.gov.br) e armazena gestorToken."
           },
@@ -222,10 +268,15 @@
         {
           "name": "02.3 Login Cidadão (Seed V3)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -233,8 +284,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
             },
             "description": "Autentica como CIDADAO seed (enzo.okuizumi@gmail.com) e armazena cidadaoToken e jwtToken."
           },
@@ -263,10 +318,15 @@
         {
           "name": "02.4 Login Credenciais Inválidas (401)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -274,8 +334,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
             }
           },
           "event": [
@@ -300,10 +364,15 @@
         {
           "name": "02.5 Login Payload Inválido (400)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -311,8 +380,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
             }
           },
           "event": [
@@ -337,13 +410,20 @@
         {
           "name": "02.6 Acesso Sem Token em Rota Protegida (401)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "me"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me"
+              ]
             }
           },
           "event": [
@@ -371,15 +451,23 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "token.jwt.invalido.assinatura", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "token.jwt.invalido.assinatura",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ]
             }
           },
           "event": [
@@ -402,15 +490,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/actuator/metrics",
-              "host": ["{{baseUrl}}"],
-              "path": ["actuator", "metrics"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "metrics"
+              ]
             },
             "description": "SecurityConfig exige ROLE_ADMIN para /actuator/metrics/**."
           },
@@ -434,15 +531,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/actuator/metrics",
-              "host": ["{{baseUrl}}"],
-              "path": ["actuator", "metrics"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "actuator",
+                "metrics"
+              ]
             }
           },
           "event": [
@@ -472,10 +578,15 @@
         {
           "name": "03.1 Cadastro Público Cidadão (POST /usuarios -> 201)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -483,8 +594,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
             },
             "description": "UsuarioRequest DTO não aceita campo cargo; o backend define CargoUsuario.CIDADAO automaticamente."
           },
@@ -525,10 +640,15 @@
         {
           "name": "03.2 Cadastro E-mail Duplicado (409 Conflict)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -536,8 +656,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
             }
           },
           "event": [
@@ -561,10 +685,15 @@
         {
           "name": "03.3 Cadastro com DDD/CEP/Senha Inválidos (400)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -572,8 +701,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
             }
           },
           "event": [
@@ -600,10 +733,15 @@
         {
           "name": "03.4 Login Novo Usuário QA (POST /login -> 200)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -611,8 +749,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["login"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
             }
           },
           "event": [
@@ -641,15 +783,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "me"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me"
+              ]
             }
           },
           "event": [
@@ -678,12 +829,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -691,8 +849,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "me"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me"
+              ]
             },
             "description": "PUT /usuarios/me retorna header X-Novo-Token com novo JWT emitido para o usuário atualizado."
           },
@@ -726,19 +889,36 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios?page=0&size=10&sort=nmUsuario,asc",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ],
               "query": [
-                { "key": "page", "value": "0" },
-                { "key": "size", "value": "10" },
-                { "key": "sort", "value": "nmUsuario,asc" }
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "nmUsuario,asc"
+                }
               ]
             }
           },
@@ -762,19 +942,36 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios?page=0&size=10&sort=nmUsuario,asc",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ],
               "query": [
-                { "key": "page", "value": "0" },
-                { "key": "size", "value": "10" },
-                { "key": "sort", "value": "nmUsuario,asc" }
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "nmUsuario,asc"
+                }
               ]
             }
           },
@@ -803,15 +1000,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios/{{qaUserId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "{{qaUserId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{qaUserId}}"
+              ]
             }
           },
           "event": [
@@ -838,17 +1044,29 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios/by-email?email={{qaUserEmail}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "by-email"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "by-email"
+              ],
               "query": [
-                { "key": "email", "value": "{{qaUserEmail}}" }
+                {
+                  "key": "email",
+                  "value": "{{qaUserEmail}}"
+                }
               ]
             }
           },
@@ -876,12 +1094,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -889,8 +1114,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios/{{qaUserId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "{{qaUserId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{qaUserId}}"
+              ]
             }
           },
           "event": [
@@ -918,12 +1148,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -931,8 +1168,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios/{{qaUserId}}/cargo",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "{{qaUserId}}", "cargo"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{qaUserId}}",
+                "cargo"
+              ]
             }
           },
           "event": [
@@ -955,12 +1198,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -968,8 +1218,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios/{{qaUserId}}/cargo",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "{{qaUserId}}", "cargo"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{qaUserId}}",
+                "cargo"
+              ]
             }
           },
           "event": [
@@ -996,12 +1252,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1009,8 +1272,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios/{{qaUserId}}/cargo",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "{{qaUserId}}", "cargo"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{qaUserId}}",
+                "cargo"
+              ]
             }
           },
           "event": [
@@ -1043,15 +1312,23 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/enderecos",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos"
+              ]
             }
           },
           "event": [
@@ -1074,12 +1351,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1087,8 +1371,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/enderecos",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos"
+              ]
             }
           },
           "event": [
@@ -1118,12 +1406,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1131,8 +1426,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/enderecos",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos"
+              ]
             }
           },
           "event": [
@@ -1159,19 +1458,36 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/enderecos?page=0&size=10&sort=id,asc",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos"
+              ],
               "query": [
-                { "key": "page", "value": "0" },
-                { "key": "size", "value": "10" },
-                { "key": "sort", "value": "id,asc" }
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
               ]
             }
           },
@@ -1199,15 +1515,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos", "{{enderecoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos",
+                "{{enderecoId}}"
+              ]
             }
           },
           "event": [
@@ -1234,12 +1559,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1247,8 +1579,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos", "{{enderecoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos",
+                "{{enderecoId}}"
+              ]
             }
           },
           "event": [
@@ -1275,15 +1612,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos", "{{enderecoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos",
+                "{{enderecoId}}"
+              ]
             }
           },
           "event": [
@@ -1306,15 +1652,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/enderecos/{{enderecoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["enderecos", "{{enderecoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "enderecos",
+                "{{enderecoId}}"
+              ]
             }
           },
           "event": [
@@ -1343,7 +1698,11 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
@@ -1351,17 +1710,41 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "cep", "value": "01310-100", "type": "text" },
-                { "key": "numero", "value": "1578", "type": "text" },
-                { "key": "referencia", "value": "Em frente ao MASP", "type": "text" },
-                { "key": "rua", "value": "Avenida Paulista", "type": "text" },
-                { "key": "foto", "type": "file", "src": "{{fotoSamplePath}}" }
+                {
+                  "key": "cep",
+                  "value": "01310-100",
+                  "type": "text"
+                },
+                {
+                  "key": "numero",
+                  "value": "1578",
+                  "type": "text"
+                },
+                {
+                  "key": "referencia",
+                  "value": "Em frente ao MASP",
+                  "type": "text"
+                },
+                {
+                  "key": "rua",
+                  "value": "Avenida Paulista",
+                  "type": "text"
+                },
+                {
+                  "key": "foto",
+                  "type": "file",
+                  "src": "{{fotoSamplePath}}"
+                }
               ]
             },
             "url": {
               "raw": "{{baseUrl}}/chamados",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ]
             },
             "description": "Envia @ModelAttribute EnderecoRequest (cep, numero, referencia, rua?) + @RequestPart(\"foto\") MultipartFile (JPEG/PNG/WEBP/GIF, máx 10MB). Retorna DeferredResult<ChamadoResponse> (timeout 60s; 504 Gateway Timeout se exceder). Ao concluir com sucesso, persiste e retorna 201 Created com titulo, descricao, categoriaNome, prioridadeNome e orgaoNome classificados pela IA (ou fallback de contingência)."
           },
@@ -1403,7 +1786,11 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
@@ -1411,15 +1798,31 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "cep", "value": "01310-100", "type": "text" },
-                { "key": "numero", "value": "1578", "type": "text" },
-                { "key": "referencia", "value": "Sem foto anexada", "type": "text" }
+                {
+                  "key": "cep",
+                  "value": "01310-100",
+                  "type": "text"
+                },
+                {
+                  "key": "numero",
+                  "value": "1578",
+                  "type": "text"
+                },
+                {
+                  "key": "referencia",
+                  "value": "Sem foto anexada",
+                  "type": "text"
+                }
               ]
             },
             "url": {
               "raw": "{{baseUrl}}/chamados",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ]
             }
           },
           "event": [
@@ -1447,7 +1850,11 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
@@ -1455,16 +1862,36 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "cep", "value": "000", "type": "text" },
-                { "key": "numero", "value": "", "type": "text" },
-                { "key": "referencia", "value": "", "type": "text" },
-                { "key": "foto", "type": "file", "src": "{{fotoSamplePath}}" }
+                {
+                  "key": "cep",
+                  "value": "000",
+                  "type": "text"
+                },
+                {
+                  "key": "numero",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "referencia",
+                  "value": "",
+                  "type": "text"
+                },
+                {
+                  "key": "foto",
+                  "type": "file",
+                  "src": "{{fotoSamplePath}}"
+                }
               ]
             },
             "url": {
               "raw": "{{baseUrl}}/chamados",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ]
             }
           },
           "event": [
@@ -1491,7 +1918,11 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
@@ -1499,16 +1930,36 @@
             "body": {
               "mode": "formdata",
               "formdata": [
-                { "key": "cep", "value": "01310-100", "type": "text" },
-                { "key": "numero", "value": "1578", "type": "text" },
-                { "key": "referencia", "value": "Teste recusa imagem não urbana", "type": "text" },
-                { "key": "foto", "type": "file", "src": "Java-Advanced/README.md" }
+                {
+                  "key": "cep",
+                  "value": "01310-100",
+                  "type": "text"
+                },
+                {
+                  "key": "numero",
+                  "value": "1578",
+                  "type": "text"
+                },
+                {
+                  "key": "referencia",
+                  "value": "Teste recusa imagem não urbana",
+                  "type": "text"
+                },
+                {
+                  "key": "foto",
+                  "type": "file",
+                  "src": "Java-Advanced/README.md"
+                }
               ]
             },
             "url": {
               "raw": "{{baseUrl}}/chamados",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ]
             },
             "description": "Cenário negativo: ao enviar arquivo com magic bytes inválidos (ex: .md/.txt) ou imagem não-urbana recusada pela IA (ocorrenciaValida=false), a API rejeita o DeferredResult com 400 Bad Request (ApiErrorResponse) sem persistir chamado no Oracle. Em timeout >60s do Worker, retorna 504 Gateway Timeout."
           },
@@ -1537,20 +1988,40 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados?page=0&size=20&sort=dtAbertura,desc&apenasMeus=false",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ],
               "query": [
-                { "key": "page", "value": "0" },
-                { "key": "size", "value": "20" },
-                { "key": "sort", "value": "dtAbertura,desc" },
-                { "key": "apenasMeus", "value": "false" }
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "dtAbertura,desc"
+                },
+                {
+                  "key": "apenasMeus",
+                  "value": "false"
+                }
               ]
             }
           },
@@ -1586,20 +2057,40 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados?status=PENDENTE&apenasMeus=false&page=0&size=10",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados"],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados"
+              ],
               "query": [
-                { "key": "status", "value": "PENDENTE" },
-                { "key": "apenasMeus", "value": "false" },
-                { "key": "page", "value": "0" },
-                { "key": "size", "value": "10" }
+                {
+                  "key": "status",
+                  "value": "PENDENTE"
+                },
+                {
+                  "key": "apenasMeus",
+                  "value": "false"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
               ]
             },
             "description": "Filtros opcionais suportados em ChamadoFiltroRequest: status, categoria, busca, apenasMeus, cidade, bairro, estado."
@@ -1630,15 +2121,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}"
+              ]
             }
           },
           "event": [
@@ -1664,13 +2164,21 @@
         {
           "name": "05.8 Download Binário da Foto (GET /chamados/{{seedChamadoId}}/foto — Público -> 200)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{seedChamadoId}}/foto",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{seedChamadoId}}", "foto"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{seedChamadoId}}",
+                "foto"
+              ]
             },
             "description": "Endpoint público (permitAll em SecurityConfig). Retorna bytes da imagem com Content-Type detectado por magic bytes e Content-Disposition inline."
           },
@@ -1700,15 +2208,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/999999",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "999999"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "999999"
+              ]
             }
           },
           "event": [
@@ -1726,17 +2243,24 @@
           ]
         },
         {
-          "name": "05.10 Atualizar Chamado como Autor (PUT /chamados/{{chamadoId}} -> 200)",
+          "name": "05.10 Atualizar Chamado como GESTOR (PUT /chamados/{{chamadoId}} -> 200)",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{gestorToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PUT",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1744,8 +2268,13 @@
             },
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}"
+              ]
             },
             "description": "ChamadoRequest exige titulo, descricao, categoria (CategoriaEnum) e endereco."
           },
@@ -1774,12 +2303,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1787,8 +2323,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}/status",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}", "status"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}",
+                "status"
+              ]
             }
           },
           "event": [
@@ -1811,12 +2353,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{gestorToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{gestorToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1824,8 +2373,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}/status",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}", "status"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}",
+                "status"
+              ]
             },
             "description": "ChamadoStatusRequest usa { status, observacao } (singular!). Atualiza para EM_EXECUCAO."
           },
@@ -1856,12 +2411,19 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{gestorToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{gestorToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "PATCH",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -1869,8 +2431,14 @@
             },
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}/status",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}", "status"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}",
+                "status"
+              ]
             }
           },
           "event": [
@@ -1898,15 +2466,25 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}/apoiar",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}", "apoiar"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}",
+                "apoiar"
+              ]
             },
             "description": "Alterna o voto do usuário autenticado (apoiar) e publica VotoMessage no RabbitMQ."
           },
@@ -1935,15 +2513,25 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "POST",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}/apoiar",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}", "apoiar"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}",
+                "apoiar"
+              ]
             },
             "description": "Segunda chamada ao mesmo endpoint alterna o voto para OFF (apoiadoPorMim = false)."
           },
@@ -1972,15 +2560,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{cidadaoToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{cidadaoToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/estatisticas",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "estatisticas"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "estatisticas"
+              ]
             }
           },
           "event": [
@@ -2010,20 +2607,29 @@
       "description": "Valida regra de exclusão (apenas AUTOR ou ADMIN pode deletar chamado; GESTOR não-autor recebe 403), remove chamado QA e exclui o usuário de teste via /usuarios/me e /usuarios/{id}.",
       "item": [
         {
-          "name": "06.1 Deletar Chamado como GESTOR Não-Autor (403 Forbidden)",
+          "name": "06.1 Deletar Chamado como CIDADAO (403 Forbidden)",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{gestorToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}"
+              ]
             }
           },
           "event": [
@@ -2032,7 +2638,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('Non-author GESTOR receives 403 Forbidden on DELETE /chamados/{id}', function () {",
+                  "pm.test('CIDADAO receives 403 Forbidden on DELETE /chamados/{id}', function () {",
                   "    pm.response.to.have.status(403);",
                   "});"
                 ]
@@ -2041,20 +2647,29 @@
           ]
         },
         {
-          "name": "06.2 Deletar Chamado QA como Autor (DELETE /chamados/{{chamadoId}} -> 204)",
+          "name": "06.2 Deletar Chamado QA como GESTOR (DELETE /chamados/{{chamadoId}} -> 204)",
           "request": {
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{gestorToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}"
+              ]
             }
           },
           "event": [
@@ -2077,15 +2692,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "GET",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/chamados/{{chamadoId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["chamados", "{{chamadoId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "chamados",
+                "{{chamadoId}}"
+              ]
             }
           },
           "event": [
@@ -2108,15 +2732,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{qaUserToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{qaUserToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios/me",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "me"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "me"
+              ]
             }
           },
           "event": [
@@ -2136,10 +2769,15 @@
         {
           "name": "06.5 Criar Usuário Temporário para Exclusão ADMIN (POST /usuarios -> 201)",
           "request": {
-            "auth": { "type": "noauth" },
+            "auth": {
+              "type": "noauth"
+            },
             "method": "POST",
             "header": [
-              { "key": "Content-Type", "value": "application/json" }
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
             ],
             "body": {
               "mode": "raw",
@@ -2147,8 +2785,12 @@
             },
             "url": {
               "raw": "{{baseUrl}}/usuarios",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
             }
           },
           "event": [
@@ -2185,15 +2827,24 @@
             "auth": {
               "type": "bearer",
               "bearer": [
-                { "key": "token", "value": "{{adminToken}}", "type": "string" }
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
               ]
             },
             "method": "DELETE",
             "header": [],
             "url": {
               "raw": "{{baseUrl}}/usuarios/{{qaTempAdminDeleteId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["usuarios", "{{qaTempAdminDeleteId}}"]
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{qaTempAdminDeleteId}}"
+              ]
             }
           },
           "event": [

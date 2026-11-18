@@ -216,6 +216,7 @@
 - [`1960ca3`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/1960ca3) — `fix(rag): preserve urgency metadata, strict category filtering and hybrid lexical reranking` *(vinculado em AB#186)*
 - [`9277f18`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/9277f18) — `fix(ai): bypass chamadas remotas de embedding quando desabilitado ou offline` *(vinculado em AB#186)*
 - [`553911d`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/553911d) — `feat(ai): configurar modelo de embedding free nvidia/nemotron-3.5-embed-1b:free com fallback resiliente` *(vinculado em AB#186)*
+- [`e6acedc`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e6acedc) — `fix(rag,docs): alinhar dimensoes MRL no ChromaDB, sincronia de indice e corrigir inconsistencias de entrega` *(vinculado em AB#186)*
 
 ---
 
@@ -514,3 +515,5 @@
 - [`e931757`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e931757) — `docs(readme,config): generalizar embeddings 1536D e variaveis no .env.example` *(vinculado em AB#190)*
 - [`efa24ff`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/efa24ff) — `refactor(ai): desacoplar servicos e documentacao de provedores e modelos especificos` *(vinculado em AB#190)*
 - [`504394d`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/504394d) — `feat: ajuste no readme` *(vinculado em AB#190)*
+- [`898401f`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/898401f) — `feat: add identificação.txt` *(vinculado em AB#190)*
+- [`e6acedc`](https://github.com/Global-Solution-CitizenTech/Disruptive-Architectures-IoT-IoB-IA/commit/e6acedc) — `fix(rag,docs): alinhar dimensoes MRL no ChromaDB, sincronia de indice e corrigir inconsistencias de entrega` *(vinculado em AB#190)*

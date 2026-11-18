@@ -311,7 +311,7 @@
 * **Priority:** `1 - Critical`
 * **Effort (Story Points):** `5`
 * **Business Value:** `100`
-* **Commits Vinculados:** `52c0476`, `f6dfa88`, `990f81a`
+* **Commits Vinculados:** `52c0476`, `f6dfa88`, `990f81a`, `215a8ec`
 
 ##### Descrição (História de Usuário)
 > **Como** equipe de engenharia ZelaFix,  
@@ -338,7 +338,7 @@
 * **Priority:** `2 - High`
 * **Effort (Story Points):** `3`
 * **Business Value:** `80`
-* **Commits Vinculados:** `3924462`, `e45cb07`, `cc4081b`, `5c22825`, `d70063b`, `0c7ff10`, `0bb681e`, `1da20c0`, `094f8ce`, `2d9193a`
+* **Commits Vinculados:** `3924462`, `e45cb07`, `cc4081b`, `5c22825`, `d70063b`, `0c7ff10`, `0bb681e`, `1da20c0`, `094f8ce`, `2d9193a`, `5808e06`, `215a8ec`, `4880432`, `9cb30ad`
 
 ##### Descrição (História de Usuário)
 > **Como** avaliador da FIAP e mantenedor do projeto,  

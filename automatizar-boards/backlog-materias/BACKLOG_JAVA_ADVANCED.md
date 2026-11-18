@@ -192,6 +192,13 @@
 - `81826d3` fix: estabilização docker alpine, fail-fast ai offline, tuning hikari pool e correção das suites de teste
 - `6e661cc` perf(api): lazy loading de BLOB com Hibernate bytecode enhancement e keepalive Hikari
 - `bc0e663` perf(api): query direta de foto, cache HTTP 24h, prefetch LOB Oracle e compactacao de upload >200KB
+- `56b20af` feat: só um pequeno ajuste em identificação.txt
+- `1b85554` fix(ci): restringir trigger do pipeline apenas para merge na branch main
+- `bcd6c48` docs(readme): align endpoint permissions, admin seed password and local setup; fix(worker): add safe AI property defaults
+- `accbd2d` feat(api): add async worker wake-up with 5m cooldown for Azure F1
+- `edfb9d8` refactor(worker): refinar prompt de triagem IA e ajustar max-tokens para 4096
+- `586d2b6` fix(chamado): restringir edicao e exclusao apenas para GESTOR e ADMIN
+- `582cb9f` perf(ai): usar reasoning-effort low, incluir decreto/SLA na descricao e subir timeout para 90s
 
 ---
 
@@ -723,6 +730,7 @@
 - PR #1 (`fix(devops,flyway): CloudAMQP, migrations V2/V3 e CI/CD unificado`)
 - PR #5 (`ci: ajustar script do mirror para protecao de branch do Azure Repos`)
 - PR #34 (`ci: adiciona variaveis de IA AI_BASE_URL e AI_API_KEY no job de build da pipeline`)
+- PR #38 (`fix(ci): restringir trigger do pipeline apenas para merge na branch main`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `6981364` ci: adicionar esteira azure-pipelines para build e deploy dos microsservicos api e worker
@@ -736,6 +744,7 @@
 - `7d8ad86` fix(ci): tratar rejected e fetch first no espelhamento da branch main
 - `f69251c` refactor(ci): atualizar nomes dos Web Apps para app-zelafix e app-zelafix-worker
 - `9db6251` ci: adiciona variaveis de IA AI_BASE_URL e AI_API_KEY no job de build da pipeline
+- `1b85554` fix(ci): restringir trigger do pipeline apenas para merge na branch main
 
 ---
 
@@ -765,6 +774,7 @@
 - PR #12 (`chore: merge develop com fixes de resiliencia, properties e seed V2/V3`)
 - PR #15 (`docs(readme): atualizar README do Java com fluxo assincrono da IA e pacotes`)
 - PR #35 (`docs: adiciona diagramas logico e relacional ao README; fix: restaura credenciais do Lucas e ajusta concorrencia e pool Hikari`)
+- PR #39 (`docs(readme): align endpoint permissions, admin seed password and local setup; fix(worker): add safe AI property defaults`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `7582fbd` docs(readme): atualizar lista oficial de integrantes do grupo para entrega da GS AB#26
@@ -802,7 +812,7 @@
 * **Description:** Evolução da camada de IA, mensageria assíncrona e domínio relacional do ecossistema ZelaFix: integração do Spring AI com provedor de LLM Multimodal (OpenAI API Standard), otimização de imagens para redução de tokens (`<= 768px` JPEG), Tool Calling normativo (`TriagemNormativaTools`), coordenação HTTP assíncrona via `DeferredResult` (`TriagemPendenteStore`) com persistência pós-IA (`EM_ANALISE` com histórico duplo conectado via `saveAll`), recusa sem gravação e propagação de falhas de triagem (`TriagemIndisponivelException`), expansão para 13 tabelas (`Prioridade` e `OrgaoGoverno`), filtros de localização, limpeza de endpoints/DTOs e estratégia Fail-Fast na IA com fallback de contingência (`PENDENTE`), isolamento de chaves `@Cacheable` e tratamento de desconexão/timeout assíncrono.
 * **Acceptance Criteria:**
   - [x] Worker IA integrado a provedor de LLM Multimodal via Spring AI (`temperature=0.1`), com `ImageMimeTypeDetector.redimensionarParaIa()` (`<= 768px` JPEG), `TriagemNormativaTools` (`@Tool consultarNormaMunicipal` e `calcularPrazoSla`), validação de schema e truncamento UTF-8 para Oracle.
-  - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 60s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE` com histórico duplo conectado via `saveAll`: `PENDENTE` de criação e `EM_ANALISE` triado), retornando `400 Bad Request` quando recusado pela IA e propagando falhas críticas do worker via `TriagemIndisponivelException` (`503`).
+  - [x] Endpoint `POST /chamados` coordenado via `DeferredResult` (`TriagemPendenteStore`, timeout 90s), gravando no Oracle apenas quando `ocorrenciaValida = true` (status `EM_ANALISE` com histórico duplo conectado via `saveAll`: `PENDENTE` de criação e `EM_ANALISE` triado), retornando `400 Bad Request` quando recusado pela IA e propagando falhas críticas do worker via `TriagemIndisponivelException` (`503`).
   - [x] Domínio expandido para 13 tabelas com `Prioridade` e `OrgaoGoverno`, filtros dinâmicos de localização (`cidade`, `bairro`, `estado`, `busca`, `apenasMeus`) e remoção de controllers/DTOs redundantes (`CategoriaController`, `StatusController`, `LoginRequest`, `LoginResponse`, `ChamadoCreateRequest`, `RecusaIaResponse`).
   - [x] Resiliência e baixa latência garantidas com estratégia Fail-Fast imediata no LLM (eliminando retries lentos e acionando contingência `PENDENTE` instantaneamente), retry controlado no RabbitMQ, chaves `@Cacheable` isoladas e tratamento de `AsyncRequestNotUsableException`, `AsyncRequestTimeoutException` e `TriagemIndisponivelException`.
 
@@ -830,6 +840,7 @@
 ##### Pull Requests no Azure Repos:
 - PR #9 (`feat(ai): migrar Spring AI para Provedor de LLM Multimodal`)
 - PR #20 (`feat(worker): validacao de escopo de imagem na IA, recusa de fotos invalidas e ajuste de prompt/limites UTF-8`)
+- PR #41 (`refactor(worker): refinar prompt de triagem IA e ajustar max-tokens para 4096`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `bee01b4` feat(ai): migrar Spring AI para Provedor de LLM Multimodal
@@ -838,6 +849,8 @@
 - `3adc483` fix(ai,queue): redimensionar imagem para IA, abortar retry em 4xx/429 e propagar erros da triagem
 - `9461331` feat(worker): tornar modelo de IA dinâmico via env e aprimorar logs de triagem
 - `eea41a6` refactor(worker): remove field injection @Value e condicional de api key em ZelaFixAiService
+- `edfb9d8` refactor(worker): refinar prompt de triagem IA e ajustar max-tokens para 4096
+- `582cb9f` perf(ai): usar reasoning-effort low, incluir decreto/SLA na descricao e subir timeout para 90s
 
 ---
 
@@ -856,7 +869,7 @@
 > **Para que** eu receba o chamado já classificado em `EM_ANALISE` com `201 Created` em uma única chamada, sem persistir imagens inválidas no banco.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
-- [x] `TriagemPendenteStore` gerenciando `ConcurrentHashMap<String, DeferredResult<ChamadoResponse>>` com `correlationId` UUID e timeout de `60_000ms` (`concluir` / `rejeitar`).
+- [x] `TriagemPendenteStore` gerenciando `ConcurrentHashMap<String, DeferredResult<ChamadoResponse>>` com `correlationId` UUID e timeout de `90_000ms` (`concluir` / `rejeitar`).
 - [x] `POST /chamados` recebendo `multipart/form-data` (`EnderecoRequest` + `foto`), validando magic bytes com `ImageMimeTypeDetector.isImagemSuportada()` e aguardando `ChamadoTriagemFeedbackConsumer`.
 - [x] Quando aprovado pela IA, `ChamadoService.aplicarTriagemIa()` grava chamado, voto automático inicial do autor e histórico duplo conectado via `saveAll`: `PENDENTE` inicial (abertura pelo cidadão via aplicativo) e `EM_ANALISE` (triagem automática da IA concluída); em caso de contingência da IA, grava com status `PENDENTE`.
 - [x] Quando recusado pela IA (`recusado = true`), `TriagemPendenteStore.rejeitar()` dispara `IllegalArgumentException` (HTTP `400 Bad Request`) sem inserir registros no Oracle.
@@ -867,6 +880,7 @@
 - PR #14 (`refactor(chamado): consolidar triagem assincrona, prioridade, orgao e DTOs`)
 - PR #18 (`fix(chamado): concluir triagem de IA com status EM_ANALISE`)
 - PR #21 (`feat: triagem assincrona, Spring AI multimodal, fail-fast e 13 tabelas`)
+- PR #40 (`feat(api): add async worker wake-up with 5m cooldown for Azure F1`)
 
 ##### Commits vinculados (Development no Azure Repos):
 - `156e3d9` feat(triagem): validar CEP no ViaCEP e expor pre-analise sincrona com Spring AI
@@ -960,3 +974,10 @@
 - `c3109df` feat: Só um pequeno ajuste no identificação.txt
 - `6e661cc` perf(api): lazy loading de BLOB com Hibernate bytecode enhancement e keepalive Hikari
 - `bc0e663` perf(api): query direta de foto, cache HTTP 24h, prefetch LOB Oracle e compactacao de upload >200KB
+- `56b20af` feat: só um pequeno ajuste em identificação.txt
+- `1b85554` fix(ci): restringir trigger do pipeline apenas para merge na branch main
+- `bcd6c48` docs(readme): align endpoint permissions, admin seed password and local setup; fix(worker): add safe AI property defaults
+- `accbd2d` feat(api): add async worker wake-up with 5m cooldown for Azure F1
+- `edfb9d8` refactor(worker): refinar prompt de triagem IA e ajustar max-tokens para 4096
+- `586d2b6` fix(chamado): restringir edicao e exclusao apenas para GESTOR e ADMIN
+- `582cb9f` perf(ai): usar reasoning-effort low, incluir decreto/SLA na descricao e subir timeout para 90s

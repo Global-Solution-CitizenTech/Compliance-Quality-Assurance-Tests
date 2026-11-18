@@ -170,7 +170,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 | 2 | Autenticado como CIDADAO, enviar GET /usuarios e PATCH /usuarios/2/cargo com { "cargo": "ADMIN" }. | API retorna HTTP 403 Forbidden em ambas as tentativas. |
 | 3 | Autenticado como CIDADAO, enviar GET /actuator/metrics. | API retorna HTTP 403 Forbidden conforme regra do SecurityFilterChain. |
 
-#### [TC-06] Impedir CIDADAO de alterar status e GESTOR nao-autor de excluir chamado
+#### [TC-06] Impedir CIDADAO de alterar status, editar ou excluir chamado (RBAC GESTOR/ADMIN)
 
 - **Azure Test Case ID:** `#142` | **Plan/Suite:** `#132` / `#133` (`api-auth-rbac`) | **Tipo:** `Negativo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `RBAC`, `Negative`
@@ -296,7 +296,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 - **Azure Test Case ID:** `#155` | **Plan/Suite:** `#153` / `#154` (`api-chamados`) | **Tipo:** `Positivo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `Chamados`, `DeferredResult`
 - **Cobertura / Endpoints:** 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.1) (`POST /chamados (multipart/form-data, DeferredResult)`)
-- **Objetivo:** Validar a criação de ocorrência urbana exclusivamente via multipart/form-data com DeferredResult (timeout 60s), publicação no RabbitMQ e persistência pós-triagem IA no Oracle.
+- **Objetivo:** Validar a criação de ocorrência urbana exclusivamente via multipart/form-data com DeferredResult (timeout 90s), publicação no RabbitMQ e persistência pós-triagem IA no Oracle.
 - **Pré-condições:** API Java, RabbitMQ, Worker Spring AI e Oracle ativos; token CIDADAO válido; imagem real de ocorrência urbana (ex.: Java-Advanced/docs/rua-esburacada.png).
 - **Dados de Entrada / Payload:** POST /chamados (multipart/form-data) com campos cep='01310-100', numero='1000', referencia='Proximo ao MASP', rua='Avenida Paulista' e part 'foto' (image/png ou image/jpeg).
 - **Resultado Esperado & HTTP Codes:** HTTP 201 Created com ChamadoResponse contendo idChamado, titulo, descricao, categoriaNome (6 enums), prioridadeNome (4 enums), orgaoNome (6 enums), status='EM_ANALISE' (ou 'PENDENTE' em contingência), totalVotos=1, apoiadoPorMim=true e historico[].
@@ -374,7 +374,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 | 4 | Enviar PATCH /chamados/{id}/status com status inexistente ou observacao em branco. | API rejeita via @EnumValidation / @NotBlank retornando HTTP 400 Bad Request. |
 | 5 | Consultar GET /chamados/{id}. | API retorna HTTP 200 OK com historico[] completo em ordem cronológica decrescente. |
 
-#### [TC-18] Excluir chamado como Autor ou ADMIN e confirmar remocao em cascata (404)
+#### [TC-18] Excluir chamado como GESTOR ou ADMIN e confirmar remocao em cascata (404)
 
 - **Azure Test Case ID:** `#166` | **Plan/Suite:** `#153` / `#154` (`api-chamados`) | **Tipo:** `Positivo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `Chamados`

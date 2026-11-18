@@ -11,7 +11,7 @@
 > **Iteration Path:** `ZelaFix\Release 1 - Global Solution\Semana 2`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
 > **Tags:** `DotNet`  
-> **Diretrizes Estratégicas:** Desenvolvimento de Web API RESTful corporativa de alta performance em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e DDD, publicada em nuvem no Render (`https://advanced-business-development-with-dot.onrender.com/`), persistência relacional estrita com Entity Framework Core 10 sobre Oracle Database 19c (`DatabaseVersion19`, 14 tabelas relacionais em 3FN e `DbInitializer` para migração e seed automáticos), resolução resiliente de endereços com ViaCEP, gestão transacional de evidências fotográficas em Base64/BLOB, mecanismo cívico de apoio popular (`VOTO_CHAMADO`) com escalonamento dinâmico de prioridade, trilha de auditoria imutável (`HIST_CHAMADO`), autenticação segura JWT Bearer HS256 com senhas protegidas por BCrypt e RBAC granular (`CIDADAO` / `GESTOR`), garantia de idempotência via cabeçalho `Idempotency-Key`, rate limiting nativo Fixed Window, observabilidade com Health Checks customizados e logs estruturados via Serilog (`X-Correlation-ID`), Swagger OpenAPI 3.0 completo com 23 paths, integração total com o aplicativo mobile React Native (Expo) com suporte a miniaturas (`incluirFoto`) e suíte de **105 testes automatizados** (53 unitários + 52 de integração com WebApplicationFactory, >91% de cobertura em todas as camadas) no padrão AAA.
+> **Diretrizes Estratégicas:** Desenvolvimento de Web API RESTful corporativa de alta performance em C# e .NET 10 (Minimal APIs) estruturada segundo a Clean Architecture e DDD, publicada em nuvem no Render (`https://advanced-business-development-with-dot.onrender.com/`), persistência relacional estrita com Entity Framework Core 10 sobre Oracle Database 19c (`DatabaseVersion19`, 14 tabelas relacionais em 3FN e `DbInitializer` para migração e seed automáticos), resolução resiliente de endereços com ViaCEP, gestão transacional de evidências fotográficas em Base64/BLOB, mecanismo cívico de apoio popular (`VOTO_CHAMADO`) com escalonamento dinâmico de prioridade, trilha de auditoria imutável (`HIST_CHAMADO`), autenticação segura JWT Bearer HS256 com senhas protegidas por BCrypt e RBAC granular (`CIDADAO` / `GESTOR`), garantia de idempotência via cabeçalho `Idempotency-Key`, rate limiting nativo Fixed Window, observabilidade com Health Checks customizados e logs estruturados via Serilog (`X-Correlation-ID`), Swagger OpenAPI 3.0 completo com 23 paths, integração total com o aplicativo mobile React Native (Expo) com suporte a miniaturas (`incluirFoto`) e suíte de **106 testes automatizados** (53 unitários + 52 de integração com WebApplicationFactory, >91% de cobertura em todas as camadas) no padrão AAA.
 
 ---
 
@@ -543,7 +543,7 @@
 * **Acceptance Criteria:**
   - [x] 53 testes unitários cobrindo domínio (`98.11%`) e aplicação (`94.20%`) com `ViaCepService`, `FotoImagem` e `RegisterRequest`.
   - [x] 52 testes de integração HTTP utilizando `WebApplicationFactory`, cobrindo `Api` (`95.28%`) e `Infrastructure` (`91.73%`).
-  - [x] 105 testes executados com sucesso no `dotnet test` (0 falhas).
+  - [x] 106 testes executados com sucesso no `dotnet test` (0 falhas).
   - [x] Swagger OpenAPI expondo todos os 23 paths em 7 grupos incluindo Health Checks e rotas diretas Mobile.
 
 #### 🔹 [PBI-13] Suíte de Testes Unitários de Domínio e Aplicação com xUnit no Padrão AAA e Moq
@@ -573,8 +573,16 @@
 ##### Commits vinculados (GitHub Repository):
 - [`e5f9a26`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/e5f9a26) — `test(unit): implementar testes unitarios com xUnit no padrao AAA`
 - [`49be863`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/49be863) — `test: atualiza testes unitarios e de integracao validando ciclo de vida, apoio e status`
-- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
+- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (106 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
 - [`090f676`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/090f676) — `feat: Só add imagens que estavam faltando no readme`
+- [`3aa650d`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/3aa650d) — `feat: Pequena modificação no README`
+- [`d627367`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/d627367) — `docs(readme): aprimorar documentacao de integracao mobile, catalogo de endpoints e matriz de rastreabilidade do backlog`
+- [`5d8796d`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/5d8796d) — `feat: Pequeno ajuste no readme`
+- [`f273ea1`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f273ea1) — `docs(readme): sincronizar identificadores oficiais do Azure Boards (#27 a #211)`
+- [`5e864d9`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/5e864d9) — `build(docker): adicionar Dockerfile multi-stage .NET 10 e suporte a porta dinamica para deploy no Render`
+- [`10411be`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/10411be) — `feat: add identificação.txt`
+- [`1b71bae`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/1b71bae) — `feat: Só um pequeno ajuste no identificação.txt`
+- [`0cc6ff4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/0cc6ff4) — `chore: remove hardcoded Jwt:Key from appsettings, document Idempotency-Key in Swagger, update identificacao.txt and README (106 tests)`
 
 ---
 
@@ -604,8 +612,16 @@
 
 ##### Commits vinculados (GitHub Repository):
 - [`53dd111`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/53dd111) — `test(integration): implementar testes de integracao com WebApplicationFactory`
-- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
+- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (106 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
 - [`090f676`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/090f676) — `feat: Só add imagens que estavam faltando no readme`
+- [`3aa650d`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/3aa650d) — `feat: Pequena modificação no README`
+- [`d627367`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/d627367) — `docs(readme): aprimorar documentacao de integracao mobile, catalogo de endpoints e matriz de rastreabilidade do backlog`
+- [`5d8796d`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/5d8796d) — `feat: Pequeno ajuste no readme`
+- [`f273ea1`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f273ea1) — `docs(readme): sincronizar identificadores oficiais do Azure Boards (#27 a #211)`
+- [`5e864d9`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/5e864d9) — `build(docker): adicionar Dockerfile multi-stage .NET 10 e suporte a porta dinamica para deploy no Render`
+- [`10411be`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/10411be) — `feat: add identificação.txt`
+- [`1b71bae`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/1b71bae) — `feat: Só um pequeno ajuste no identificação.txt`
+- [`0cc6ff4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/0cc6ff4) — `chore: remove hardcoded Jwt:Key from appsettings, document Idempotency-Key in Swagger, update identificacao.txt and README (106 tests)`
 
 ---
 
@@ -637,5 +653,13 @@
 - [`ee3696b`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/ee3696b) — `docs(readme): atualizar documentacao tecnica, diagramas logico e relacional e integracao mobile`
 - [`cd487c4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/cd487c4) — `docs: documenta arquitetura, rubrica GS2, endpoints, healthchecks e execucao local com Docker`
 - [`f5a8305`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f5a8305) — `fix(api,infra,swagger): expor todos os endpoints no Swagger, compatibilizar EF Core com Oracle 19c, auto-migrar/semear banco e corrigir StatusAnterior`
-- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (105 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
+- [`6979213`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/6979213) — `test,docs: elevar cobertura acima de 91% (106 testes), adicionar evidencias Oracle e atualizar catalogo de endpoints no README`
 - [`090f676`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/090f676) — `feat: Só add imagens que estavam faltando no readme`
+- [`3aa650d`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/3aa650d) — `feat: Pequena modificação no README`
+- [`d627367`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/d627367) — `docs(readme): aprimorar documentacao de integracao mobile, catalogo de endpoints e matriz de rastreabilidade do backlog`
+- [`5d8796d`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/5d8796d) — `feat: Pequeno ajuste no readme`
+- [`f273ea1`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/f273ea1) — `docs(readme): sincronizar identificadores oficiais do Azure Boards (#27 a #211)`
+- [`5e864d9`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/5e864d9) — `build(docker): adicionar Dockerfile multi-stage .NET 10 e suporte a porta dinamica para deploy no Render`
+- [`10411be`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/10411be) — `feat: add identificação.txt`
+- [`1b71bae`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/1b71bae) — `feat: Só um pequeno ajuste no identificação.txt`
+- [`0cc6ff4`](https://github.com/Global-Solution-CitizenTech/Advanced-Business-Development-with-Dot-Net/commit/0cc6ff4) — `chore: remove hardcoded Jwt:Key from appsettings, document Idempotency-Key in Swagger, update identificacao.txt and README (106 tests)`

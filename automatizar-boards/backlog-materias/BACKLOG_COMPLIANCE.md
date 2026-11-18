@@ -11,7 +11,7 @@
 > **Start Date:** `2026-11-04`  
 > **Target Date:** `2026-11-19`  
 > **Padrão:** Azure Boards (Scrum Process: Epic ➔ Feature ➔ PBI)  
-> **Diretrizes Estratégicas:** 100% de aderência à rubrica oficial da Global Solution 2 (5 critérios de 20% cada), governança ágil Scrum no Azure Boards para todas as 7 disciplinas (`7` Epics, `30` Features, `89` PBIs, `276` Story Points), validação estrita de contrato via Python (`parser_backlog.py` + `run_sync.py --validate`), iterações padronizadas (`Semana 1` e `Semana 2`), tag única por disciplina (sem tag redundante `ZelaFix`), rastreabilidade contínua de commits e PRs nos 7 repositórios (GitHub + Azure Repos), suíte automatizada Postman (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em **4 Azure Test Plans / 4 Suites / 25 Casos de Teste (`TC-01`..`TC-25` — 100% `Passed`)** alinhados à arquitetura `DeferredResult` (`60s`), recusa de imagem IA sem persistência no Oracle e às `13` tabelas / `5` ENUMs oficiais.
+> **Diretrizes Estratégicas:** 100% de aderência à rubrica oficial da Global Solution 2 (5 critérios de 20% cada), governança ágil Scrum no Azure Boards para todas as 7 disciplinas (`7` Epics, `30` Features, `89` PBIs, `276` Story Points), validação estrita de contrato via Python (`parser_backlog.py` + `run_sync.py --validate`), iterações padronizadas (`Semana 1` e `Semana 2`), tag única por disciplina (sem tag redundante `ZelaFix`), rastreabilidade contínua de commits e PRs nos 7 repositórios (GitHub + Azure Repos), suíte automatizada Postman (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis) e homologação 1:1 em **4 Azure Test Plans / 4 Suites / 25 Casos de Teste (`TC-01`..`TC-25` — 100% `Passed`)** alinhados à arquitetura `DeferredResult` (`90s`), recusa de imagem IA sem persistência no Oracle e às `13` tabelas / `5` ENUMs oficiais.
 
 ---
 
@@ -35,7 +35,7 @@
 | :---: | :--- | :---: | :--- | :--- |
 | **01** | **Estrutura de Projeto** | **20 pts** | Governança consolidada no Azure Boards (`ZelaFixGS/ZelaFix`) cobrindo 7 Epics, 30 Features e 89 PBIs (`276 SP`), sendo o Epic de Compliance `#67` composto por 3 Features e 7 PBIs (`21 SP`), organizados por iteração (`Semana 1` e `Semana 2`) e responsável por matéria. | Hierarquia pai-filho validada no Azure Boards, tag única por disciplina e `run_sync.py --validate` com `0` erros. |
 | **02** | **Critérios de Aceite por Feature** | **20 pts** | Features e PBIs padronizados no formato Scrum (`Como / Eu quero / Para que`) com `System.Description`, `Microsoft.VSTS.Common.AcceptanceCriteria`, datas, `Effort` e `Business Value` impostos pelo contrato `BacklogValidationError` (`parser_backlog.py`). | Campos nativos preenchidos em 100% dos Work Items via `SyncEngine` e validados em modo `strict=True`. |
-| **03** | **Lista de Test Cases Positivos e Negativos** | **20 pts** | Matriz oficial ampliada para **25 Casos de Teste** (`TC-01`..`TC-25`) com **15 cenários positivos (60%)** e **10 cenários negativos/borda (40%)**, espelhando **57 requests** Postman com `57` scripts `pm.test()` e **25 variáveis** de ambiente. | Cobertura completa de Auth/RBAC JWT, Usuários/Endereços ViaCEP, Chamados `DeferredResult` (`60s`), recusa IA sem Oracle e ZelaBot RAG. |
+| **03** | **Lista de Test Cases Positivos e Negativos** | **20 pts** | Matriz oficial ampliada para **25 Casos de Teste** (`TC-01`..`TC-25`) com **15 cenários positivos (60%)** e **10 cenários negativos/borda (40%)**, espelhando **57 requests** Postman com `57` scripts `pm.test()` e **25 variáveis** de ambiente. | Cobertura completa de Auth/RBAC JWT, Usuários/Endereços ViaCEP, Chamados `DeferredResult` (`90s`), recusa IA sem Oracle e ZelaBot RAG. |
 | **04** | **Sumário dos Test Cases** | **20 pts** | Sumário estruturado por caso contendo: Azure Test Case ID, Plan/Suite, Prioridade (`P1`/`P2`), Objetivo, Pré-condições (Flyway `V1`–`V3`), Payloads controlados, Enums oficiais (`5` ENUMs) e HTTP Codes esperados. | Documentado em [`docs/MATRIZ_CASOS_DE_TESTE_AZURE.md`](../../docs/MATRIZ_CASOS_DE_TESTE_AZURE.md) e sincronizado 1:1 no Azure Test Plans. |
 | **05** | **Passos Detalhados dos Test Cases** | **20 pts** | Passo a passo sequencial relacionando Ação do Testador (Entrada) e Resposta Esperada do Sistema (Saída), distribuído em **4 Test Plans / 4 Test Suites** (`#132`/`#133`, `#143`/`#144`, `#153`/`#154`, `#122`/`#123`) após higienização de `14` duplicados. | XML de passos no campo nativo `Microsoft.VSTS.TCM.Steps` em todos os 25 Test Cases (`Ready`). |
 | **TOTAL** | **Pontuação Total da Entrega** | **100 pts** | **Atendimento Rigoroso a 100% dos Requisitos do Edital** | **Boards + Test Plans + Postman + Automação Python** |
@@ -245,7 +245,7 @@
 * **Acceptance Criteria:**
   - [x] `25` casos de teste (`TC-01`..`TC-25`) documentados com Objetivo, Pré-condições, Dados de Entrada, HTTP Codes esperados e passos estruturados.
   - [x] Proporção equilibrada entre fluxos positivos (`15` TCs — `60%`) e negativos/segurança/borda (`10` TCs — `40%`).
-  - [x] Coleção Postman v2.0 com `6` pastas, `57` requests e `57` asserções `pm.test()` alinhadas 1:1 aos endpoints `DeferredResult` (`60s`), `multipart/form-data` e teardown.
+  - [x] Coleção Postman v2.0 com `6` pastas, `57` requests e `57` asserções `pm.test()` alinhadas 1:1 aos endpoints `DeferredResult` (`90s`), `multipart/form-data` e teardown.
   - [x] Cobertura explícita de recusa de imagem fora de escopo (`ocorrenciaValida=false`) sem persistência no Oracle e guardrails do ZelaBot AI.
 
 ---
@@ -267,7 +267,7 @@
 ##### Descrição (História de Usuário)
 > **Como** Testador de Software QA,  
 > **Eu quero** especificar `15` casos de teste positivos com dados controlados e manter a coleção Postman automatizada (`6` pastas, `57` requests, `57` scripts `pm.test()`, `25` variáveis),  
-> **Para que** possamos homologar de ponta a ponta os fluxos de autenticação JWT, usuários, endereços ViaCEP, chamados `DeferredResult` (`60s`), BLOB de fotos, apoio comunitário (`+1`), RabbitMQ/Worker AI e ZelaBot RAG.
+> **Para que** possamos homologar de ponta a ponta os fluxos de autenticação JWT, usuários, endereços ViaCEP, chamados `DeferredResult` (`90s`), BLOB de fotos, apoio comunitário (`+1`), RabbitMQ/Worker AI e ZelaBot RAG.
 
 ##### Critérios de Aceite (Acceptance Criteria / Definition of Done)
 - [x] `15` casos positivos especificados cobrindo `TC-01`, `TC-07`, `TC-09`, `TC-10`, `TC-12`, `TC-13`, `TC-14`, `TC-16`, `TC-17`, `TC-18`, `TC-19`, `TC-21`, `TC-22`, `TC-24` e `TC-25`.
@@ -361,6 +361,9 @@
 - [`b1b105c`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/b1b105c) — `refactor(compliance): remove test plan e casos de teste do codigo e do Azure Boards conforme alinhamento` *(vinculado em AB#76)*
 - [`9ccf50c`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/9ccf50c) — `docs(qa): atualizar README e matriz de casos de teste com o Azure Test Plans` *(vinculado em AB#76)*
 - [`6ad2806`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/6ad2806) — `docs(qa): atualizar matriz de 25 casos de teste Azure Test Plans e README consolidado` *(vinculado em AB#76)*
+- [`5f5aefe`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/5f5aefe) — `docs(qa): alinhar matriz de casos de teste com enums canonicos e endpoints de producao` *(vinculado em AB#76)*
+- [`1315724`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/1315724) — `docs(compliance): adiciona PDF oficial de entrega e vincula no README` *(vinculado em AB#76)*
+- [`e4a0e5f`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e4a0e5f) — `docs(compliance): atualizar PDF final, totais consolidados (30 Features, 89 PBIs, 276 SP) e identificacao.txt` *(vinculado em AB#76)*
 
 ---
 
@@ -394,3 +397,25 @@
 - [`df43043`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/df43043) — `docs(boards): sincronizar BACKLOG_MOBILE com Azure Boards` *(vinculado em AB#77)*
 - [`471c6be`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/471c6be) — `docs(boards): sincronizar BACKLOG_DISRUPTIVE_ARCHITECTURES e vincular commits ao Azure Boards` *(vinculado em AB#77)*
 - [`12ae289`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/12ae289) — `docs(boards): atualizar backlogs de Mobile, Java, Database e DevOps e sincronizar Azure Boards` *(vinculado em AB#77)*
+- [`72db657`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/72db657) — `chore: remover script temporario de sincronizacao sync_azure_boards_iot` *(vinculado em AB#77)*
+- [`8f4ec6a`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/8f4ec6a) — `feat(boards): implementar Smart Upsert (--update), eliminar scripts redundantes e unificar CLI` *(vinculado em AB#77)*
+- [`f9164b9`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/f9164b9) — `docs(dotnet): mapear Azure Boards IDs #27..#35 no BACKLOG_DOT_NET.md e sincronizar nuvem` *(vinculado em AB#77)*
+- [`e89c5c8`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e89c5c8) — `docs(compliance): generalizar mencoes de modelos de IA em todos os backlogs e README` *(vinculado em AB#77)*
+- [`a4b343d`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/a4b343d) — `docs(compliance): eliminar mencoes a provedores e modelos especificos nos backlogs, matriz e colecao` *(vinculado em AB#77)*
+- [`318e741`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/318e741) — `docs(java): atualizar backlog com fail-fast na IA e historico duplo do chamado` *(vinculado em AB#77)*
+- [`d4a7e25`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/d4a7e25) — `docs(backlog): alinhar PBI-13 com escalonamento comunitario de votos via rabbitmq` *(vinculado em AB#77)*
+- [`576000e`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/576000e) — `refactor: atualizar endpoints dos Web Apps para app-zelafix e app-zelafix-worker` *(vinculado em AB#77)*
+- [`4ade001`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/4ade001) — `docs(backlogs): sincronizar commits recentes de Java, IoT e DevOps no Azure Boards` *(vinculado em AB#77)*
+- [`28b5ecd`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/28b5ecd) — `docs(mobile,java): sincronizar 8 commits de mobile, versionCode 8, 66 testes e PRs de java` *(vinculado em AB#77)*
+- [`1549492`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/1549492) — `docs(boards): atualizar backlog de Java Advanced com PRs #33, #34, #35 e commit afe5b7e` *(vinculado em AB#77)*
+- [`e04e576`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e04e576) — `feat(boards): sincronizar backlog completo de Dot Net com 5 Features, 15 PBIs e commits vinculados no Azure Boards` *(vinculado em AB#77)*
+- [`0d2cd49`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/0d2cd49) — `docs(boards): atualizar BACKLOG_DOT_NET.md com 105 testes (>91% cobertura), Swagger 23 paths e commits f5a8305/6979213` *(vinculado em AB#77)*
+- [`5e37abc`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/5e37abc) — `docs(boards): sincronizar ultimos commits de Java, Mobile, Database, DevOps e DotNet` *(vinculado em AB#77)*
+- [`d962aa3`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/d962aa3) — `feat: add identificação.txt` *(vinculado em AB#77)*
+- [`3a0870c`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/3a0870c) — `feat: Só um pequeno ajuste no identificação.txt` *(vinculado em AB#77)*
+- [`dd3efd0`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/dd3efd0) — `docs(boards): atualizar Database (d3ea34e) e Java (631a585, c3109df) e sincronizar Azure Boards` *(vinculado em AB#77)*
+- [`c358710`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/c358710) — `feat: add imagens no readme de compliance!` *(vinculado em AB#77)*
+- [`b808f8c`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/b808f8c) — `feat: só um pequeno ajuste em identificação.txt` *(vinculado em AB#77)*
+- [`e16a3cc`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/e16a3cc) — `refactor(boards): impor tag unica por disciplina em Java, Database e no SyncEngine` *(vinculado em AB#77)*
+- [`48476a7`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/48476a7) — `feat(boards): definir estado Done para todas as Features e PBIs mantendo Epics In Progress` *(vinculado em AB#77)*
+- [`f9e4b47`](https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests/commit/f9e4b47) — `feat: só um pequeno ajuste backlog devops` *(vinculado em AB#77)*
