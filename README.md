@@ -28,10 +28,6 @@
 | 🐙 **Repositório Oficial (Compliance & QA)** | Governança, automação Python, matriz de testes e suíte Postman | https://github.com/Global-Solution-CitizenTech/Compliance-Quality-Assurance-Tests |
 | ☕ **Repositório Java (GitHub + Azure Repos)** | Microsserviços Spring Boot (`zelafix-api` e `zelafix-worker`), Flyway, Docker e CI/CD | https://github.com/Global-Solution-CitizenTech/Java-Advanced |
 
-## 🔗 Vídeo de Demonstração (Global Solution 2)
-
-*(Link do YouTube será inserido após gravação)*
-
 ---
 
 ## 🌐 Links do Ecossistema Integrado em Produção
