@@ -83,7 +83,7 @@ python run_sync.py --update --discipline database
 # Escanear os 7 repositórios e vincular commits recentes aos Work Items:
 python run_sync.py --commits
 
-# Aplicar atribuição de responsáveis por tag e estados Scrum (In Progress / Committed):
+# Aplicar atribuição de responsáveis por tag e estados Scrum (Epics: In Progress | Features e PBIs: Done):
 python run_sync.py --govern
 
 # Instalar post-commit hooks nos 7 repositórios locais para auto-vínculo com tag AB#<ID>:

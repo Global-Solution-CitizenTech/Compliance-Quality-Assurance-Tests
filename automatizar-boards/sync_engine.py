@@ -33,6 +33,10 @@ from parser_backlog import (
 class SyncEngine:
     """Motor unificado de operações do Azure Boards para o ZelaFix."""
 
+    # Tipos gerenciados pelos backlogs Markdown; Tasks (ex: vídeo DevOps), Test Plans/Cases e Bugs nunca são alterados/removidos.
+    MANAGED_BACKLOG_TYPES = ("Epic", "Feature", "Product Backlog Item")
+    _MANAGED_TYPES_WIQL = "'Epic', 'Feature', 'Product Backlog Item'"
+
     def __init__(self, client: Optional[AzureClient] = None):
         self.client = client or AzureClient(AZURE_ORG, AZURE_PROJECT, AZURE_PAT)
         self.script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -567,7 +571,11 @@ class SyncEngine:
 
             disc_items = []
             if not dry_run:
-                wiql = f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}' and [System.Tags] Contains '{d_info['tag']}'"
+                wiql = (
+                    f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}' "
+                    f"and [System.WorkItemType] IN ({self._MANAGED_TYPES_WIQL}) "
+                    f"and [System.Tags] Contains '{d_info['tag']}'"
+                )
                 disc_items = self.client.query_wiql(wiql)
 
             for line in lines:
@@ -596,15 +604,18 @@ class SyncEngine:
     # 3. GOVERNANÇA DE RESPONSÁVEIS E ESTADOS
     # =========================================================================
     def apply_governance(self, dry_run: bool = False) -> int:
-        """Aplica atribuição dos integrantes e estados In Progress / Committed."""
+        """Aplica atribuição dos integrantes e estados (Epics: In Progress | Features e PBIs: Done)."""
         prefix = "[DRY-RUN] " if dry_run else ""
         print("\n================================================================================")
         print(f"👤 {prefix}APLICANDO GOVERNANÇA, RESPONSÁVEIS E ESTADOS NO AZURE BOARDS")
         print("================================================================================")
 
-        ids = self.client.query_wiql(f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}'")
+        ids = self.client.query_wiql(
+            f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}' "
+            f"and [System.WorkItemType] IN ({self._MANAGED_TYPES_WIQL})"
+        )
         if not ids:
-            print("ℹ️ Nenhum Work Item encontrado no projeto.")
+            print("ℹ️ Nenhum Work Item de backlog encontrado no projeto.")
             return 0
 
         items = self.client.get_batch(ids, fields=["System.Id", "System.Title", "System.WorkItemType", "System.Tags", "System.State"])
@@ -616,6 +627,8 @@ class SyncEngine:
             iid = it["id"]
             fields = it["fields"]
             wtype = fields.get("System.WorkItemType")
+            if wtype not in self.MANAGED_BACKLOG_TYPES:
+                continue
             tags = fields.get("System.Tags", "")
             state = fields.get("System.State", "")
 
@@ -727,16 +740,29 @@ class SyncEngine:
         return all_ok
 
     # =========================================================================
-    # 6. LIMPEZA TOTAL DO BOARD
+    # 6. LIMPEZA SEGURA DO BACKLOG (NUNCA REMOVE TASKS, TEST PLANS OU TEST CASES)
     # =========================================================================
-    def clean_board(self, destroy: bool = True) -> int:
-        """Limpa todos os Work Items do projeto com segurança."""
-        ids = self.client.query_wiql(f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}'")
-        print(f"🗑️ Encontrados {len(ids)} itens para remoção no projeto {AZURE_PROJECT}...")
+    def clean_board(self, destroy: bool = False, dry_run: bool = False) -> int:
+        """Remove apenas itens de backlog gerenciados (Epic, Feature, PBI), preservando Tasks e Test Cases."""
+        ids = self.client.query_wiql(
+            f"Select [System.Id] From WorkItems Where [System.TeamProject] = '{AZURE_PROJECT}' "
+            f"and [System.WorkItemType] IN ({self._MANAGED_TYPES_WIQL})"
+        )
+        items = self.client.get_batch(ids, fields=["System.Id", "System.WorkItemType", "System.Title"])
+        safe_items = [it for it in items if it.get("fields", {}).get("System.WorkItemType") in self.MANAGED_BACKLOG_TYPES]
+        skipped = len(items) - len(safe_items)
+
+        prefix = "[DRY-RUN] " if dry_run else ""
+        print(
+            f"🗑️ {prefix}Encontrados {len(safe_items)} itens de backlog gerenciados no projeto {AZURE_PROJECT} "
+            f"(preservando Tasks, Test Plans, Test Suites e Test Cases; ignorados={skipped})..."
+        )
+        if dry_run:
+            return 0
+
         deleted = 0
-        for iid in ids:
-            ok = self.client.delete_work_item(iid, destroy=destroy)
-            if ok:
+        for it in safe_items:
+            if self.client.delete_work_item(it["id"], destroy=destroy):
                 deleted += 1
-        print(f"✨ Limpeza concluída: {deleted}/{len(ids)} itens removidos.")
+        print(f"✨ Limpeza concluída: {deleted}/{len(safe_items)} itens movidos para {'exclusão permanente' if destroy else 'a Lixeira'}.")
         return deleted

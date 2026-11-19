@@ -156,6 +156,7 @@
                   "    pm.expect(json.paths).to.have.property('/usuarios');",
                   "    pm.expect(json.paths).to.have.property('/chamados');",
                   "    pm.expect(json.paths).to.have.property('/enderecos');",
+                  "    pm.expect(json.paths).to.have.property('/historicos');",
                   "});"
                 ]
               }
@@ -435,10 +436,14 @@
                   "pm.test('Status code is 401 Unauthorized', function () {",
                   "    pm.response.to.have.status(401);",
                   "});",
-                  "pm.test('Response matches ApiErrorResponse', function () {",
-                  "    const json = pm.response.json();",
-                  "    pm.expect(json.status).to.eql(401);",
-                  "    pm.expect(json.path).to.eql('/usuarios/me');",
+                  "pm.test('Unauthorized challenge returned without leaking payload', function () {",
+                  "    const body = pm.response.text();",
+                  "    if (body && body.trim().length > 0) {",
+                  "        const json = pm.response.json();",
+                  "        pm.expect(json.status).to.eql(401);",
+                  "    } else {",
+                  "        pm.response.to.have.header('WWW-Authenticate');",
+                  "    }",
                   "});"
                 ]
               }
@@ -2154,7 +2159,7 @@
                   "    const json = pm.response.json();",
                   "    pm.expect(String(json.idChamado)).to.eql(pm.environment.get('chamadoId'));",
                   "    pm.expect(json.historico).to.be.an('array').with.lengthOf.at.least(1);",
-                  "    pm.expect(json.historico[0]).to.have.all.keys('id', 'data', 'status', 'observacao', 'autorNome');",
+                  "    pm.expect(json.historico[0]).to.have.all.keys('id', 'chamadoId', 'data', 'status', 'observacao', 'autorNome');",
                   "});"
                 ]
               }

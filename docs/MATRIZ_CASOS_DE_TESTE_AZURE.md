@@ -24,12 +24,12 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 ### 2.1 Endpoints de Referência
 - **API Java (`zelafix-api`):** Local `http://localhost:8080` | Cloud (Azure App Service) `https://app-zelafix.azurewebsites.net`
 - **ZelaBot AI (`deploy_zelafixai_render`):** Local `http://localhost:8000` | Cloud (Render) `https://disruptive-architectures-iot-iob-ia-mpl5.onrender.com`
-- **Worker Spring AI (`zelafix-worker`):** Assíncrono via RabbitMQ (`chamado.triagem.queue` -> `chamado.triagem-feedback.queue`, além de `chamado.voto.queue` -> `chamado.prioridade-escalada.queue`), utilizando `ZelaFixAiService` + `TriagemNormativaTools`
+- **Worker Spring AI (`zelafix-worker`):** Assíncrono via RabbitMQ (`chamado.triagem.queue` -> `chamado.triagem-concluida.queue`, além de `chamado.voto.queue` -> `chamado.prioridade-escalada.queue`), utilizando `ZelaFixAiService` + `TriagemNormativaTools`
 
 ### 2.2 Contas Semeadas para QA (Flyway `V2__admin_inicial.sql` e `V3__dados_iniciais_zelafix.sql`)
 - **ADMIN:** `admin@zelafix.com.br` (perfil administrativo global)
-- **GESTOR:** `roberto.gestor@subprefeitura.sp.gov.br` (gestor de subprefeitura habilitado para triagem/status)
-- **CIDADAO:** `enzo.okuizumi@gmail.com` (bem como `ana.silva@gmail.com` e `lucas.gouveia@gmail.com`)
+- **GESTOR:** `roberto.gestor@subprefeitura.sp.gov.br` e `lucas.zeladoria@subprefeitura.sp.gov.br` (gestores de subprefeitura habilitados para triagem/status)
+- **CIDADAO:** `enzo.okuizumi@gmail.com`
 
 ### 2.3 Contrato de Enums (Oracle DDL / Flyway / Java / MongoDB)
 - **`CargoUsuario`:** `CIDADAO`, `GESTOR`, `ADMIN`
@@ -74,9 +74,9 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 | **TC-16** | `#161` | `api-chamados` | P1 | Positivo | `GET /chamados, GET /chamados/{id}, GET /chamados/estatisticas` | 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.5–05.7, 05.16) |
 | **TC-17** | `#163` | `api-chamados` | P1 | Positivo | `PUT /chamados/{id}, POST /chamados/{id}/apoiar, PATCH /chamados/{id}/status` | 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.10, 05.12–05.15) |
 | **TC-18** | `#166` | `api-chamados` | P1 | Positivo | `DELETE /chamados/{id}, GET /chamados/{id}, DELETE /usuarios/me` | 06. Teardown & Limpeza (06.2–06.4) |
-| **TC-19** | `#124` | `ai-service` | P1 | Positivo | `POST /chamados, RabbitMQ chamado.triagem.queue -> chamado.triagem-feedback.queue` | 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) |
+| **TC-19** | `#124` | `ai-service` | P1 | Positivo | `POST /chamados, RabbitMQ chamado.triagem.queue -> chamado.triagem-concluida.queue` | 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) |
 | **TC-20** | `#126` | `ai-service` | P1 | Negativo | `POST /chamados, TriagemPendenteStore, GET /chamados/estatisticas` | 05. Chamados, Triagem IA (DeferredResult) & Apoio (05.4) |
-| **TC-21** | `#127` | `ai-service` | P1 | Positivo | `POST /ai/chat, POST /ai/chat/public` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
+| **TC-21** | `#127` | `ai-service` | P1 | Positivo | `POST /ai/chat` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
 | **TC-22** | `#128` | `ai-service` | P1 | Positivo | `POST /ai/chat` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
 | **TC-23** | `#129` | `ai-service` | P2 | Negativo | `POST /ai/chat` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
 | **TC-24** | `#131` | `ai-service` | P1 | Positivo | `POST /ai/triagem, POST /ai/insights` | ZelaBot AI FastAPI (test_zelafix_scenarios.py) |
@@ -397,7 +397,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 
 - **Azure Test Case ID:** `#124` | **Plan/Suite:** `#122` / `#123` (`ai-service`) | **Tipo:** `Positivo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `WorkerAI`, `RabbitMQ`
-- **Cobertura / Endpoints:** 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) (`POST /chamados, RabbitMQ chamado.triagem.queue -> chamado.triagem-feedback.queue`)
+- **Cobertura / Endpoints:** 01. Observabilidade / 05. Chamados, Triagem IA (01.2, 05.1) (`POST /chamados, RabbitMQ chamado.triagem.queue -> chamado.triagem-concluida.queue`)
 - **Objetivo:** Validar o pipeline reativo zelafix-api -> RabbitMQ (chamado.triagem.queue) -> zelafix-worker (ZelaFixAiService + TriagemNormativaTools @Tool com Fail-Fast) -> chamado.triagem-concluida.queue com classificação nos enums oficiais, proteção de limites UTF-8 do Oracle e persistência com histórico duplo.
 - **Pré-condições:** zelafix-api, RabbitMQ e zelafix-worker conectados com Provedor de LLM Multimodal ativo; foto válida de ocorrência urbana.
 - **Dados de Entrada / Payload:** POST /chamados multipart com foto real de buraco/lixo/poste/alagamento em via pública.
@@ -430,7 +430,7 @@ Matriz oficial de QA sincronizada 1:1 com o **Azure Test Plans** do projeto [`Ze
 
 - **Azure Test Case ID:** `#127` | **Plan/Suite:** `#122` / `#123` (`ai-service`) | **Tipo:** `Positivo` | **Prioridade:** `P1` | **Estado:** `Ready`
 - **Tags Azure:** `Compliance`, `QA`, `ZelaBot`, `RAG`
-- **Cobertura / Endpoints:** ZelaBot AI FastAPI (test_zelafix_scenarios.py) (`POST /ai/chat, POST /ai/chat/public`)
+- **Cobertura / Endpoints:** ZelaBot AI FastAPI (test_zelafix_scenarios.py) (`POST /ai/chat`)
 - **Objetivo:** Validar resposta conversacional do ZelaBot AI fundamentada nos decretos municipais PMSP indexados no ChromaDB e formatada sem tabelas pipes ou markdown bruto para exibição mobile.
 - **Pré-condições:** Microsserviço ZelaBot AI (FastAPI) online com índice ChromaDB carregado.
 - **Dados de Entrada / Payload:** POST /ai/chat com { "pergunta": "Onde posso descartar entulho de obra residencial e quanto custa no ecoponto?", "sessionId": "qa_rag_01" }.

@@ -52,11 +52,11 @@ Exemplos de Uso:
     parser.add_argument("--all", "-a", action="store_true", help="Importar backlogs das 7 disciplinas")
     parser.add_argument("--discipline", "-d", type=str, choices=list(DISCIPLINES.keys()), help="Importar/atualizar disciplina específica")
     parser.add_argument("--commits", "-c", action="store_true", help="Escanear os 7 repositórios e vincular commits")
-    parser.add_argument("--govern", "-g", action="store_true", help="Aplicar governança de responsáveis e estados (In Progress/Committed)")
+    parser.add_argument("--govern", "-g", action="store_true", help="Aplicar governança de responsáveis e estados (Epics: In Progress | Features e PBIs: Done)")
     parser.add_argument("--hooks", action="store_true", help="Instalar post-commit hooks nos 7 repositórios locais")
     parser.add_argument("--status", "-s", action="store_true", help="Exibir resumo consolidado de saúde dos Work Items")
     parser.add_argument("--validate", "-v", action="store_true", help="Validar campos obrigatórios de todos os backlogs")
-    parser.add_argument("--clean", action="store_true", help="Limpar todos os Work Items do projeto com segurança")
+    parser.add_argument("--clean", action="store_true", help="Enviar apenas Epics, Features e PBIs do backlog para a Lixeira (preserva Tasks e Test Cases)")
     parser.add_argument("--check-auth", action="store_true", help="Verificar conexão e permissões no Azure DevOps")
     parser.add_argument("--full", action="store_true", help="Executar carga, governança e commits de ponta a ponta")
     parser.add_argument("--dry-run", action="store_true", help="Modo simulação (não grava na nuvem)")
@@ -87,9 +87,15 @@ Exemplos de Uso:
         return
 
     if args.clean:
-        confirm = input("⚠️ ATENÇÃO: Deseja realmente remover todos os Work Items do projeto? (s/N): ").strip().lower()
-        if confirm == "s":
-            engine.clean_board()
+        if args.dry_run:
+            engine.clean_board(destroy=False, dry_run=True)
+            return
+        confirm = input(
+            "⚠️ ATENÇÃO: Enviar Epics, Features e PBIs do backlog para a Lixeira (Tasks e Test Cases serão preservados)? "
+            "Digite 'LIMPAR BACKLOG' para confirmar: "
+        ).strip()
+        if confirm == "LIMPAR BACKLOG":
+            engine.clean_board(destroy=False, dry_run=False)
         else:
             print("Operação de limpeza cancelada.")
         return

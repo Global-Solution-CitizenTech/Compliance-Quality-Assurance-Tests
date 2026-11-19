@@ -256,13 +256,21 @@ def _markdown_to_clean_html(text: str) -> str:
 
 
 def _format_inline_markdown(text: str) -> str:
-    """Formata tags inline como negrito, itálico e código."""
+    """Formata tags inline como negrito, itálico e código sem corromper identificadores snake_case."""
     t = html.escape(text)
+    code_spans: List[str] = []
+
+    def _stash_code(match: re.Match) -> str:
+        code_spans.append(f"<code>{match.group(1)}</code>")
+        return f"\x00CODE{len(code_spans) - 1}\x00"
+
+    t = re.sub(r"`(.+?)`", _stash_code, t)
     t = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", t)
-    t = re.sub(r"__(.+?)__", r"<strong>\1</strong>", t)
+    t = re.sub(r"(?<!\w)__(.+?)__(?!\w)", r"<strong>\1</strong>", t)
     t = re.sub(r"\*(.+?)\*", r"<em>\1</em>", t)
-    t = re.sub(r"_(.+?)_", r"<em>\1</em>", t)
-    t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
+    t = re.sub(r"(?<!\w)_(.+?)_(?!\w)", r"<em>\1</em>", t)
+    for idx, span in enumerate(code_spans):
+        t = t.replace(f"\x00CODE{idx}\x00", span)
     return t
 
 

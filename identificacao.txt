@@ -23,7 +23,4 @@ Projeto: ZelaFix
 
 Link Azure Boards: https://dev.azure.com/ZelaFixGS/ZelaFix
 
-Link Vídeo:
-[INSERIR LINK DO VÍDEO COMPLIANCE AQUI]
-
 ================================================================================

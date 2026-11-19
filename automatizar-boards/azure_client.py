@@ -65,17 +65,19 @@ class AzureClient:
         return None
 
     def get_batch(self, ids: List[int], fields: Optional[List[str]] = None) -> List[Dict[str, Any]]:
-        """Busca múltiplos Work Items em lote."""
+        """Busca múltiplos Work Items em lote (respeitando o limite de 200 IDs da API)."""
         if not ids:
             return []
         url = f"{self.base_url}/_apis/wit/workitemsbatch?api-version=7.0"
-        payload: Dict[str, Any] = {"ids": ids}
-        if fields:
-            payload["fields"] = fields
-        res = self.session.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=30)
-        if res.status_code == 200:
-            return res.json().get("value", [])
-        return []
+        results: List[Dict[str, Any]] = []
+        for i in range(0, len(ids), 200):
+            payload: Dict[str, Any] = {"ids": ids[i:i + 200]}
+            if fields:
+                payload["fields"] = fields
+            res = self.session.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=30)
+            if res.status_code == 200:
+                results.extend(res.json().get("value", []))
+        return results
 
     def create_work_item(
         self,
@@ -172,8 +174,8 @@ class AzureClient:
         res = self.session.patch(url, json=patch_ops, headers=headers, timeout=20)
         return res.status_code == 200
 
-    def delete_work_item(self, item_id: int, destroy: bool = True) -> bool:
-        """Remove um Work Item por ID."""
+    def delete_work_item(self, item_id: int, destroy: bool = False) -> bool:
+        """Remove um Work Item por ID (soft-delete para a Lixeira por padrão)."""
         destroy_str = "true" if destroy else "false"
         url = f"{self.org_url}/_apis/wit/workitems/{item_id}?destroy={destroy_str}&api-version=7.0"
         res = self.session.delete(url, timeout=20)
